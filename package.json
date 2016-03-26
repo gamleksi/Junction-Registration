@@ -15,6 +15,7 @@
     "express-validator":"*",
     "mongodb":"*",
     "mongoose":"*",
+    "passport": "*",
     "passport-http":"*",
     "passport-local":"*",
     "cookie-parser": "~1.3.5",
