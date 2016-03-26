@@ -3,10 +3,20 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "nodemon app.js"
   },
   "dependencies": {
-    "body-parser": "~1.13.2",
+    "bcryptjs":"*",
+    "body-parser": "*",
+    "connect-flash":"*",
+    "express-messages":"*",
+    "express-session":"*",
+    "express-handlebars":"*",
+    "express-validator":"*",
+    "mongodb":"*",
+    "mongoose":"*",
+    "passport-http":"*",
+    "passport-local":"*",
     "cookie-parser": "~1.3.5",
     "debug": "~2.2.0",
     "ejs": "~2.3.3",
