@@ -3,6 +3,9 @@ var router = express.Router();
 var User = require('../models/user');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
+
+
+
 /* GET users listing. */
 router.get('/register', ensureIsNotAuthenticated, function(req, res) {
   res.render('register')
@@ -11,6 +14,18 @@ router.get('/register', ensureIsNotAuthenticated, function(req, res) {
 router.get('/login', ensureIsNotAuthenticated, function(req, res) {
   res.render('login')
 });
+
+
+
+router.get('/account', function(req, res){
+	res.render('account')
+})
+
+
+router.get('/edit_profile', function(req, res){
+	res.render('edit_profile')
+})
+
 
 
 
@@ -45,12 +60,9 @@ router.post('/register', function(req, res) {
   		if(err) throw err;
   		console.log(user);
   	});
-
   	req.flash('success_msg', 'You are registered and can now login')
-
   	res.redirect('login')
   }
-
 });
 
 passport.use(new LocalStrategy(
@@ -87,6 +99,10 @@ router.get('/logout', function(req, res){
 	req.flash('success_msg', 'You are logget out.');
 	res.redirect('/')
 })
+
+
+
+
 
 
 passport.serializeUser(function(user, done) {
