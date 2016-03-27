@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var User = require('../models/user');
+var Admin = require('../models/admin');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 /* GET users listing. */
@@ -53,7 +54,7 @@ router.post('/register', function(req, res) {
 
 });
 
-passport.use(new LocalStrategy(
+passport.use('user-local', new LocalStrategy(
   function(username, password, done) {
 
 
@@ -77,10 +78,7 @@ passport.use(new LocalStrategy(
 ));
 
 router.post('/login',
-  passport.authenticate('local', {successRedirect:'/', failureRedirect:'/users/login',failureFlash: true}),
-  function(req, res) {
-    res.redirect('/');
- });
+  passport.authenticate('user-local', {successRedirect:'/', failureRedirect:'/users/login',failureFlash: true}));
 
 router.get('/logout', function(req, res){
 	req.logout();
@@ -90,12 +88,22 @@ router.get('/logout', function(req, res){
 
 
 passport.serializeUser(function(user, done) {
+  console.log("serializeUser")
+
   done(null, user.id);
 });
 
-passport.deserializeUser(function(id, done) {
-  User.getUserById(id, function(err, user) {
-    done(err, user);
+passport.deserializeUser(function(id, done){
+  Admin.findById(id, function(err, user){
+    if(err) done(err);
+      if(user){
+        done(null, user);
+      } else {
+         User.findById(id, function(err, user){
+         if(err) done(err);
+         done(null, user);
+      })
+    }
   });
 });
 
