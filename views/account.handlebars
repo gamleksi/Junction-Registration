@@ -1,0 +1,21 @@
+<h2 class="page-header">MY PROFILE</h2>
+{{#if errors}}
+	{{#each errors}}
+		<div class = "alert alert-danger"> {{msg}}</div>
+	{{/each}}
+{{/if}}
+
+	<div class="form-group">
+		<h4><u>First name</u></h4>
+		<label>{{user.firstname}}</label>
+	</div>
+	<div class="form-group">
+		<h4><u>Last name</u></h4>
+		<label>{{user.lastname}}</label>
+	</div>
+	<div class="form-group">
+		<h4><u>email</u></h4>
+		<label>{{user.email}}</label>
+	</div>
+
+
