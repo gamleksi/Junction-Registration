@@ -4,11 +4,11 @@ var User = require('../models/user');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 /* GET users listing. */
-router.get('/register', function(req, res) {
+router.get('/register', ensureIsNotAuthenticated, function(req, res) {
   res.render('register')
 });
 
-router.get('/login', function(req, res) {
+router.get('/login', ensureIsNotAuthenticated, function(req, res) {
   res.render('login')
 });
 
@@ -55,10 +55,9 @@ router.post('/register', function(req, res) {
 
 passport.use(new LocalStrategy(
   function(username, password, done) {
-		console.log(username +"  , " + password )
+
 
     User.getUserByEmail(username, function(err,user){
-		console.log(username +"  , " + user )
 
     	if(err) throw err;
     	if(!user){
@@ -68,7 +67,7 @@ passport.use(new LocalStrategy(
     		if(err) throw err;
     		if(isMatch){
     			console.log('isMatch true')
-    			return done(null,user)
+    			return done(null, user)
     		} else {
     			done(null,false,{message:'Invalid passwrong'})
     		}
@@ -81,7 +80,13 @@ router.post('/login',
   passport.authenticate('local', {successRedirect:'/', failureRedirect:'/users/login',failureFlash: true}),
   function(req, res) {
     res.redirect('/');
-  });
+ });
+
+router.get('/logout', function(req, res){
+	req.logout();
+	req.flash('success_msg', 'You are logget out.');
+	res.redirect('/')
+})
 
 
 passport.serializeUser(function(user, done) {
@@ -94,7 +99,13 @@ passport.deserializeUser(function(id, done) {
   });
 });
 
-
-
+function ensureIsNotAuthenticated(req, res, next){
+	if(!req.isAuthenticated()) {
+		return next();
+	} else {
+		//req.flash('error_msg', "You are already logged in")
+		res.redirect('/')
+	}
+}
 
 module.exports = router;
