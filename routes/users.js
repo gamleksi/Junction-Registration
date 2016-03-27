@@ -4,11 +4,11 @@ var User = require('../models/user');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 /* GET users listing. */
-router.get('/register', function(req, res) {
+router.get('/register', ensureIsNotAuthenticated, function(req, res) {
   res.render('register')
 });
 
-router.get('/login', function(req, res) {
+router.get('/login', ensureIsNotAuthenticated, function(req, res) {
   res.render('login')
 });
 
@@ -99,7 +99,13 @@ passport.deserializeUser(function(id, done) {
   });
 });
 
-
-
+function ensureIsNotAuthenticated(req, res, next){
+	if(!req.isAuthenticated()) {
+		return next();
+	} else {
+		//req.flash('error_msg', "You are already logged in")
+		res.redirect('/')
+	}
+}
 
 module.exports = router;
