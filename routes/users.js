@@ -55,10 +55,9 @@ router.post('/register', function(req, res) {
 
 passport.use(new LocalStrategy(
   function(username, password, done) {
-		console.log(username +"  , " + password )
+
 
     User.getUserByEmail(username, function(err,user){
-		console.log(username +"  , " + user )
 
     	if(err) throw err;
     	if(!user){
@@ -68,7 +67,7 @@ passport.use(new LocalStrategy(
     		if(err) throw err;
     		if(isMatch){
     			console.log('isMatch true')
-    			return done(null,user)
+    			return done(null, user)
     		} else {
     			done(null,false,{message:'Invalid passwrong'})
     		}
@@ -81,7 +80,13 @@ router.post('/login',
   passport.authenticate('local', {successRedirect:'/', failureRedirect:'/users/login',failureFlash: true}),
   function(req, res) {
     res.redirect('/');
-  });
+ });
+
+router.get('/logout', function(req, res){
+	req.logout();
+	req.flash('success_msg', 'You are logget out.');
+	res.redirect('/')
+})
 
 
 passport.serializeUser(function(user, done) {
