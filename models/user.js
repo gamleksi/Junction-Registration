@@ -16,6 +16,10 @@ var UserSchema = mongoose.Schema({
 	},
 	password: {
 		type: String
+	},
+	isAdmin: {
+		type: Boolean,
+		default: false
 	}
 });
 
@@ -53,4 +57,8 @@ module.exports.updateProfile = function(toUpdate,callback){
 
 module.exports.getUserById = function(id,callback){
 	User.findById(id,callback);
+}
+
+module.exports.getUsers = function(callback){
+	User.find({}, callback);
 }
