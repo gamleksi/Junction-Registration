@@ -19,13 +19,13 @@ router.get('/login', ensureIsNotAuthenticated, function(req, res) {
 
 
 router.get('/account', function(req, res){
-	res.render('account')
-})
+	res.render('account');
+});
 
 
 router.get('/edit_profile', function(req, res){
-	res.render('edit_profile')
-})
+	res.render('edit_profile');
+});
 
 
 
@@ -51,14 +51,17 @@ router.post('/register', function(req, res) {
   if(errors) {
 	  res.render('register', {errors: errors})
   } else {
-  	var newUser = new User({
+  	
+
+    var newUser = {
   		firstname: firstname,
   		lastname: lastname,
   		email: email,
   		password: password
-  	});
-  	User.createUser(newUser, function(err, user) {
-  		if(err) throw err;
+  	};
+
+  	req.models.users.createUser(newUser, function(err, user) {
+      if(err) console.error(err);   
   		console.log(user);
   	});
   	req.flash('success_msg', 'You are registered and can now login')

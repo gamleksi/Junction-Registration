@@ -7,7 +7,7 @@ var LocalStrategy = require('passport-local').Strategy;
 
 router.get('/', ensureIsAuthenticatedAndAdmin, function(req, res) {
   res.render('admin', {layout: 'admin-layout'});     
-})
+});
 
 router.get('/login', function(req, res) {
   res.render('admin-login', {layout: 'admin-layout'})
@@ -38,7 +38,7 @@ passport.use('admin-local', new LocalStrategy(
 ));
 
 router.get('/hackers', ensureIsAuthenticatedAndAdmin, function(req, res) {
-  User.getUsers(function(err,users) {
+  req.models.users.getUsers(function(err,users) {
     if(err) throw err;
     res.render('hackers',{hackers:users, layout: 'admin-layout'})
   })
@@ -50,7 +50,7 @@ router.post('/login',
 
 function ensureIsAuthenticatedAndAdmin(req, res, next){
   if(!req.isAuthenticated()) {
-    res.render('admin-login', {layout: 'admin-layout'})    
+    res.render('admin-login', {layout: 'admin-layout'});   
   } else {
     if(!req.user.isAdmin) {
       res.redirect('/'); 

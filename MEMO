@@ -1,0 +1,66 @@
+MEMO
+
+TODO:
+1. Käy läpi javascriptin synkroniset ja asynkroniset funktiot
+
+
+FILE SELITTEET
+1. app-config
+	- määrittelee keskitetysti portit / tietokannan url jne. 
+2. Models/user.js
+	- määritellään tietokannat
+3. public
+	- css
+	- js
+		- react!!
+4. routes
+	- roottaa get ja post requestit
+	- admin
+	- index
+	- users
+5. views
+	-
+6. App.js
+
+7. Package.json
+	- babel-loader
+	- babel-plugin-add-module-exports
+	- babel-plugin-react-html-attrs
+	- babel-plugin-transform-class-properties
+	- babel-plugin-transform-decorators-legacy
+	- babel-preset-es2015
+	- babel-preset-react
+	- babel-preset-stage-0
+	- bcryptjs
+	- body-parser
+	- connect-flash
+	- cookie-parser
+	- debug
+	- ejs
+	- express
+	- express-handlebars
+	- express-messages
+	- express-session
+	- expression-validator
+	- migrate-orm2
+	- morgan
+	- orm
+	- passport
+	- passport-http
+	- passport-local
+	- react
+	- react-dom
+	- serve-favicon
+	- webpack
+	- webpack-dev-server
+
+8. Webpack.json
+	-
+
+Asioita
+1. Process.env(.x) juuri  (vim ~/.bash_profile) pystyy märittelee 
+2. 
+
+
+
+By leading one of themes at Junction, Twitter steps into the scene of enthusiastic makers and doers, who can potentially become valuable evangelists of the Twitter brand. This is compounded by the fact that this year Junction will not only be Europe’s largest hackathon, but also one of the biggest in the world.

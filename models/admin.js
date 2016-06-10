@@ -29,7 +29,7 @@ module.exports.comparePassword = function(candidatePassword, hash, callback){
 		if(err) throw err;
 		callback(null,isMatch);
 	});
-}
+};
 
 
 module.exports.getAdminById = function(id,callback){
