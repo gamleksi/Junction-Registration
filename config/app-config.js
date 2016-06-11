@@ -5,7 +5,7 @@ var prod = {
 };
 
 var local = {
-	databaseUrl: "postgresql://eliasmikkola:md565dc8059e1f8abdcf75606e8f61b6d29@localhost:5432/Junction"
+	databaseUrl: "postgresql://eliasmikkola:md511a7bbad6bac2f8c91a2611f29e4fd92@localhost:5432/junction"
 };
 
 if(env === "local") {

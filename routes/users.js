@@ -3,6 +3,7 @@ var router = express.Router();
 var Admin = require('../models/admin');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
+var UserDB = require('../models/user');
 
 
 /* GET users listing. */
@@ -68,20 +69,17 @@ router.post('/register', function(req, res) {
 });
 
 
-var UserDB = require('../models/user');
-
+var UserDB = require('../models/user.js')
 
 passport.use('user-local', new LocalStrategy(
-  function(username, password, done) {
-
-
-    UserDB.getUserByEmail(username, function(err,user){
-
-    	if(err) throw err;
-    	if(!user){
+  {passReqToCallback : true},
+  function(req,username, password, done) {
+    req.models.users.getUserByEmail(username, function(value){
+      console.log("value from callback:" + value)
+    	if(value === null){
     		return done(null,false,{message:"Invalid username"});
     	}
-    	UserDB.comparePasswords(password, function(err,isMatch){
+    	 req.models.users.comparePasswords(password, function(err,isMatch){
     		if(err) throw err;
     		if(isMatch){
     			console.log('isMatch true');
