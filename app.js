@@ -42,7 +42,7 @@ app.use(orm.express(config.databaseUrl, {
             console.log(err);
           }
           else{
-            console.log("synced")
+            console.log("synced");
           }
         });
         next();
@@ -55,13 +55,15 @@ var admin = require('./routes/admin');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+
+
 app.use(session({
-  secret: 'secret',
-  resave: true,
-  saveUninitialized: true
+  secret: 'secret', //Helps to improve encyption. TODO: text should keep private and unique for this app!! 
+  resave: true, // 'True' updates session every new view. Helps avoiding session expiring.
+  saveUninitialized: true //Earlier true. Change to reduce database traffic when anonymous users.
 }));
 
-//Passport unut
+//Passport configuration to middleware.
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -101,7 +103,7 @@ app.use(function (req, res, next){
   res.locals.success_msg = req.flash('success_msg');
   res.locals.error_msg = req.flash('error_msg');
   res.locals.error = req.flash('error');
-  //res.locals.user = req.models.users || null; Ei muistikuvaa miten käytettiin.
+  res.locals.user = req.user || null;
   next();
 });
 
@@ -110,6 +112,8 @@ app.use('/users', users);
 app.use('/admin', admin);
 
 app.set('port', (process.env.PORT || 3000));
+
+
 
 app.listen(app.get('port'), function(){
   console.log('listening to port ' + app.get('port'));

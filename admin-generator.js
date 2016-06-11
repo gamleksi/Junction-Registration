@@ -1,34 +1,34 @@
-var mongoose = require('mongoose');
-var bcrypt = require('bcryptjs');
-mongoose.connect('mongodb://localhost/loginapp')
-var db = mongoose.connections;
+var config = require('./config/app-config')
 
-var AdminSchema = mongoose.Schema({
-	username: {
-		type: String,
-		index: true	
-	},
-	password: {
-		type: String
-	},
-	isAdmin: {
-		type: Boolean,
-		default: true
-	}
+var orm = require('orm');
+
+var Users = require('./models/user');
+
+
+
+orm.express(config.databaseUrl, {
+    error: function(err){
+      console.error(err);
+    }, 
+    define: function (db, models, next) {
+        models.users = Users.createModel(db);
+        db.sync(function(err,success){
+          if(err){
+
+            // TODO: Mitä tehdä jos sync error
+
+            console.log(err);
+          }
+          else{
+            console.log("synced");
+          	models.users.createUser(config.admin, function(err, user) {
+		      if(err) {
+		      	console.error(err);   	
+		      }
+		  		console.log(user);
+		  	});
+          }
+
+        });
+    }
 });
-
-var Admin = module.exports = mongoose.model('Admin', AdminSchema);
-
-
-createUser = function(newUser, callback) {
-
-	bcrypt.genSalt(10, function(err, salt) {
-		bcrypt.hash(newUser.password, salt, function(err, hash) {
-				newUser.password = hash;
-				newUser.save(callback)
-		});
-	});
-};
-
-createUser(new Admin({username: "admin", password: "admin"}))
-

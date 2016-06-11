@@ -31,7 +31,7 @@ router.get('/edit_profile', function(req, res){
 
 //Register User
 router.post('/register', function(req, res) {
-  console.log(req.body)
+  console.log(req.body);
   var firstname = req.body.firstname;
   var lastname = req.body.lastname;
   var email = req.body.email;
@@ -51,7 +51,6 @@ router.post('/register', function(req, res) {
 	  res.render('register', {errors: errors})
   } else {
   	
-
     var newUser = {
   		firstname: firstname,
   		lastname: lastname,
@@ -64,16 +63,14 @@ router.post('/register', function(req, res) {
   		console.log(user);
   	});
   	req.flash('success_msg', 'You are registered and can now login')
-  	res.redirect('login')
+  	res.redirect('login');
   }
 });
 
 
-var UserDB = require('../models/user.js')
-
 passport.use('user-local', new LocalStrategy(
   {passReqToCallback : true},
-  function(req,username, password, done) {
+  function(req, username, password, done) {
     req.models.users.getUserByEmail(username, function(user){
       console.log("value from callback:");
       console.log(user);
@@ -99,7 +96,7 @@ passport.use('user-local', new LocalStrategy(
 ));
 
 router.post('/login',
-  passport.authenticate('user-local', {successRedirect:'/', failureRedirect:'/users/login',failureFlash: true}));
+  passport.authenticate('user-local', {successRedirect: '/', failureRedirect:'/users/login',failureFlash: true}));
 
 router.get('/logout', function(req, res){
 	req.logout();
@@ -121,7 +118,7 @@ function ensureIsNotAuthenticated(req, res, next){
 	if(!req.isAuthenticated()) {
 		return next();
 	} else {
-		res.redirect('/')
+		res.redirect('/');
 	}
 }
 
