@@ -119,19 +119,15 @@ module.exports = {
 			Users.one({"email":addr}, function(err,email){
 				if(err) throw err;
 				else callback(email)
-			})
+			});
 		};
 
-		Users.comparePasswords = function(suggestedPass, callback){
-			var pass = this.password
-			console.log(pass)
-			bcrypt.compare(suggestedPass, pass, function(err, isMatch){
+		Users.comparePasswords = function(candidatePassword, hash, callback){
+			bcrypt.compare(candidatePassword,hash, function(err, isMatch){
 				if(err) console.error("error in compare pass" + err);
 				callback(null,isMatch);
 			});
 		};
-
-//{ col1: orm.eq(123) }
 
 		return Users;
 	}

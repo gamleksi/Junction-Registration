@@ -74,12 +74,13 @@ var UserDB = require('../models/user.js')
 passport.use('user-local', new LocalStrategy(
   {passReqToCallback : true},
   function(req,username, password, done) {
-    req.models.users.getUserByEmail(username, function(value){
-      console.log("value from callback:" + value)
-    	if(value === null){
+    req.models.users.getUserByEmail(username, function(user){
+      console.log("value from callback:");
+      console.log(user);
+    	if(user === null){
     		return done(null,false,{message:"Invalid username"});
     	}
-    	 req.models.users.comparePasswords(password, function(err,isMatch){
+    	 req.models.users.comparePasswords(password, user.password, function(err,isMatch){
     		if(err) throw err;
     		if(isMatch){
     			console.log('isMatch true');
@@ -103,39 +104,23 @@ router.post('/login',
 router.get('/logout', function(req, res){
 	req.logout();
 	req.flash('success_msg', 'You are logget out.');
-	res.redirect('/')
-})
-
-
-
-
+	res.redirect('/');
+});
 
 
 passport.serializeUser(function(user, done) {
-  console.log("serializeUser")
-
-  done(null, user.id);
+  console.log("serializeUser");
+  done(null, user);
 });
 
-passport.deserializeUser(function(id, done){
-  Admin.findById(id, function(err, user){
-    if(err) done(err);
-      if(user){
-        done(null, user);
-      } else {
-         User.findById(id, function(err, user){
-         if(err) done(err);
-         done(null, user);
-      })
-    }
-  });
+passport.deserializeUser(function(user, done){
+ done(null, user);   
 });
 
 function ensureIsNotAuthenticated(req, res, next){
 	if(!req.isAuthenticated()) {
 		return next();
 	} else {
-		//req.flash('error_msg', "You are already logged in")
 		res.redirect('/')
 	}
 }
