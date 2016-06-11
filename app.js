@@ -27,7 +27,27 @@ app.engine('handlebars', exphbs({defaultLayout:'layout'}));
 app.set('view engine', 'handlebars');
 
 
+//Database connection middleware
+app.use(orm.express(config.databaseUrl, {
+    error: function(err){
+      console.error(err);
+    }, 
+    define: function (db, models, next) {
+        models.users = Users.createModel(db);
+        db.sync(function(err,success){
+          if(err){
 
+            // TODO: Mitä tehdä jos sync error?
+
+            console.log(err);
+          }
+          else{
+            console.log("synced")
+          }
+        });
+        next();
+    }
+}));
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
@@ -90,20 +110,9 @@ app.use(function (req, res, next){
   res.locals.success_msg = req.flash('success_msg');
   res.locals.error_msg = req.flash('error_msg');
   res.locals.error = req.flash('error');
-  res.locals.user = req.user || null;
+  //res.locals.user = req.models.users || null; Ei muistikuvaa miten käytettiin.
   next();
 });
-
-//Database connection middleware
-app.use(orm.express(config.databaseUrl, {
-    error: function(err){
-      console.error(err);
-    }, 
-    define: function (db, models, next) {
-        models.users = Users.createModel(db);
-        next();
-    }
-}));
 
 app.use('/', routes);
 app.use('/users', users);

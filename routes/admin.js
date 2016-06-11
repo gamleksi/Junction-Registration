@@ -19,6 +19,7 @@ passport.use('admin-local', new LocalStrategy(
 
     Admin.getAdminByUsername(username, function(err,user){
 
+      
       if(err) throw err;
       if(!user){
         return done(null,false,{message:"Invalid username or password"});

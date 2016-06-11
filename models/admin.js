@@ -22,7 +22,7 @@ var Admin = module.exports = mongoose.model('Admin', AdminSchema);
 module.exports.getAdminByUsername = function(username,callback){
 	var query = {username: username};
 	Admin.findOne(query,callback);
-}
+};
 
 module.exports.comparePassword = function(candidatePassword, hash, callback){
 	bcrypt.compare(candidatePassword,hash, function(err, isMatch){

@@ -28,8 +28,7 @@ createUser = function(newUser, callback) {
 				newUser.save(callback)
 		});
 	});
-
-}
+};
 
 createUser(new Admin({username: "admin", password: "admin"}))
 

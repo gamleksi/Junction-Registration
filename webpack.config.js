@@ -1,4 +1,4 @@
-var debug = process.env.NODE_ENV !== "production";
+var debug = process.env.NODE_ENV !== "production"; //tämä config
 var webpack = require('webpack');
 
 module.exports = {

@@ -81,47 +81,56 @@ var bcrypt = require('bcryptjs');
 module.exports = {
 	createModel: function(db) {
 
-		var User = db.define("Users", {
+		var Users = db.define("users", {
 				firstname: String,
-				lastname:  String,
+				lastname: String,
 				email: String,
 				password: String,
 				admin: Boolean
+			}, {
+				methods: {
+
+				}
 			}
 		);
 
-		// console.log(User.table)
-
-		User.createUser = function(user, callback){
-
-			user.admin = false;
-
-			if(!user.password2) delete user.password2;
-
-			// console.log(user);
+		Users.createUser = function(user, callback){
 
 			bcrypt.genSalt(10, function(err, salt) {
 				bcrypt.hash(user.password, salt, function(err, hash) {
-					user.password = hash;
+					user["password"] = hash;
+					Users.create(user, function(err,items){
+
+						if(err){
+							console.error(err);
+						} else {
+							console.log("User has been created succesfully.")
+						}
+					});					
 				});
-			});
-			this.create(user,function(err,items){
-
-				if(err){
-					console.log("virheilmoitus: ")
-					console.error(err)
-
-				}
-				else{
-					console.log("WORKS LIKE A")
-				}
 			});
 		};
 
-		// User.getUserByEmail = function(email, callback){
-		// 	return "";
-		// };
-		return User;
+		Users.getUserByEmail = function(addr, callback){
+			User.find({email: addr}, function(err, item) {
+				if(err) callback(err);
+				else callback(item);
+			});
+		};
+
+		Users.comparePasswords = function(suggestedPass, hash, callback){
+			bcrypt.compare(suggestedPass, hash, function(err, isMatch){
+				if(err) throw err;
+				callback(null,isMatch);
+			});
+		};
+
+//{ col1: orm.eq(123) }
+
+		return Users;
 	}
 
 };
+
+
+

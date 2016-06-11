@@ -1,10 +1,8 @@
 var express = require('express');
 var router = express.Router();
-var User = require('../models/user');
 var Admin = require('../models/admin');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
-
 
 
 /* GET users listing. */
@@ -69,27 +67,36 @@ router.post('/register', function(req, res) {
   }
 });
 
+
+var UserDB = require('../models/user');
+
+
 passport.use('user-local', new LocalStrategy(
   function(username, password, done) {
 
 
-    User.getUserByEmail(username, function(err,user){
+    UserDB.getUserByEmail(username, function(err,user){
 
     	if(err) throw err;
     	if(!user){
     		return done(null,false,{message:"Invalid username"});
     	}
-    	User.comparePassword(password,user.password,function(err,isMatch){
+    	UserDB.comparePasswords(password, function(err,isMatch){
     		if(err) throw err;
     		if(isMatch){
-    			console.log('isMatch true')
-    			return done(null, user)
-    		} else {
-    			done(null,false,{message:'Invalid passwrong'})
+    			console.log('isMatch true');
+    			return done(null, user);
+    		} 
+        else {
+    			done(null,false,{message:'Invalid passwrong'});
     		}
-    	})
-    })
+
+    	});
+    
+    });
+  
   }
+
 ));
 
 router.post('/login',
