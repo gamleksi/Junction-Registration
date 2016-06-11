@@ -37,7 +37,7 @@ app.use(orm.express(config.databaseUrl, {
         db.sync(function(err,success){
           if(err){
 
-            // TODO: Mitä tehdä jos sync error?
+            // TODO: Mitä tehdä jos sync error
 
             console.log(err);
           }
