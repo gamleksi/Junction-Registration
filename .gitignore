@@ -5,3 +5,5 @@ jspm_packages
 
 # Optional npm cache directory
 .npm
+
+congif/app-config.js
