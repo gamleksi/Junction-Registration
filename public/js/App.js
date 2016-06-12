@@ -140,12 +140,9 @@ var AdminPanel = React.createClass({
 	},
 
 	findHackers: function(){
-		console.log("findHackers")
 				
 		var xmlhttp = new XMLHttpRequest();
 		var url = "http://localhost:3000/admin/hackers/all"
-
-
 
 		xmlhttp.open('GET', url, false);
 		xmlhttp.send();
