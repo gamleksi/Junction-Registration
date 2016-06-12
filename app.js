@@ -34,6 +34,7 @@ app.use(orm.express(config.databaseUrl, {
     }, 
     define: function (db, models, next) {
         models.users = Users.createModel(db);
+
         db.sync(function(err,success){
           if(err){
 
@@ -43,11 +44,17 @@ app.use(orm.express(config.databaseUrl, {
           }
           else{
             console.log("synced");
+            models.users.getUsers(function(users) {    
+              console.log(users)
+            });
           }
         });
         next();
     }
 }));
+
+
+
 
 var routes = require('./routes/index');
 var users = require('./routes/users');

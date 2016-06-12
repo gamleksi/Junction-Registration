@@ -5,8 +5,8 @@ var prod = {
 };
 
 var local = {
-	databaseUrl: "postgresql://junkkari:md565dc8059e1f8abdcf75606e8f61b6d29@localhost:5432/Junction",
-	admin: {
+databaseUrl: "postgresql://eliasmikkola:md511a7bbad6bac2f8c91a2611f29e4fd92@localhost:5432/junction"
+,	admin: {
 		firstname: "Luukas",
 		lastname: "Castren",
 		email: "admin@admin.com",

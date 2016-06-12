@@ -16,9 +16,7 @@ router.get('/hackers', ensureIsAuthenticatedAndAdmin, function(req, res) {
 
 router.get('/hackers/all', ensureIsAuthenticatedAndAdmin, function(req, res) {
   req.models.users.getUsers(function(users) {    
-    console.log("dataa lähti!");
     console.log('%s %s', req.method, req.url);
-    console.log(users);
     res.send({hackers:users});
   })
 })

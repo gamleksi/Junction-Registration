@@ -36,6 +36,45 @@
 //     - ProductCategoryRow
 //     - ProductRow
 
+/*
+<AdminPanel>
+
+<HackerTable>
+<table class="table table-bordered">
+	{<TableHeader
+	
+		/>}
+  </table>
+
+
+<TableHeader>
+    <thead>
+      <tr>
+        <th>Firstname</th>
+        <th>Lastname</th>
+        <th>Email</th>
+      </tr>
+    </thead>
+
+
+<TableBody>
+<tbody>
+
+   </tbody>
+	
+	<TableRow>
+      <tr>
+        <td>{this.props.name}</td>
+        <td>{}</td>
+        <td>{}</td>
+      </tr>
+      
+   
+
+
+*/
+
+
 
 // var ProductCategoryRow = React.createClass({
 //   render: function() {
@@ -124,18 +163,56 @@ var DataButton = React.createClass({
 	}
 })
 
-var TotalNumber = React.createClass({
-	render: function() {
-		return (
-			<h1>{this.props.num}</h1>
-		)
+
+
+
+
+var TableHeader = React.createClass({
+
+	render:function(){
+		var names = [];
+			console.log(this.props.attributeNames)
+
+		this.props.attributeNames.forEach(function(name){
+			names.push(<th>{name}</th>)
+		});
+		return(
+			<thead>
+			      <tr>
+			       {names}
+			      </tr>
+    		</thead>
+		
+			)
 	}
-})
+});
+
+
+var HackerTable = React.createClass({
+
+	render:function(){
+
+		var keyArray =[]
+		for(var key in this.props.hackers[0]){
+			console.log(key)
+			keyArray.push(key)
+		}
+
+		return(
+			<table class="table table-bordered">
+				<TableHeader attributeNames={keyArray}
+				/> 
+				
+			</table>
+		
+			)
+	}
+});
 
 var AdminPanel = React.createClass({
 	getInitialState: function() {
 	    return {
-			hackers: 0
+			hackers: {}
 	    }
 	},
 
@@ -144,17 +221,15 @@ var AdminPanel = React.createClass({
 				
 		var xmlhttp = new XMLHttpRequest();
 		var url = "http://localhost:3000/admin/hackers/all"
-
-
-
 		xmlhttp.open('GET', url, false);
 		xmlhttp.send();
 
 		var responseItem = xmlhttp.response
 		var jsoned = JSON.parse(responseItem)
 		console.log(responseItem)
+		
 		this.setState({
-			hackers: Object.keys(jsoned.hackers).length
+			hackers:(jsoned.hackers)
 		});
 
 	},
@@ -162,13 +237,14 @@ var AdminPanel = React.createClass({
 	render: function() {
 	return (
 	  <div>
-	  	<DataButton
+	  <DataButton
 	  		findHackers={this.findHackers}
 	  	/>
-	    <a>Hello World</a>
-	    <TotalNumber
-	    	num={this.state.hackers}
-	    />
+	  <HackerTable 
+	  		hackers={this.state.hackers}
+	  />
+	  	
+	    
 	  </div>
 	);
 	}
@@ -176,4 +252,4 @@ var AdminPanel = React.createClass({
 
 const app = document.getElementById('container');
 
-ReactDom.render(<AdminPanel/>, app);
+ReactDom.render(<AdminPanel />, app);
