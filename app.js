@@ -43,11 +43,7 @@ app.use(orm.express(config.databaseUrl, {
             console.log(err);
           }
           else{
-            console.log("synced");
-            models.users.getUsers(function(users) {    
-              console.log("hou")
-              console.log(users);
-            });
+            console.log("Database synced");
           }
         });
         next();
