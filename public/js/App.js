@@ -163,15 +163,43 @@ var DataButton = React.createClass({
 	}
 })
 
+var TableRow = React.createClass({
 
+	render:function(){
+		var values = []
+		for(var key in this.props.hackerInfo){
+			var value = this.props.hackerInfo[key]
+			values.push(<td>{value}</td>)
+		}
+		return(
+			<tr>
+				{values}
+			</tr>
+			)
+	}
+});
 
+var TableBody = React.createClass({
+
+	render:function(){
+		var rows = []
+		for(var i in this.props.hackers){
+			var hacker = this.props.hackers[i]			
+			 rows.push(<TableRow hackerInfo={hacker} />)
+		}
+		return(
+			<tbody>
+				{rows}
+			</tbody>
+			)
+	}
+});
 
 
 var TableHeader = React.createClass({
 
 	render:function(){
 		var names = [];
-			console.log(this.props.attributeNames)
 
 		this.props.attributeNames.forEach(function(name){
 			names.push(<th>{name}</th>)
@@ -202,7 +230,7 @@ var HackerTable = React.createClass({
 			<table class="table table-bordered">
 				<TableHeader attributeNames={keyArray}
 				/> 
-				
+				<TableBody hackers={this.props.hackers} />
 			</table>
 		
 			)
