@@ -7,3 +7,5 @@ jspm_packages
 .npm
 
 config/app-config.js
+
+public/js/scripts.min.js
