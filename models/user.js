@@ -6,10 +6,24 @@ module.exports = {
 		var Users = db.define("users", {
 				firstname: String,
 				lastname: String,
+				age: {type: 'integer'},
 				email: {type:"text", key: true},
+				country: String,
+				gender: ["male", "female"],
 				password: String,
 				admin: {type: "boolean", defaultValue: false}
 			}, {
+
+  // 		  {
+  //   "firstname": "Contreras",
+  //   "lastname": "<ReferenceError: lastName is not defined>",
+  //   "age": 26,
+  //   "email": "thomashale@geostele.com",
+  //   "country": "Viet Nam",
+  //   "gender": "male"
+  // }
+
+
 				validations: {
 					email: orm.enforce.unique("email taken!")
 
@@ -67,7 +81,7 @@ module.exports = {
 		// };
 
 		Users.getUsers = function(callback){
-			Users.all({admin: false}).only("firstname").run(function(err, results) {
+			Users.all({admin: false}, function(err, results) {
 				if(err) {
 					throw err;
 				}

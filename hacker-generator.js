@@ -1,8 +1,3 @@
-var config = require('./config/app-config')
-
-var orm = require('orm');
-
-var Users = require('./models/user');
 
 
 var hackers = [
@@ -1185,6 +1180,11 @@ var hackers = [
 ];
 
 
+var config = require('./config/app-config');
+
+var orm = require('orm');
+
+var Users = require('./models/user');
 
 
 orm.express(config.databaseUrl, {
@@ -1202,12 +1202,15 @@ orm.express(config.databaseUrl, {
           }
           else{
             console.log("synced");
-          	models.users.createUser(, function(err, user) {
-		      if(err) {
-		      	console.error(err);   	
-		      }
-		  		console.log(user);
-		  	});
+            for(i in hackers) {
+              models.users.createUser(hackers[i], function(err, user) {
+                  if(err) {
+                    console.error(err);     
+                  }
+              });              
+            }
+            console.log('ready')
+
           }
 
         });
