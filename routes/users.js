@@ -26,9 +26,6 @@ router.get('/edit_profile', function(req, res){
 	res.render('edit_profile');
 });
 
-
-
-
 //Register User
 router.post('/register', function(req, res) {
   console.log(req.body);

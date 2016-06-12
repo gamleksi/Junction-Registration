@@ -110,32 +110,68 @@
 //   }
 // });
 
-
-// var PRODUCTS = [
-//   {category: 'Sporting Goods', price: '$49.99', stocked: true, name: 'Football'},
-//   {category: 'Sporting Goods', price: '$9.99', stocked: true, name: 'Baseball'},
-//   {category: 'Sporting Goods', price: '$29.99', stocked: false, name: 'Basketball'},
-//   {category: 'Electronics', price: '$99.99', stocked: true, name: 'iPod Touch'},
-//   {category: 'Electronics', price: '$399.99', stocked: false, name: 'iPhone 5'},
-//   {category: 'Electronics', price: '$199.99', stocked: true, name: 'Nexus 7'}
-// ];
- 
-// ReactDOM.render(
-//   <FilterableProductTable products={PRODUCTS} />,
-//   document.getElementById('container')
-// );
-
 import React from "react";
 import ReactDom from "react-dom";
 
+var DataButton = React.createClass({
+	findHackers: function() {
+	  this.props.findHackers();
+	},
+	render: function() {
+		return (
+			<button onClick={this.findHackers}>Euroopan kovimmat koodarit</button>
+		)
+	}
+})
+
+var TotalNumber = React.createClass({
+	render: function() {
+		return (
+			<h1>{this.props.num}</h1>
+		)
+	}
+})
+
 var AdminPanel = React.createClass({
-  render: function() {
-    return (
-      <div>
-        <a>Hello World</a>
-      </div>
-    );
-  }
+	getInitialState: function() {
+	    return {
+			hackers: 0
+	    }
+	},
+
+	findHackers: function(){
+		console.log("findHackers")
+				
+		var xmlhttp = new XMLHttpRequest();
+		var url = "http://localhost:3000/admin/hackers/all"
+
+
+
+		xmlhttp.open('GET', url, false);
+		xmlhttp.send();
+
+		var responseItem = xmlhttp.response
+		var jsoned = JSON.parse(responseItem)
+		console.log(responseItem)
+		this.setState({
+			hackers: Object.keys(jsoned.hackers).length
+		});
+
+	},
+
+	render: function() {
+	return (
+	  <div>
+	  	<DataButton
+	  		findHackers={this.findHackers}
+	  	/>
+	    <a>Hello World</a>
+	    <TotalNumber
+	    	num={this.state.hackers}
+	    />
+	  </div>
+	);
+	}
 });
 
 const app = document.getElementById('container');
