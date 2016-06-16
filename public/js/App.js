@@ -240,7 +240,7 @@ var HackerTable = React.createClass({
 var AdminPanel = React.createClass({
 	getInitialState: function() {
 	    return {
-			hackers: {}
+			hackers: {},
 	    }
 	},
 
@@ -262,7 +262,9 @@ var AdminPanel = React.createClass({
 
 	},
 
+
 	render: function() {
+	findHakcers();
 	return (
 	  <div>
 	  <DataButton
@@ -271,8 +273,7 @@ var AdminPanel = React.createClass({
 	  <HackerTable 
 	  		hackers={this.state.hackers}
 	  />
-	  	
-	    
+
 	  </div>
 	);
 	}

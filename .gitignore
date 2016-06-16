@@ -9,3 +9,9 @@ jspm_packages
 config/app-config.js
 
 public/js/scripts.min.js
+
+public/.DS_Store
+
+views/.DS_Store
+
+.DS_Store
