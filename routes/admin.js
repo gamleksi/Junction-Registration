@@ -15,6 +15,7 @@ router.get('/hackers', ensureIsAuthenticatedAndAdmin, function(req, res) {
 });
 
 router.get('/hackers/all', ensureIsAuthenticatedAndAdmin, function(req, res) {
+
   req.models.users.getUsers(function(users) {    
     console.log('%s %s', req.method, req.url);
     res.send({hackers:users});
@@ -24,15 +25,16 @@ router.get('/hackers/all', ensureIsAuthenticatedAndAdmin, function(req, res) {
 
 function ensureIsAuthenticatedAndAdmin(req, res, next){
   
-  if(!req.isAuthenticated()) {
-    res.redirect('/');   
-  } else {
-    if(!req.user.admin) {
-      res.redirect('/'); 
-    } else {
+  //Outcommented for testing purpose
+  // if(!req.isAuthenticated()) {
+  //   res.redirect('/');   
+  // } else {
+  //   if(!req.user.admin) {
+  //     res.redirect('/'); 
+  //   } else {
       next();
-    }
-  }
+  //   }
+  // }
 }
 
 module.exports = router; 

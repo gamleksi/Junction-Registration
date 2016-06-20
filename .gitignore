@@ -10,6 +10,8 @@ config/app-config.js
 
 public/js/scripts.min.js
 
+public/css/bootstrap.min.js
+
 public/.DS_Store
 
 views/.DS_Store
