@@ -34,6 +34,9 @@ router.post('/register', function(req, res) {
   var email = req.body.email;
   var password =  req.body.password;
   var password2 = req.body.password2;
+  var gender = req.body.gender
+  var age = req.body.age
+  var country = req.body.country
 
   //Validator 
   req.checkBody('firstname', 'firstname is required').notEmpty();
@@ -51,10 +54,21 @@ router.post('/register', function(req, res) {
     var newUser = {
   		firstname: firstname,
   		lastname: lastname,
+      age: age,
   		email: email,
+      country: country,
+      gender: gender,
   		password: password
   	};
-
+// firstname: String,
+//         lastname: String,
+//         age: {type: 'integer'},
+//         email: {type:"text", key: true},
+//         country: String,
+//         gender: ["male", "female"],
+//         password: String,
+//         admin: {type: "boolean", defaultValue: false}
+//       },
   	req.models.users.createUser(newUser, function(err, user) {
       if(err) console.error(err);   
   		console.log(user);

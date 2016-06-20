@@ -21,18 +21,22 @@ router.get('/hackers/all', ensureIsAuthenticatedAndAdmin, function(req, res) {
   });
 });
 
-
+router.get('/logout', function(req, res){
+  req.logout();
+  req.flash('success_msg', 'You are logget out.');
+  res.redirect('/');
+});
 function ensureIsAuthenticatedAndAdmin(req, res, next){
-  
-  if(!req.isAuthenticated()) {
-    res.redirect('/');   
-  } else {
-    if(!req.user.admin) {
-      res.redirect('/'); 
-    } else {
-      next();
-    }
-  }
+  next();
+  // if(!req.isAuthenticated()) {
+  //   res.redirect('/');   
+  // } else {
+  //   if(!req.user.admin) {
+  //     res.redirect('/'); 
+  //   } else {
+  //     next();
+  //   }
+  // }
 }
 
 module.exports = router; 
