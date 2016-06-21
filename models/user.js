@@ -11,17 +11,10 @@ module.exports = {
 				country: String,
 				gender: ["male", "female"],
 				password: String,
+				motivation: String,
+				skillDescription: String,
 				admin: {type: "boolean", defaultValue: false}
 			}, {
-
-  // 		  {
-  //   "firstname": "Contreras",
-  //   "lastname": "<ReferenceError: lastName is not defined>",
-  //   "age": 26,
-  //   "email": "thomashale@geostele.com",
-  //   "country": "Viet Nam",
-  //   "gender": "male"
-  // }
 
 
 				validations: {
