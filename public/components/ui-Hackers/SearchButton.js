@@ -9,7 +9,7 @@ export default React.createClass({
 	},
 	render: function() {
 		    return (
-		        <button onClick={this.findHackers}>Euroopan kovimmat koodarit</button>
+		        <button onClick={this.findHackers}>Search hackers</button>
 		    )
 	}	
 })
