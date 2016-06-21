@@ -19,12 +19,13 @@ export default React.createClass({
                                 id={index} 
                                 updateAttributeNames={update}
                                 attributeName={value}/>)
-            index++; 
+            index++;
+            
         });
         return(
-            <div id="checkboxrow">
+            <tr>
                 {checkboxes}
-            </div>
+            </tr>
             )
     }
 });

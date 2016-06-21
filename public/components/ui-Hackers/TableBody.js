@@ -4,17 +4,15 @@ import TableRow from "./TableRow";
 export default React.createClass({
     
     render:function(){
-        var values = []
-        for(var key in this.props.hackerInfo){
-            if(this.props.visibleColumns[key]) {
-                var value = this.props.hackerInfo[key]
-                values.push(<td key={value}>{value}</td>)
-            }
+        var rows = []
+        for(var i in this.props.hackers){
+            var hacker = this.props.hackers[i]          
+             rows.push(<TableRow  key={hacker.email} visibleColumns={this.props.columnNames} hackerInfo={hacker} />)
         }
-        return (
-            <tr>
-                {values}
-            </tr>
-        )
+        return(
+            <tbody>
+                {rows}
+            </tbody>
+            )
     }
 });
