@@ -1,7 +1,17 @@
 import React from "react";
 
 export default React.createClass({
-    render:function(){
+    getInitialState:function(){
+        return {expand: false}
+    }
+    ,handleClick: function(){
+        console.log("clicked")
+        this.setState({
+            expand:!(this.state.expand)
+        })
+    }
+    ,render:function(){
+
         var values = []
         for(var key in this.props.hackerInfo){
             if(this.props.visibleColumns[key]) {
@@ -9,10 +19,19 @@ export default React.createClass({
                 values.push(<td key={value}>{value}</td>)
             }
         }
-        return(
-            <tr>
-                {values}
-            </tr>
-            )
+        if(this.state.expand == true){
+             return(
+            <tr height="300" onClick={this.handleClick}>
+                    {values}
+                </tr>
+                )
+        }
+        else {
+            return(
+                <tr onClick={this.handleClick}>
+                    {values}
+                </tr>
+                )
+        }
     }
 });

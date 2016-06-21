@@ -3,7 +3,6 @@ import React from "react";
 export default React.createClass({
     handleChange: function() {
         var newValue = this.refs.isSelected.checked
-        
         this.props.updateAttributeNames(
             this.props.id,
             this.props.attributeName,
@@ -19,8 +18,7 @@ export default React.createClass({
                     ref="isSelected"
                     onChange={this.handleChange}
                   />
-            </td>
-                
+            </td>     
             )
     }
 });
