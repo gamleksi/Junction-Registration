@@ -1,5 +1,5 @@
 {
-  "name": "Junction",
+  "name": "admin",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -35,6 +35,20 @@
     "react-dom": "^0.14.6",
     "serve-favicon": "~2.3.0",
     "webpack": "^1.12.9",
-    "webpack-dev-server": "^1.14.1"
-  }
+    "webpack-dev-server": "^1.14.1",
+    "mailchimp-api": "*"
+  },
+  "main": "admin-generator.js",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/gamleksi/Junction-2016.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gamleksi/Junction-2016/issues"
+  },
+  "homepage": "https://github.com/gamleksi/Junction-2016#readme",
+  "description": ""
 }
