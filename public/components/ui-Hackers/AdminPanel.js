@@ -17,14 +17,19 @@ export default React.createClass ({
                 var responseItem = xhr.response
                 var jsoned = JSON.parse(responseItem)
                 
-                var keyArray =[]
+                var panelArray =[]
+                var rowArray = []
                 for(var key in jsoned.hackers[0]){
-                    if(key !== "admin" && key !== "password"){
-                        keyArray.push({name:key,visible:true})
+                    if(key !== "admin" && key !== "password" && key !== "motivation" && key !== "skillDescription"){
+                        panelArray.push({name:key,visible:true})
+                    }
+                     if(key !== "admin" && key !== "password" ){
+                        rowArray.push({name:key,visible:true})
                     }
                 }
                 self.setState({
-                    attributeNames: keyArray,
+                    panelValues : panelArray,
+                    attributeNames: rowArray,
                     hackers:(jsoned.hackers)
                 });
                 console.log(jsoned.hackers)
@@ -39,19 +44,21 @@ export default React.createClass ({
         };
         xhr.open('GET', url);
         xhr.send();
-        // var responseItem = xmlhttp.response
-        // var jsoned = JSON.parse(responseItem)
-        
-        // var keyArray =[]
-        // for(var key in jsoned.hackers[0]){
-        //  if(key !== "admin" && key !== "password"){
-        //      keyArray.push({name:key,visible:true})
-        //  }
-        // }
-        // this.setState({
-        //  attributeNames: keyArray,
-        //  hackers:(jsoned.hackers)
-        // });
+//          getHackers      
+//       /           \
+//    panelArray     <rowArray>
+//     /              \ 
+//  ControlPanel       <HackerTable>
+//                          \
+//                          <TableBody>
+//                              \
+//                          <TableRow>   
+//                          filteröinti
+// 
+// 
+// 
+
+
     },
     
         // xhr.open('GET', url,true);
@@ -59,17 +66,20 @@ export default React.createClass ({
     getInitialState: function() {
         //var initialHackers = this.getHackers();
         return {
+            panelValues:[],
             attributeNames: [],
             hackers: {}
         }
     },
     setAttributeNames: function(attributes){
         this.setState({
+            panelValues: this.state.panelValues,
             attributeNames: attributes,
             hackers:this.state.hackers
         });
     },setHackers: function(hackers){
         this.setState({
+            panelValues : this.state.panelValues,
             attributeNames: this.state.attributeNames,
             hackers:hackers
         });
@@ -88,7 +98,7 @@ export default React.createClass ({
         <SearchButton findHackers={this.getHackers}/>
       <ControlPanel
                 setAttributeNames ={this.setAttributeNames}
-                attributeNames={this.state.attributeNames}
+                attributeNames={this.state.panelValues}
                 findHackers={this.getHackers}
         /> 
       <HackerTable 

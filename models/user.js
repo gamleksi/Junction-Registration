@@ -74,7 +74,7 @@ module.exports = {
 		// };
 
 		Users.getUsers = function(callback){
-			Users.all({admin: false}, function(err, results) {
+			Users.find({admin: false}, function(err, results) {
 				if(err) {
 					throw err;
 				}
