@@ -13,7 +13,7 @@ export default React.createClass({
                     newArray[item.name] = true;
                 }
             }
-
+    
         return(
             <table class="table table-inverse">
                 <TableHeader
@@ -23,7 +23,9 @@ export default React.createClass({
                     hackers={this.props.hackers}
                     columnNames={this.props.columnNames} 
                     allValues={this.props.columnNames}
+                    addToSelectedList={this.props.addToSelectedList}
                      />
+                    }
             </table>
             )
     }

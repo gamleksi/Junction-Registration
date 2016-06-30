@@ -1,0 +1,39 @@
+App.js
+- Renderoi AdminPaneliin
+
+AdminPanel.js
+- GetInitialState
+	- panelValues: ARRAY [ {name, visible}]
+		- Lista attribuuteista, jotka Admin voi nähdä osallistujarivillä.
+		- Käytetään Checkboxrow:ssa, jossa Admin määrittää näkyvät attribuutit.
+	- attributeNames: ARRAY[ {name, visible}]
+		- Määritellään setAttributeNames funktiossa
+		- Muodostaa columNames, kun AdminPanelmääritellään
+		- columNames object[name] = visible
+			- Määrittää hackerTable:ssa sarakkeet. 
+	- hackers:
+		- json obj osallistujista
+- Props
+	- ei ole
+- Funktiot
+	- getHackers
+		- Kutsutaan: SearchButton
+		- hakee tietokannasta kaikki osallistuja
+		- määrittelee panelArray:n
+		- määrittelee alkuperäisen attributeNames
+	- setAttributeNames
+		- kutsutaan: CheckBoxRow.js
+		- param: attributes
+		- määrittelee parametrillaan attributeNames:n
+	- setHackers
+		- ei käytössä
+- Kontrolloi
+	- SearchButton
+		findHackers={this.getHackers}
+	- ControlPanel
+		setAttributeNames ={this.setAttributeNames}
+        attributeNames={this.state.panelValues}
+		findHackers={this.getHackers}
+	- HackerTable
+        columnNames={newArray}
+        hackers={this.state.hackers}

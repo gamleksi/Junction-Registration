@@ -13,7 +13,8 @@ module.exports = {
 				password: String,
 				motivation: String,
 				skillDescription: String,
-				admin: {type: "boolean", defaultValue: false}
+				admin: {type: "boolean", defaultValue: false},
+				accepted: Date
 			}, {
 
 
@@ -23,7 +24,7 @@ module.exports = {
 				},
 				methods:{
 					getPassword:function(){
-						return this.password
+						return this.password;
 					}
 				}
 			}

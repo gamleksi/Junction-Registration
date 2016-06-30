@@ -30,7 +30,8 @@ export default React.createClass ({
                 self.setState({
                     panelValues : panelArray,
                     attributeNames: rowArray,
-                    hackers:(jsoned.hackers)
+                    hackers:(jsoned.hackers),
+                    selectedParticipants: {}
                 });
                 console.log(jsoned.hackers)
                 console.log("jsoned.hackers")
@@ -44,46 +45,66 @@ export default React.createClass ({
         };
         xhr.open('GET', url);
         xhr.send();
-//          getHackers      
-//       /           \
-//    panelArray     <rowArray>
-//     /              \ 
-//  ControlPanel       <HackerTable>
-//                          \
-//                          <TableBody>
-//                              \
-//                          <TableRow>   
-//                          filteröinti
-// 
-// 
-// 
+
+/*
+         <AdminPanel>      
+      /           \
+   Control     <rowArray>
+    /              \ 
+ ControlPanel       <HackerTable>
+
+                         \
+                         <TableBody>
+                             \
+                         <TableRow>   
+                         filteröinti
+
+*/
+
 
 
     },
     
-        // xhr.open('GET', url,true);
-        // xhr.send(null);
     getInitialState: function() {
         //var initialHackers = this.getHackers();
         return {
             panelValues:[],
             attributeNames: [],
-            hackers: {}
+            hackers: {},
+            selectedParticipants: {}
         }
     },
     setAttributeNames: function(attributes){
         this.setState({
             panelValues: this.state.panelValues,
             attributeNames: attributes,
-            hackers:this.state.hackers
-        });
-    },setHackers: function(hackers){
-        this.setState({
-            panelValues : this.state.panelValues,
-            attributeNames: this.state.attributeNames,
-            hackers:hackers
+            hackers:this.state.hackers,
+            selectedParticipants: this.state.selectedParticipants
         });
     },
+    addToSelectedList: function(hacker) {
+        var selected = this.state.selectedParticipants
+        if(!selected[hacker.email]) {
+            console.log("selected")
+           selected[hacker.email] = hacker; 
+        }
+        this.setState({
+                panelValues: this.state.panelValues,
+                attributeNames: this.state.attributeNames,
+                hackers: this.state.hackers,
+                selectedParticipants: selected
+        })
+    },
+    acceptSelectedHackers: function() {
+
+    },
+    // setHackers: function(hackers){
+    //     this.setState({
+    //         panelValues : this.state.panelValues,
+    //         attributeNames: this.state.attributeNames,
+    //         hackers:hackers
+    //     });
+    // },
     render: function() {
         
         var newArray = {}
@@ -96,14 +117,16 @@ export default React.createClass ({
     return (
     <div id="init">
         <SearchButton findHackers={this.getHackers}/>
-      <ControlPanel
+        <ControlPanel
                 setAttributeNames ={this.setAttributeNames}
                 attributeNames={this.state.panelValues}
                 findHackers={this.getHackers}
+                selectedParticipants={this.state.selectedParticipants} 
         /> 
       <HackerTable 
             columnNames={newArray}
             hackers={this.state.hackers}
+            addToSelectedList={this.addToSelectedList}
       />
       </div>
     )
