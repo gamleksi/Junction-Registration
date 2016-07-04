@@ -9,10 +9,13 @@ export default React.createClass ({
     getHackers: function(){
         var self = this;
         var xhr = new XMLHttpRequest();
-         var url = "http://localhost:3000/admin/hackers/all"
+        var url = "http://localhost:3000/admin/hackers/all"
          // () => {   == same as function(){
         xhr.onload = () => {
+
+          //request finished and response is ready  
           if (xhr.readyState === 4) {
+
             if (xhr.status === 200) {
                 var responseItem = xhr.response
                 var jsoned = JSON.parse(responseItem)
@@ -27,16 +30,15 @@ export default React.createClass ({
                         rowArray.push({name:key,visible:true})
                     }
                 }
-                self.setState({
+                this.setState({
                     panelValues : panelArray,
                     attributeNames: rowArray,
                     hackers:(jsoned.hackers),
                     selectedParticipants: {}
-                });
-                console.log(jsoned.hackers)
-                console.log("jsoned.hackers")
+                })
             } else {
               console.error(xhr.statusText);
+
             }
           }
         };
@@ -95,18 +97,32 @@ export default React.createClass ({
                 selectedParticipants: selected
         })
     },
-    acceptSelectedHackers: function() {
 
+    acceptSelectedHackers: function() {
+        var self = this;
+        var xhr = new XMLHttpRequest();
+        var url = "http://localhost:3000/admin/hackers/accept-selected"
+        xhr.open('POST', url);
+        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        var selectedArr = Object.keys(this.state.selectedParticipants);
+        xhr.onload = function() {
+            if (this.readyState === 4) {
+                var responseItem = this.response;
+                console.log("Accepted");
+                console.log(JSON.parse(responseItem).accepted)
+            }
+        }
+        console.log("selectedarr")
+        console.log(selectedArr);
+        xhr.send(JSON.stringify({"selected": selectedArr}));
     },
-    // setHackers: function(hackers){
-    //     this.setState({
-    //         panelValues : this.state.panelValues,
-    //         attributeNames: this.state.attributeNames,
-    //         hackers:hackers
-    //     });
-    // },
     render: function() {
         
+
+        if(Object.getOwnPropertyNames(this.state.hackers).length <= 0) {
+            this.getHackers()
+        }
+
         var newArray = {}
             for(var key in this.state.attributeNames){
                 if(this.state.attributeNames[key].visible){
@@ -116,7 +132,7 @@ export default React.createClass ({
 
     return (
     <div id="init">
-        <SearchButton findHackers={this.getHackers}/>
+        <SearchButton findHackers={this.acceptSelectedHackers}/>
         <ControlPanel
                 setAttributeNames ={this.setAttributeNames}
                 attributeNames={this.state.panelValues}

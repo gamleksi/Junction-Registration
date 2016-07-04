@@ -1,5 +1,7 @@
 var bcrypt = require('bcryptjs');
-var orm = require('orm')
+var orm = require('orm');
+var dateFormat = require('dateformat');
+
 module.exports = {
 	createModel: function(db) {
 
@@ -16,7 +18,6 @@ module.exports = {
 				admin: {type: "boolean", defaultValue: false},
 				accepted: Date
 			}, {
-
 
 				validations: {
 					email: orm.enforce.unique("email taken!")
@@ -51,6 +52,42 @@ module.exports = {
 				else callback(user);
 			});
 		};
+
+		Users.acceptHackers = function(users, callback) {
+			var date = dateFormat(new Date(), "isoDate");
+			var arr = [];
+			var errorOccured = [];
+			var innerFunction = function(index) {
+					Users.one({"email": users[i]}, function(err, user) {
+						if(err) {
+							errorOccured.push(users[i]);
+							throw err;
+						} 
+						if(user) {
+							user.accepted = date;
+							user.save(function(err) {								
+								if(!err) {
+									//console.log("user");
+									arr.push(user);
+								} else {
+									throw err;
+									errorOccured.push(users[i]);		
+								}
+								if(index == (users.length-1)) {
+									callback(arr);
+								}
+							});							
+						}	
+							
+					});
+			}
+
+
+			for(var i in users){
+				innerFunction(i);
+			}
+		};
+			
 
 		Users.comparePasswords = function(candidatePassword, hash, callback){
 			bcrypt.compare(candidatePassword,hash, function(err, isMatch){

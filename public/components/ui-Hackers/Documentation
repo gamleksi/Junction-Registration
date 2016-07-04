@@ -13,6 +13,8 @@ AdminPanel.js
 			- Määrittää hackerTable:ssa sarakkeet. 
 	- hackers:
 		- json obj osallistujista
+	- selectedParticipants {email: hackerObj}
+		- Muodostaan ryhmän jotka Admin kutsuu tapahtumaan. 
 - Props
 	- ei ole
 - Funktiot
@@ -25,6 +27,10 @@ AdminPanel.js
 		- kutsutaan: CheckBoxRow.js
 		- param: attributes
 		- määrittelee parametrillaan attributeNames:n
+	- addToSelectedList
+		- kutsutaan: TableRow.js
+		- param: hacker
+		- lisää hackerin selectedParticipants mappiin		
 	- setHackers
 		- ei käytössä
 - Kontrolloi

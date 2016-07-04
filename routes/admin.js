@@ -23,6 +23,16 @@ router.get('/hackers/all', ensureIsAuthenticatedAndAdmin, function(req, res) {
 });
 
 
+router.post('/hackers/accept-selected', ensureIsAuthenticatedAndAdmin, function(req, res) {
+  var selected=req.body.selected;
+  console.log("selected");
+  console.log(selected);    
+  req.models.users.acceptHackers(selected, function(users){
+    console.log(users);
+    res.send({accepted: users});
+  });
+});
+
 function ensureIsAuthenticatedAndAdmin(req, res, next){
   
   //Outcommented for testing purpose
