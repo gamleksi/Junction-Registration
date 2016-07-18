@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
+var sendgrid = require('../sendgrid/sendgrid.js')
+
 
 router.get('/', ensureIsAuthenticatedAndAdmin, function(req, res) {
   res.render('admin', {layout: 'admin-layout'});     
@@ -30,8 +32,24 @@ router.post('/hackers/accept-selected', ensureIsAuthenticatedAndAdmin, function(
   req.models.users.acceptHackers(selected, function(users){
     console.log(users);
     res.send({accepted: users});
+    sendgrid.sendApprovalMails(users, function() {
+      console.log("Sendgrid done");
+    });
   });
 });
+
+
+router.post('/webhook', ensureIsAuthenticatedAndAdmin, function(req, res) {
+  console.log("webhook"); 
+  console.log(req.body)
+  console.log(req.body[0].email + ": " +req.body[0].event);
+  req.models.users.addApprovalEmailInformation(req.body[0].email, req.body[0].event)
+  res.send();
+});
+
+
+  
+//elo 29. - syyskuun vaihteessa  Delegaation vierailua
 
 function ensureIsAuthenticatedAndAdmin(req, res, next){
   

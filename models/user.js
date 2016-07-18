@@ -16,7 +16,8 @@ module.exports = {
 				motivation: String,
 				skillDescription: String,
 				admin: {type: "boolean", defaultValue: false},
-				accepted: Date
+				accepted: Date,
+				acceptedEmail: {type: "text", defaultValue: "not send"}
 			}, {
 
 				validations: {
@@ -68,7 +69,7 @@ module.exports = {
 							user.save(function(err) {								
 								if(!err) {
 									//console.log("user");
-									arr.push(user);
+									arr.push(user.email);
 								} else {
 									throw err;
 									errorOccured.push(users[i]);		
@@ -82,11 +83,24 @@ module.exports = {
 					});
 			}
 
-
 			for(var i in users){
 				innerFunction(i);
 			}
 		};
+
+		Users.addApprovalEmailInformation = function(email, event) {
+			Users.getUserByEmail(email, function(user){
+			
+			});
+
+			Users.one({"email":email}, function(err,user){
+				if(err) throw err;
+				else {
+					user.acceptedEmail = event;
+					user.save();
+				}
+			});
+		}; 
 			
 
 		Users.comparePasswords = function(candidatePassword, hash, callback){
