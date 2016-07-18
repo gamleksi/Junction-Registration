@@ -2,7 +2,7 @@
   var event = new EventEmitter();
   var helper = require('sendgrid').mail
 
-  var from_email = new helper.Email("aleksi.hamalainen@aaltoes.com")  
+  var from_email = new helper.Email("eliasdsdf@gmail.com")  
   
   var approvalMail = {
     content: new helper.Content("text/plain", "some text here"),  
@@ -26,12 +26,14 @@
   var sendEmail = function(to_email, subject, content) {
     mail = new helper.Mail(from_email, subject, to_email, content);
     var requestBody = mail.toJSON()
+    console.log("request body")
+    console.log(requestBody)
     var request = createNewRequest(requestBody)
     sg.API(request, function (response) {
       console.log("Mail")
       console.log(response.statusCode)
-      console.log(response.body)
-      console.log(response.headers)
+       console.log(response.body)
+      // console.log(response.headers)
       //TODO pitääkö statusCode jo tässä vaiheessa tsekata
       event.emit('newMailSent', to_email, response.statusCode);
     });

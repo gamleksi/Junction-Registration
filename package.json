@@ -36,7 +36,9 @@
     "serve-favicon": "~2.3.0",
     "webpack": "^1.12.9",
     "webpack-dev-server": "^1.14.1",
-    "mailchimp-api": "*"
+    "mailchimp-api": "*",
+    "dotenv": "2.0.0",
+    "sendgrid":"*"
   },
   "main": "admin-generator.js",
   "devDependencies": {},

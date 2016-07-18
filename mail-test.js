@@ -1,8 +1,8 @@
   var helper = require('sendgrid').mail
 
-  from_email = new helper.Email("aleksi.hamalainen@aaltoes.com")
+  from_email = new helper.Email("eliasdsdf@gmail.com")
   
-  to_email = new helper.Email("ville.leppala@aaltoes.com")
+  to_email = new helper.Email("elias.mikkola1@gmail.com")
   
   subject = "Registrationshit"
   
