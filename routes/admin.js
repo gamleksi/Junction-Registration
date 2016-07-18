@@ -33,7 +33,7 @@ router.post('/hackers/accept-selected', ensureIsAuthenticatedAndAdmin, function(
     console.log(users);
     res.send({accepted: users});
     sendgrid.sendApprovalMails(users, function() {
-      console.log("Sendgrid done");
+      console.log("Sendgrid valmis");
     });
   });
 });
