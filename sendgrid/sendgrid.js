@@ -1,8 +1,8 @@
   var EventEmitter = require('events');
   var event = new EventEmitter();
-  var helper = require('sendgrid').mail
+  var helper = require('sendgrid').mail;
 
-  var from_email = new helper.Email("eliasdsdf@gmail.com")  
+  var from_email = new helper.Email(process.env.EMAIL_FROM)  
   
   var approvalMail = {
     content: new helper.Content("text/plain", "some text here"),  
@@ -21,53 +21,43 @@
       request.path = '/v3/mail/send'
       request.body = requestBody
       return request;
-  }
-
-  var sendEmail = function(to_email, subject, content) {
-    mail = new helper.Mail(from_email, subject, to_email, content);
-    var requestBody = mail.toJSON()
-    console.log("request body")
-    console.log(requestBody)
-    var request = createNewRequest(requestBody)
-    sg.API(request, function (response) {
-      console.log("Mail")
-      console.log(response.statusCode)
-       console.log(response.body)
-      // console.log(response.headers)
-      //TODO pitääkö statusCode jo tässä vaiheessa tsekata
-      event.emit('newMailSent', to_email, response.statusCode);
-    });
-  }  
+  };
 
   module.exports = {
     sendApprovalMails: function(emails, callback) {
-      var userStatusCodes = {};
-      console.log("emails");
-      console.log(emails);
-      event.on('newMailSent', function(email, statusCode) {
-        userStatusCodes[email] = statusCode;
-        if(Object.keys(userStatusCodes).length === emails.length) {
-          console.log("mailit lähetetty");
-          callback();
-        }
-        
+    
+      event.on('newMailSent', function(statusCode) {
+        callback(statusCode);
       });
 
-      for(i in emails) {
-        sendEmail(emails[i], approvalMail.subject, approvalMail.content);
+      var to_email = new helper.Email(emails[0])
+                
+      mail = new helper.Mail(from_email, approvalMail.subject, to_email, approvalMail.content);      
+
+      emails.shift()
+
+      for(var i in emails) {
+
+        to_email = new helper.Email(emails[i]);  
+        var personalization = new helper.Personalization();
+        personalization.addTo(to_email);
+        mail.addPersonalization(personalization);
+     
       }
-    }
+      var requestBody = mail.toJSON()
+      console.log("request body")
+      console.log(requestBody);
+      
+      var request = createNewRequest(requestBody);
+      
+      sg.API(request, function (response) {
+        console.log("Mail")
+        console.log(response.statusCode)
+        console.log(response.body)
+        // console.log(response.headers)
+        //TODO pitääkö statusCode jo tässä vaiheessa tsekata
+        event.emit('emailsSent', response.statusCode);
+      });
+      
+      }
   };
-
-
-
-/**
-
-Moikka Aleksi!
-
-Mainiota, Wanha Satama on myös tosi kiva mesta. :)
-
-Meillä näyttää tilanne melko hyvältä, on suht vahva kattaus yhteistyötahoja jo mukana (alustava lupaus jo Konecranes, Wärtsilä, Rolls Royce, Napa, Helsingin kaupunki ja satama, Trafi, Tulli). Iso haaste on vain kustannukset, jotka tuntuu monelle kovalta. Onko tuo 50k fiksattu, vai onko siinä yhtään joustoa? Tuntuu että monet tahot antaisi mieluummin omia resujaan ja tilojaan käyttöön, mutta pyritään perustelemaan että laatu maksaa. :)
-
-Pete
-**/

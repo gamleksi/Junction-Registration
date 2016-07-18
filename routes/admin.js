@@ -27,19 +27,22 @@ router.get('/hackers/all', ensureIsAuthenticatedAndAdmin, function(req, res) {
 
 router.post('/hackers/accept-selected', ensureIsAuthenticatedAndAdmin, function(req, res) {
   var selected=req.body.selected;
-  console.log("selected");
-  console.log(selected);    
-  req.models.users.acceptHackers(selected, function(users){
-    console.log(users);
-    res.send({accepted: users});
-    sendgrid.sendApprovalMails(users, function() {
-      console.log("Sendgrid valmis");
+  
+  sendgrid.sendApprovalMails(selected, function(statusCode) {
+    if(statusCode === 202 || statusCode === 200) {
+      console.log("Emails sent");
+      req.models.users.acceptHackers(selected);
+      res.send({statusCode: statusCode}) 
+    } else {
+      console.log("Sending failed");
+      res.send({statusCode: statusCode})
+    }
     });
-  });
+
 });
 
 
-router.post('/webhook', ensureIsAuthenticatedAndAdmin, function(req, res) {
+router.post('/webhook', isFromSendGrid, function(req, res) {
   console.log("webhook"); 
   console.log(req.body)
   console.log(req.body[0].email + ": " +req.body[0].event);
@@ -48,8 +51,11 @@ router.post('/webhook', ensureIsAuthenticatedAndAdmin, function(req, res) {
 });
 
 
+function isFromSendGrid(req, res, next) {
+  // TODO
+  next();
+}
   
-//elo 29. - syyskuun vaihteessa  Delegaation vierailua
 
 function ensureIsAuthenticatedAndAdmin(req, res, next){
   

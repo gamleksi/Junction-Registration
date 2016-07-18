@@ -2,6 +2,8 @@ var bcrypt = require('bcryptjs');
 var orm = require('orm');
 var dateFormat = require('dateformat');
 
+
+
 module.exports = {
 	createModel: function(db) {
 
@@ -54,48 +56,26 @@ module.exports = {
 			});
 		};
 
-		Users.acceptHackers = function(users, callback) {
+		Users.acceptHackers = function(users) {
 			var date = dateFormat(new Date(), "isoDate");
-			var arr = [];
-			var errorOccured = [];
-			var innerFunction = function(index) {
-					Users.one({"email": users[i]}, function(err, user) {
-						if(err) {
-							errorOccured.push(users[i]);
-							throw err;
-						} 
-						if(user) {
-							user.accepted = date;
-							user.save(function(err) {								
-								if(!err) {
-									//console.log("user");
-									arr.push(user.email);
-								} else {
-									throw err;
-									errorOccured.push(users[i]);		
-								}
-								if(index == (users.length-1)) {
-									callback(arr);
-								}
-							});							
-						}	
-							
-					});
-			}
-
 			for(var i in users){
-				innerFunction(i);
+				Users.one({"email": users[i]}, function(err, user) {
+					if(err) {
+						throw err;
+					} 
+					if(user) {
+						user.accepted = date;
+						user.save();							
+					}
+				});
 			}
 		};
 
 		Users.addApprovalEmailInformation = function(email, event) {
-			Users.getUserByEmail(email, function(user){
-			
-			});
 
 			Users.one({"email":email}, function(err,user){
 				if(err) throw err;
-				else {
+				if(user) {
 					user.acceptedEmail = event;
 					user.save();
 				}
