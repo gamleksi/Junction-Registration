@@ -1,3 +1,5 @@
+var dotenv = require('dotenv').config();
+
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -12,7 +14,7 @@ var passport = require('passport');
 var exphbs = require('express-handlebars');
 var LocalStrategy = require('passport-local').Strategy;
 var config = require('./config/app-config')
-var dotenv = require('dotenv').config();
+
 
 var orm = require('orm');
 

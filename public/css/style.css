@@ -1,0 +1,14 @@
+.hacker > tr {
+width: 100%;
+display: inline-table;
+}
+
+table .hacker{
+ height:700px; 
+}
+.hacker > tbody{
+  overflow-y: scroll;
+  height: 600px;
+  width: 100%;
+  position: absolute;
+}

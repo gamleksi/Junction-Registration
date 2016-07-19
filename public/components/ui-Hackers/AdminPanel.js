@@ -84,11 +84,12 @@ export default React.createClass ({
             selectedParticipants: this.state.selectedParticipants
         });
     },
-    addToSelectedList: function(hacker) {
+    addToSelectedList: function(hacker, travelReImbursement) {
         var selected = this.state.selectedParticipants
         if(!selected[hacker.email]) {
             console.log("selected")
-           selected[hacker.email] = hacker; 
+            hacker["travelReImbursement"] = travelReImbursement;
+            selected[hacker.email] = hacker; 
         }
         this.setState({
                 panelValues: this.state.panelValues,
@@ -96,6 +97,19 @@ export default React.createClass ({
                 hackers: this.state.hackers,
                 selectedParticipants: selected
         })
+    },
+    dropFromSelectedList: function(hacker) {
+        var selected = this.state.selectedParticipants        
+        if(selected[hacker.email]) {
+            console.log("dropped: " + "hacker.email")
+            delete selected[hacker.email];
+            this.setState({
+                panelValues: this.state.panelValues,
+                attributeNames: this.state.attributeNames,
+                hackers: this.state.hackers,
+                selectedParticipants: selected
+            })            
+        } 
     },
 
     acceptSelectedHackers: function() {
@@ -129,6 +143,7 @@ export default React.createClass ({
                     newArray[this.state.attributeNames[key].name] = true;
                 }
             }
+        console.log(newArray);    
 
     return (
     <div id="init">
@@ -143,6 +158,7 @@ export default React.createClass ({
             columnNames={newArray}
             hackers={this.state.hackers}
             addToSelectedList={this.addToSelectedList}
+            dropFromSelectedList={this.dropFromSelectedList}
       />
       </div>
     )
