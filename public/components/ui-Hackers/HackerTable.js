@@ -4,26 +4,22 @@ import TableBody from "./TableBody";
 
 export default React.createClass({
     render:function(){
-        
-         var newArray = {}
-         var col = this.props.columnNames
-            for(var key in col){
-                var item = col[key]
-                if(item.visible && item.name !== "subscription" && item.name !== "skillDescription"){
-                    newArray[item.name] = true;
-                }
-            }
-    
+        console.log("hackertable")
+        console.log(this.props.columnNames)
+        var headerAttr = this.props.columnNames
+        delete headerAttr["skillDescription"]
+        delete headerAttr["motivation"]
+
         return(
-            <table class="table table-inverse">
+            <table class="hacker table table-striped">
                 <TableHeader
-                    columnNames={newArray}
+                    columnNames={headerAttr}
                 /> 
                 <TableBody 
                     hackers={this.props.hackers}
-                    columnNames={this.props.columnNames} 
-                    allValues={this.props.columnNames}
+                    columnNames={this.props.columnNames}
                     addToSelectedList={this.props.addToSelectedList}
+                    dropFromSelectedList={this.props.dropFromSelectedList}
                      />
                     }
             </table>
