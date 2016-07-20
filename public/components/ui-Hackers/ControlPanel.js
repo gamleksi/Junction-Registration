@@ -17,8 +17,8 @@ export default React.createClass({
             <tbody>
 
                         <CheckboxRow 
-                            setAttributeNames={this.props.setAttributeNames}
-                            attributeNames={this.props.attributeNames} 
+                            setAttributeValues={this.props.setAttributeValues}
+                            rowAttributes={this.props.rowAttributes} 
                         />  
                 
             </tbody>

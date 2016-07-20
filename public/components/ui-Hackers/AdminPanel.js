@@ -4,6 +4,16 @@ import HackerTable from "./HackerTable";
 import SearchButton from "./SearchButton";
 
 
+//Hardcoded values
+
+
+var attrNotBeShown = ["admin", "password"]; //TODO: deleting needs to be done already in backend!!
+
+var attrNotBeShownInRows = ["skillDescription", "motivation"];
+
+var notBeShownInOpeningRow = ["email"];
+
+
 export default React.createClass ({
 
     getHackers: function(){
@@ -20,19 +30,28 @@ export default React.createClass ({
                 var responseItem = xhr.response
                 var jsoned = JSON.parse(responseItem)
                 
-                var panelArray =[]
-                var rowArray = []
+                var rowAttributes = {}
+
                 for(var key in jsoned.hackers[0]){
-                    if(key !== "admin" && key !== "password" && key !== "motivation" && key !== "skillDescription"){
-                        panelArray.push({name:key,visible:true})
-                    }
-                     if(key !== "admin" && key !== "password" ){
-                        rowArray.push({name:key,visible:true})
-                    }
+                    rowAttributes[key] = true
                 }
+                attrNotBeShown.forEach(function(e) {
+                    delete rowAttributes[e]
+                })
+
+                var attributes = rowAttributes;
+
+                attrNotBeShownInRows.forEach(function(e) {
+                    delete rowAttributes[e]
+                })
+                notBeShownInOpeningRow.forEach(function(e) {
+                    if(rowAttributes[e]) {
+                        rowAttributes[e] = false;
+                    }
+                })                
                 this.setState({
-                    panelValues : panelArray,
-                    attributeNames: rowArray,
+                    rowAttributes : rowAttributes,
+                    attributeNames: attributes,
                     hackers:(jsoned.hackers),
                     selectedParticipants: {}
                 })
@@ -68,18 +87,19 @@ export default React.createClass ({
     },
     
     getInitialState: function() {
-        //var initialHackers = this.getHackers();
         return {
-            panelValues:[],
+            rowAttributes: {},
             attributeNames: [],
             hackers: {},
             selectedParticipants: {}
         }
     },
-    setAttributeNames: function(attributes){
+    setAttributeValues: function(key){
+        var attributes = this.state.rowAttributes
+        attributes[key] = !(attributes[key]) 
         this.setState({
-            panelValues: this.state.panelValues,
-            attributeNames: attributes,
+            rowAttributes: attributes,
+            attributeNames: this.state.attributeNames,
             hackers:this.state.hackers,
             selectedParticipants: this.state.selectedParticipants
         });
@@ -92,7 +112,7 @@ export default React.createClass ({
             selected[hacker.email] = hacker; 
         }
         this.setState({
-                panelValues: this.state.panelValues,
+                rowAttributes: this.state.rowAttributes,
                 attributeNames: this.state.attributeNames,
                 hackers: this.state.hackers,
                 selectedParticipants: selected
@@ -104,7 +124,7 @@ export default React.createClass ({
             console.log("dropped: " + "hacker.email")
             delete selected[hacker.email];
             this.setState({
-                panelValues: this.state.panelValues,
+                rowAttributes: this.state.rowAttributes,
                 attributeNames: this.state.attributeNames,
                 hackers: this.state.hackers,
                 selectedParticipants: selected
@@ -137,28 +157,21 @@ export default React.createClass ({
             this.getHackers()
         }
 
-        var newArray = {}
-            for(var key in this.state.attributeNames){
-                if(this.state.attributeNames[key].visible){
-                    newArray[this.state.attributeNames[key].name] = true;
-                }
-            }
-        console.log(newArray);    
-
     return (
     <div id="init">
         <SearchButton findHackers={this.acceptSelectedHackers}/>
         <ControlPanel
-                setAttributeNames ={this.setAttributeNames}
-                attributeNames={this.state.panelValues}
+                setAttributeValues ={this.setAttributeValues}
+                rowAttributes={this.state.rowAttributes}
                 findHackers={this.getHackers}
                 selectedParticipants={this.state.selectedParticipants} 
         /> 
       <HackerTable 
-            columnNames={newArray}
+            rowAttributes={this.state.rowAttributes}
             hackers={this.state.hackers}
             addToSelectedList={this.addToSelectedList}
             dropFromSelectedList={this.dropFromSelectedList}
+            expandedInfo={attrNotBeShownInRows}
       />
       </div>
     )

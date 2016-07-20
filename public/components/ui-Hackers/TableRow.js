@@ -60,54 +60,87 @@ var RadioInputs =  React.createClass({
     }
 });
 
+var ExpandedRadioInput = React.createClass({
+
+    inputSelected: function(e) {
+        console.log(e.target.value)
+        this.props.inputSelected(e.target.value);
+    },
+    render: function(){
+        var reimburesements = ["No", "Fin", "Nord", "Eu", "Out"]
+        var radioInputs = []
+        for(var i in reimburesements) {
+                radioInputs.push(
+                <div class="radio">
+                    <label>
+                    <input
+                        value={reimburesements[i]}
+                        onChange={this.inputSelected}
+                        type="radio" 
+                        name={this.props.hackerId}/>
+                    {reimburesements[i]}    
+                    </label>
+                </div>
+                )
+        }
+        return (
+            <div>
+                {radioInputs}
+            </div>
+        )
+    }
+});
 
 var ExpandedInfo = React.createClass({
 
     
     render: function(){
-        var values = []
-        var values2 = []
-        console.log("this.props.visibleColumns")
-        console.log(this.props.visibleColumns) 
+        var hacker = this.props.hackerInfo
+        var column1 = []
             for(var key in this.props.hackerInfo){
-                if(key !=="motivation" && key !== "skillDescription"){
-                    if(this.props.visibleColumns[key]) {
-                        var value = this.props.hackerInfo[key]
-                        values.push(<p key={value}>{value}</p>)
-                    }
-                } else {
-                    if(this.props.visibleColumns[key]) {
-                        var value = this.props.hackerInfo[key]
-                        values2.push(<p key={value}><b>{key}</b><br/><br/><br/>{value}</p>)
-                    }
+                if(this.props.visibleColumns.hasOwnProperty(key)) {
+                    var value = hacker[key]
+                    column1.push(<p key={value}> <b> {key + ":"} </b> {value}</p>)
                 }
+                // } else {
+                //     if(this.props.visibleColumns[key]) {
+                //         var value = this.props.hackerInfo[key]
+                //         values2.push(<p key={value}><b>{key}</b><br/><br/><br/>{value}</p>)
+                //     }
+                // }
             }
+
+
+        var textColums = []; //Motivation, skillDescription etc
+
+        this.props.expandedInfo.forEach(function(key) {
+            console.log(key)
+            textColums.push(
+                <td>
+                    <b> {key + ":"} + </b> {hacker[key]}                    
+                </td>
+                )
+        })
+
         var classColor="active"
         if(this.props.selected) {
             classColor="success"
         }
 
         return(
-            <tr  class={classColor} height="300" >
+            <tr  class={classColor}>
+                    <td>
+                        {column1}
+                    </td>
+                    {textColums}
                     <td>
                         <div>
-                            {values}
-                        </div>
-                    </td>
-                      <td>
-                        <div>
-                            {values2}
-                        </div>
-                    </td>
-                    <RadioInputs inputSelected={this.props.inputSelected} travelReImbursement={this.props.travelReImbursement} inputChanged={this.inputChanged} hackerId={this.props.hackerInfo.email}/>
-                    <td>
-                        <div>
+                            <ExpandedRadioInput inputSelected={this.props.inputSelected} travelReImbursement={this.props.travelReImbursement} inputChanged={this.inputChanged} hackerId={this.props.hackerInfo.email}/>                            
                             <button onClick={this.props.expandClick}>EXPAND</button>
                             <button onClick={this.props.selectClick}>SELECT</button>
                         </div>
-                    </td>
-                      
-                </tr>
+                    </td>                      
+            </tr>
         )            
 
     }
@@ -120,11 +153,9 @@ var RowInfo = React.createClass({
 
         var values = []
         for(var key in this.props.hackerInfo){
-            if(key !=="motivation" && key !== "skillDescription"){
-                if(this.props.visibleColumns[key]) {
-                    var value = this.props.hackerInfo[key]
-                    values.push(<td key={value}>{value}</td>)
-                }
+            if(this.props.visibleColumns[key]) {
+                var value = this.props.hackerInfo[key]
+                values.push(<td key={value}>{value}</td>)
             }
         }        
 
@@ -192,8 +223,44 @@ export default React.createClass({
             travelReImbursement: travelReImbursement
         })
     },
+    // render: function() {
+    //     var hackerRow = [
+    //                 <RowInfo
+    //                     travelReImbursement={this.state.travelReImbursement}
+    //                     selected={this.state.selected}
+    //                     visibleColumns={this.props.visibleColumns}
+    //                     hackerInfo={this.props.hackerInfo}
+    //                     selectClick={this.selectClick}
+    //                     expandClick={this.expandClick}
+    //                     inputSelected={this.inputSelected}
+    //                 />
+    //     ]
+
+    //     if(this.state.expand) {
+    //         hackerRow.push[
+    //                 <RowInfo
+    //                     travelReImbursement={this.state.travelReImbursement}
+    //                     selected={this.state.selected}
+    //                     visibleColumns={this.props.visibleColumns}
+    //                     hackerInfo={this.props.hackerInfo}
+    //                     selectClick={this.selectClick}
+    //                     expandClick={this.expandClick}
+    //                     inputSelected={this.inputSelected}
+    //                 />
+    //         ]
+    //     }
+    //     return (
+    //         <div>
+    //             {hackerRow}                
+    //         </div>
+    //     )        
+    // }
+
+
+
     
     render: function() {
+        console.log("RENDER")
         if(this.state.expand) {
             return (
                 <ExpandedInfo
@@ -204,6 +271,7 @@ export default React.createClass({
                     expandClick={this.expandClick}
                     visibleColumns={this.props.visibleColumns}
                     inputSelected={this.inputSelected}
+                    expandedInfo={this.props.expandedInfo}
                 />
             )
         } else {

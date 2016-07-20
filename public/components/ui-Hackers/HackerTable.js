@@ -4,24 +4,20 @@ import TableBody from "./TableBody";
 
 export default React.createClass({
     render:function(){
-        console.log("hackertable")
-        console.log(this.props.columnNames)
-        var headerAttr = this.props.columnNames
-        delete headerAttr["skillDescription"]
-        delete headerAttr["motivation"]
-
+        console.log(this.props.rowAttributes)
         return(
             <table class="hacker table table-striped">
                 <TableHeader
-                    columnNames={headerAttr}
+                    rowAttributes={this.props.rowAttributes}
                 /> 
                 <TableBody 
                     hackers={this.props.hackers}
-                    columnNames={this.props.columnNames}
+                    rowAttributes={this.props.rowAttributes}
                     addToSelectedList={this.props.addToSelectedList}
                     dropFromSelectedList={this.props.dropFromSelectedList}
+                    expandedInfo={this.props.expandedInfo}
                      />
-                    }
+                    
             </table>
             )
     }
