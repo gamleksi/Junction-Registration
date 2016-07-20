@@ -8,13 +8,12 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var ejs = require('ejs');
 var expressValidator = require('express-validator');
-var flash = require('connect-flash');
+var flash = require('express-flash');
 var session = require('express-session');
 var passport = require('passport');
 var exphbs = require('express-handlebars');
 var LocalStrategy = require('passport-local').Strategy;
 var config = require('./config/app-config')
-
 
 var orm = require('orm');
 
