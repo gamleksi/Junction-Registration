@@ -38,7 +38,8 @@
     "webpack-dev-server": "^1.14.1",
     "mailchimp-api": "*",
     "dotenv": "2.0.0",
-    "sendgrid":"*"
+    "sendgrid":"*",
+    "express-flash":"*"
   },
   "main": "admin-generator.js",
   "devDependencies": {},

@@ -1,3 +1,5 @@
+var dotenv = require('dotenv').config();
+
 var config = require('./config/app-config')
 
 var orm = require('orm');

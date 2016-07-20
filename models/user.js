@@ -6,17 +6,40 @@ var dateFormat = require('dateformat');
 
 module.exports = {
 	createModel: function(db) {
+		// Form attributes:
+		// - age: Int [CHECK]
+		// - firstname: String [CHECK]
+		// - lastname: String [CHECK]
+		// - country: String (määrämuotoinen) [CHECK]
+		// - email: String (määrämuotoinen) [CHECK]
+		// - gender [male, female, other] [CHECK]
+		// - t-shirt size: [xs, s, m, l, xl, xxl] [CHECK]
+		// - dietary restrictions: String (määräpituus, esim 160 merkkiä) 
+		/*	Vegetarian:
+		 	No Pork:
+	 		Gluten-Free:
+		   	No special restrictions: */
 
+		// - top track choice (checkbox trackeistä, 1 valinta)
+		// - portfolio: String (url)
+		// - question 1: String
+		// - question 2: String
+		// - comments for organizers
 		var Users = db.define("users", {
 				firstname: String,
 				lastname: String,
 				age: {type: 'integer'},
 				email: {type:"text", key: true},
 				country: String,
-				gender: ["male", "female"],
+				gender: ["male", "female","other"],
+				shirtsize: ["xs","s","m","l","xl","xxl"],
+				dietary: ["no","veg","pork","glut"],
+				track:["junction","other"],
+				portfolio:String,
+				question1:String,
+				question2:String,
+				comment:String,
 				password: String,
-				motivation: String,
-				skillDescription: String,
 				admin: {type: "boolean", defaultValue: false},
 				accepted: Date,
 				acceptedEmail: {type: "text", defaultValue: "not send"}
@@ -40,9 +63,12 @@ module.exports = {
 					user["password"] = hash;
 					Users.create(user, function(err,items){
 						if(err){
-							console.error(err);
+							console.log("ERRRRROR")
+							//console.error(err);
+							callback(false)
 						} else {
 							console.log("User has been created succesfully.")
+							callback(true)
 						}
 					});					
 				});

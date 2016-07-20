@@ -1,31 +1,19 @@
-var dotenv = require('dotenv').config();
-
   var helper = require('sendgrid').mail
 
-  from_email = new helper.Email("aleksi.hamalainen@aaltoes.com")
+  from_email = new helper.Email("eliasdsdf@gmail.com")
   
-  to_email2 = new helper.Email("eliasdsdf@gmail.com");
-  to_email1 = new helper.Email("elias.mikkola1@gmail.com");
+  to_email = new helper.Email("elias.mikkola1@gmail.com")
   
-  to_email = [to_email1, to_email2];
-
-  subject = "Registrationshit shit 2"
+  subject = "Registrationshit"
   
   content = new helper.Content("text/plain", "some text here");
   
-  mail = new helper.Mail(from_email, subject, to_email1, content);
+  mail = new helper.Mail(from_email, subject, to_email, content);
   
-  var pers = new helper.Personalization()
-
-  pers.addTo(to_email2)
-  mail.addPersonalization(pers)
-
   var sg = require('sendgrid').SendGrid(process.env.SENDGRID_API_KEY);
   
   var requestBody = mail.toJSON()
-  console.log("rb")
-  console.log(requestBody);
-  
+    
   var request = sg.emptyRequest()
   
   request.method = 'POST'
@@ -42,48 +30,9 @@ var dotenv = require('dotenv').config();
 
 
 
-  // personalizations:
-  //  [ Personalization {
-  //      tos: [Object],
-  //      ccs: undefined,
-  //      bccs: undefined,
-  //      subject: undefined,
-  //      headers: undefined,
-  //      substitutions: undefined,
-  //      custom_args: undefined,
-  //      send_at: undefined,
-  //      addTo: [Function],
-  //      getTos: [Function],
-  //      addCc: [Function],
-  //      getCcs: [Function],
-  //      addBcc: [Function],
-  //      getBccs: [Function],
-  //      setSubject: [Function],
-  //      getSubject: [Function],
-  //      addHeader: [Function],
-  //      getHeaders: [Function],
-  //      addSubstitution: [Function],
-  //      getSubstitutions: [Function],
-  //      addCustomArg: [Function],
-  //      getCustomArgs: [Function],
-  //      setSendAt: [Function],
-  //      getSendAt: [Function],
-  //      toJSON: [Function] } ],
-  // subject: 'Registrationshit',
-  // content: [ { type: 'text/plain', value: 'some text here' } ],
-  // attachments: undefined,
-  // template_id: undefined,
-  // sections: undefined,
-  // headers: undefined,
-  // categories: undefined,
-  // custom_args: undefined,
-  // send_at: undefined,
-  // batch_id: undefined,
-  // asm: undefined,
-  // ip_pool_name: undefined,
-  // mail_settings: undefined,
-  // tracking_settings: undefined,
-  // reply_to: undefined }
+  //IiQZVjzXSfmR2fYpuYdzDQ
 
 
-
+// echo "export SENDGRID_API_KEY='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'" > sendgrid.env
+// echo "sendgrid.env" >> .gitignore
+// source ./sendgrid.env

@@ -31,8 +31,10 @@
       });
 
       var to_email = new helper.Email(emails[0])
-                
-      mail = new helper.Mail(from_email, approvalMail.subject, to_email, approvalMail.content);      
+
+      mail = new helper.Mail(from_email, approvalMail.subject, to_email, approvalMail.content);  
+      mail.personalizations[0].addSubstitution({"-mail-":emails[0]}) 
+
 
       emails.shift()
 
@@ -41,13 +43,15 @@
         to_email = new helper.Email(emails[i]);  
         var personalization = new helper.Personalization();
         personalization.addTo(to_email);
+        personalization.addSubstitution({"-mail-":emails[i]})
         mail.addPersonalization(personalization);
      
       }
       var requestBody = mail.toJSON()
+      requestBody.template_id = "7b141e1e-d840-406c-902f-cfd8294e011d"
       console.log("request body")
       console.log(requestBody);
-      
+    
       var request = createNewRequest(requestBody);
       
       sg.API(request, function (response) {
