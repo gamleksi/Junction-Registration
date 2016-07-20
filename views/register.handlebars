@@ -1,8 +1,8 @@
 <h2 class="page-header"></h2>
 {{#if errors}}
-	{{#each errors}}
-		<div class = "alert alert-danger"> {{msg}}</div>
-	{{/each}}
+	
+	<div class = "alert alert-danger"> {{errors.length}} error(s). See below.</div>
+	
 {{/if}}
 
 <form method="post" action="/users/register">
@@ -10,39 +10,72 @@
 
 	<div class="form-group">
 		<label>First Name</label>
-		<input type="text" class="form-control" placeholder="first name" name="firstname">
+		{{#if error_messages.firstname}}
+			<p class = "alert-text"> {{error_messages.firstname}}</p>
+		{{/if}}
+		<input type="text" class="form-control" value="{{failedPost.firstname}}" placeholder="first name" name="firstname">
 	</div>
+
+
 	<!-- lastname: String, -->
 
 	<div class="form-group">
 		<label>Lastname</label>
-		<input type="text" class="form-control" placeholder="lastname" name="lastname">
+			{{#if error_messages.lastname}}
+				<p class = "alert-text">{{error_messages.lastname}}</p>
+			{{/if}}
+		<input type="text" class="form-control" value="{{failedPost.lastname}}" placeholder="lastname" name="lastname">
 	</div>
+	
+
 	<!-- age: {type: 'integer'}, -->
 	<div class="form-group">
 		<label>Age</label>
-		<input type="number" class="form-control" placeholder="99" name="age">
+	{{#if error_messages.age}}
+		<p class = "alert-text">{{error_messages.age}}</p>
+	{{/if}}
+		<input type="number" class="form-control" value="{{failedPost.age}}" placeholder="99" name="age">
 	</div>	
+	
 	<!-- email: {type:"text", key: true}, -->
 	<div class="form-group">
 		<label>Email</label>
-		<input type="email" class="form-control" placeholder="hacker@hackjunction.com" name="email">
+	{{#if error_messages.email}}
+		<p class = "alert-text"> {{error_messages.email}}</p>
+	{{/if}}
+		<input type="email" class="form-control"  value="{{failedPost.email}}" placeholder="hacker@hackjunction.com" name="email">
 	</div>	
+	
+
 	<!-- country: String, -->
 	<div class="form-group">
 		<label>Home Country</label>
-		<input type="text" class="form-control" placeholder="Finland" name="country">
+	{{#if error_messages.country}}
+		<p class = "alert-text"> {{error_messages.country}}</p>
+	{{/if}}
+		<input type="text" class="form-control"  value="{{failedPost.country}}" placeholder="Finland" name="country">
 	</div>	
+	
+
 	<!-- gender: ["male", "female","other"], -->
 	<div class="form-group">
 		<label>Gender</label><br>
+	{{#if error_messages.gender}}
+		<p class = "alert-text"> {{error_messages.gender}}</p>
+	{{/if}}
 		 <input type="radio" name="gender" value="male" > Male<br>
 		 <input type="radio" name="gender" value="female"> Female<br>
 		 <input type="radio" name="gender" value="other"> Other<br>
-	</div>	
+	</div>
+
+
+
 	<!-- shirtsize: ["xs","s","m","l","xl","xxl"], -->
 	<div class="form-group">
 		<label>Shirt size</label><br>
+	{{#if error_messages.shirt}}
+<p class = "alert-text">{{error_messages.shirt}}</p>
+	{{/if}}
 		 <input type="radio" name="shirt" value="xs" >XS<br>
 		 <input type="radio" name="shirt" value="s"> S<br>
 		 <input type="radio" name="shirt" value="m"> M<br>
@@ -50,40 +83,74 @@
  		 <input type="radio" name="shirt" value="xl"> XL<br>
  		 <input type="radio" name="shirt" value="xxl"> XXL<br>
 	</div>	
+
+
 	<!-- dietary: ["no","veg","pork","glut"], -->
 	<div class="form-group">
 		<label>Dietary restrictions</label><br>
+	{{#if error_messages.dietary}}
+		<p class = "alert-text"> {{error_messages.dietary}}</p>
+	{{/if}}
+
 		 <input type="radio" name="dietary" value="no" > No special restrictions<br>
 		 <input type="radio" name="dietary" value="veg" > Vegan<br>
 		 <input type="radio" name="dietary" value="glut" > Gluten free<br>
 		 <input type="radio" name="dietary" value="pork" > No pork<br>
 	</div>	
+
 	<!-- track:["junkkari","ultrahack"], -->
 	<div class="form-group">
 		<label>First track choice</label><br>
-		 <input type="radio" name="track" value="junction" > Junction <br>
+		{{#if error_messages.track}}
+			<p class = "alert-text"> {{error_messages.track}}</p>
+		{{/if}}
+		 <input type="radio" name="track" value="junction"> Junction <br>
 		 <input type="radio" name="track" value="other" > Other<br>
 	</div>	
+
+
 	<!-- portfolio:String, -->
 	<div class="form-group">
 		<label>Portfolio (Github, Gitlab etc.)</label>
-		<input type="text" class="form-control" placeholder="github.com/junction_hcker" name="portfolio">
+		{{#if error_messages.portfolio}}
+			<p class = "alert-text"> {{error_messages.portfolio}}</p>
+		{{/if}}
+		<input type="text" class="form-control" value="{{failedPost.portfolio}}"  placeholder="github.com/junction_hcker" name="portfolio">
 	</div>
+
+
 	<!-- question1:String, -->
 	<div class="form-group">
 		<label>Question 1 </label>
-		<textarea type="textarea" class="form-control" placeholder="" name="q1"></textarea>
+		{{#if error_messages.q1}}
+			<p class = "alert-text"> {{error_messages.q1}}</p>
+		{{/if}}
+		<textarea type="textarea" class="form-control"  placeholder="" name="q1">{{failedPost.q1}}</textarea>
 	</div>	
+
+
+
 	<!-- question2:String, -->
 	<div class="form-group">
 		<label>Question 2</label>
-		<textarea type="textarea" class="form-control" placeholder="" name="q2"></textarea>
+		{{#if error_messages.q2}}
+			<p class = "alert-text"> {{error_messages.q2}}</p>
+		{{/if}}
+		<textarea type="textarea" class="form-control"   placeholder="" name="q2">{{failedPost.q2}}</textarea>
 	</div>
+
+
 	<!-- comment:String, -->
+
+
 	<div class="form-group">
 		<label>Free comment</label>
-		<textarea type="textarea" class="form-control" placeholder="" name="comment"></textarea>
+		{{#if error_messages.comment}}
+			<p class = "alert-text"> {{error_messages.comment}}</p>
+		{{/if}}
+			<textarea type="textarea" class="form-control"  value="{{failedPost.comment}}" placeholder="" name="comment">{{failedPost.comment}}</textarea>
 	</div>
+
 
 
 
@@ -94,6 +161,12 @@
 <!-- password: String, -->
 	<div class="form-group">
 		<label>Password</label>
+		{{#if error_messages.password}}
+			<p class = "alert-text"> {{error_messages.password}}</p>
+		{{/if}}
+		{{#if error_messages.password2}}
+			<p class = "alert-text"> {{error_messages.password2}}</p>
+		{{/if}}
 		<input type="password" class="form-control" placeholder="password" name="password">
 	</div>
 
@@ -101,6 +174,7 @@
 		<label>Password again</label>
 		<input type="password" class="form-control" placeholder="password" name="password2">
 	</div>
+
 
 	<button type="submit" class="btn btn-default">LOGIN</button>
 </form>

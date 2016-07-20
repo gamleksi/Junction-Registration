@@ -47,10 +47,10 @@ router.post('/register', function(req, res) {
 
 
   //Validator 
-  req.checkBody('firstname', 'firstname is required').notEmpty();
-  req.checkBody('lastname', 'lastname is required').notEmpty();
-  req.checkBody('email', 'email is required').notEmpty();
-  req.checkBody('email', 'email is not valid').isEmail();
+  req.checkBody('firstname', 'Firstname is required.').notEmpty();
+  req.checkBody('lastname', 'Lastname is required.').notEmpty();
+  req.checkBody('email', 'Email is required.').notEmpty();
+  req.checkBody('email', 'Email is not valid.').isEmail();
   req.checkBody('password', 'password is required').notEmpty();
   req.checkBody('password2', 'Passwords have to match').equals(password);
   req.checkBody('age', 'age is required').notEmpty();
@@ -58,13 +58,41 @@ router.post('/register', function(req, res) {
   req.checkBody('shirt', 'shirtsize is required').notEmpty();
   req.checkBody('track', 'track choice is required').notEmpty();
   req.checkBody('country', 'Country is required').notEmpty();
+    req.checkBody('q1', 'Please answer the question.').notEmpty();
+  req.checkBody('q2', 'Please answer the question.').notEmpty();
+
   req.checkBody('gender', 'Gender is required').notEmpty();
 
   var errors = req.validationErrors();
+  var error_messages = {}
+  errors.forEach(function(v) {
+
+    error_messages[v.param] = v.msg
+  });
+  var failedPost = {
+        firstname: firstname,
+        lastname: lastname,
+        age: age,
+        email: email,
+        country: country,
+        gender: gender,
+        shirtsize: shirt,
+        dietary: dietary,
+        portfolio:portfolio,
+        q1:q1,
+        q2:q2,
+        comment:comment
+      };
+      console.log("FAILED POST VALUES")
+      console.log(failedPost)
   if(errors) {
-	  res.render('register', {errors: errors})
+    console.log("ERRORS IN FORM")
+    console.log(errors)
+
+	  res.render('register', {errors: errors,error_messages:error_messages,failedPost:failedPost})
   } else {
-  	
+  	 
+
       var newUser = {
         firstname: firstname,
         lastname: lastname,

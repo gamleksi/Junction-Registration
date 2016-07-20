@@ -12,3 +12,6 @@ table .hacker{
   width: 100%;
   position: absolute;
 }
+.alert-text{
+	color: red;
+}
