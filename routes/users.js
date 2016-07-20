@@ -4,11 +4,11 @@ var Admin = require('../models/admin');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var UserDB = require('../models/user');
-
+ form_values = require('../FORM_VALUES.js')
 
 /* GET users listing. */
 router.get('/register', ensureIsNotAuthenticated, function(req, res) {
-  res.render('register')
+  res.render('register',{form_values: form_values})
 });
 
 router.get('/login', ensureIsNotAuthenticated, function(req, res) {
@@ -37,7 +37,7 @@ router.post('/register', function(req, res) {
   var age = req.body.age
   var country = req.body.country
   var gender = req.body.gender
-  var shirt = req.body.shirt
+  var shirtsize = req.body.shirtsize
   var dietary = req.body.dietary
   var track = req.body.track
   var portfolio = req.body.portfolio
@@ -55,7 +55,7 @@ router.post('/register', function(req, res) {
   req.checkBody('password2', 'Passwords have to match').equals(password);
   req.checkBody('age', 'age is required').notEmpty();
   req.checkBody('dietary', 'dietary is required').notEmpty();
-  req.checkBody('shirt', 'shirtsize is required').notEmpty();
+  req.checkBody('shirtsize', 'shirtsize is required').notEmpty();
   req.checkBody('track', 'track choice is required').notEmpty();
   req.checkBody('country', 'Country is required').notEmpty();
     req.checkBody('q1', 'Please answer the question.').notEmpty();
@@ -64,11 +64,9 @@ router.post('/register', function(req, res) {
   req.checkBody('gender', 'Gender is required').notEmpty();
 
   var errors = req.validationErrors();
-  var error_messages = {}
-  errors.forEach(function(v) {
+ 
 
-    error_messages[v.param] = v.msg
-  });
+
   var failedPost = {
         firstname: firstname,
         lastname: lastname,
@@ -76,20 +74,50 @@ router.post('/register', function(req, res) {
         email: email,
         country: country,
         gender: gender,
-        shirtsize: shirt,
+        shirtsize: shirtsize,
         dietary: dietary,
+        track:track,
         portfolio:portfolio,
         q1:q1,
         q2:q2,
         comment:comment
       };
-      console.log("FAILED POST VALUES")
-      console.log(failedPost)
-  if(errors) {
-    console.log("ERRORS IN FORM")
-    console.log(errors)
+      console.log("FORM VALUES ")
+      console.log(form_values)
+      
+    var form_values_with_errors = JSON.parse(JSON.stringify(form_values));
+    // for(i in form_values){
+    //   form_values_with_errors[i] = form_values[i]
+    // }
+    for(i in form_values_with_errors  ){
+      console.log(i)
+      if(failedPost[i]){
+          console.log("FAILEDPOST I")
+               // console.log(failedPost[i])
+            form_values_with_errors[i].forEach(function(obj){
+              // console.log("OBJECT")
+              // console.log(obj)
+              if(failedPost[i] === obj.value){
+              
+                obj.checked = "checked"
+              }
+            });
+          }
+        }
 
-	  res.render('register', {errors: errors,error_messages:error_messages,failedPost:failedPost})
+  if(errors) {
+     var error_messages = {}
+    errors.forEach(function(v) {
+      error_messages[v.param] = v.msg
+    });
+    console.log("ERRORS IN FORM")
+    //console.log(errors)
+    console.log(form_values_with_errors)
+
+	  res.render("register", {errors: errors,
+                            error_messages:error_messages,
+                            failedPost:failedPost,
+                            form_values: form_values_with_errors})
   } else {
   	 
 
@@ -100,7 +128,7 @@ router.post('/register', function(req, res) {
         email: email,
         country: country,
         gender: gender,
-        shirtsize: shirt,
+        shirtsize: shirtsize,
         dietary: dietary,
         portfolio:portfolio,
         question1:q1,
@@ -114,11 +142,15 @@ router.post('/register', function(req, res) {
         res.redirect('login');
       }
       else {
-         req.flash('error', 'Already registered with the given email.');
-          res.redirect('register');
+         //req.flash('error', 'Already registered with the given email.');
+          res.render('register',{
+              errors:{'error': 'Already registered with the given email.'},
+              failedPost:failedPost,
+              form_values: form_values_with_errors,
+              error_messages: {"email":"Email already in use." }
+            });
       }
   	});
-  	
   }
 });
 
