@@ -9,7 +9,7 @@ import SearchButton from "./SearchButton";
 
 var attrNotBeShown = ["admin", "password"]; //TODO: deleting needs to be done already in backend!!
 
-var attrNotBeShownInRows = ["skillDescription", "motivation"];
+var attrNotBeShownInRows = ["question1", "question2", "comment"];
 
 var notBeShownInOpeningRow = ["email"];
 
