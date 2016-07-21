@@ -67,20 +67,7 @@ export default React.createClass ({
         xhr.open('GET', url);
         xhr.send();
 
-/*
-         <AdminPanel>      
-      /           \
-   Control     <rowArray>
-    /              \ 
- ControlPanel       <HackerTable>
 
-                         \
-                         <TableBody>
-                             \
-                         <TableRow>   
-                         filteröinti
-
-*/
 
 
 

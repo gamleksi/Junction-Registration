@@ -25,16 +25,22 @@ module.exports = {
 		// - question 1: String
 		// - question 2: String
 		// - comments for organizers
+
+		var shirtsizes = ["xs","s","m","l","xl","xxl"]
+		var	dietarys = ["no","veg","pork","glut"]
+		var tracks = ["junction","other"]
+		var sexes =["male", "female","other"]
+
 		var Users = db.define("users", {
 				firstname: String,
 				lastname: String,
 				age: {type: 'integer'},
 				email: {type:"text", key: true},
 				country: String,
-				gender: ["male", "female","other"],
-				shirtsize: ["xs","s","m","l","xl","xxl"],
-				dietary: ["no","veg","pork","glut"],
-				track:["junction","other"],
+				sex: String,
+				shirtsize: String,
+				dietary: String,
+				track: String,
 				portfolio:String,
 				question1:String,
 				question2:String,
@@ -46,7 +52,13 @@ module.exports = {
 			}, {
 
 				validations: {
-					email: orm.enforce.unique("email taken!")
+					email: orm.enforce.unique("email taken!"),
+				    sex: orm.validators.insideList(sexes, "Invalid sex"),
+				    shirtsize: orm.validators.insideList(shirtsizes, "Invalid shirtsize"),
+				    track: orm.validators.insideList(tracks, "Invalid track"),
+				    dietary: orm.validators.insideList(dietarys, "Invalid dietary"),
+
+
 
 				},
 				methods:{
@@ -63,8 +75,8 @@ module.exports = {
 					user["password"] = hash;
 					Users.create(user, function(err,items){
 						if(err){
-							console.log("ERRRRROR")
-							//console.error(err);
+							// console.log("ERRRRROR")
+							console.error(err);
 							callback(false)
 						} else {
 							console.log("User has been created succesfully.")
@@ -130,15 +142,30 @@ module.exports = {
 		// 	});
 		// 	});
 		// };
+	/*
+	Different DB queries?
+	-
 
+	*/
 		Users.getUsers = function(callback){
-			Users.find({admin: false}, function(err, results) {
+			Users.find({admin: false}).omit('admin').omit('password').run(function(err, results) {
 				if(err) {
 					throw err;
 				}
 				callback(results);
 			});
 		};
+
+		Users.getUsersWithParameters = function(params,callback){
+			params.admin = false
+			Users.find(params).omit('admin').run(function(err, results) {
+				if(err) {
+					throw err;
+				}
+				callback(results);
+			});
+		};
+
 
 		return Users;
 	}

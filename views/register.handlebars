@@ -60,11 +60,11 @@
 	<!-- gender:  -->
 	<div class="form-group">
 		<label>Gender</label><br>
-		{{#if error_messages.gender}}
-			<p class = "alert-text"> {{error_messages.gender}}</p>
+		{{#if error_messages.sex}}
+			<p class = "alert-text"> {{error_messages.sex}}</p>
 		{{/if}}
-		 {{#each form_values.gender}}
- 			 <input type="radio" name="gender" value="{{this.value}}" {{this.checked}}>{{this.text}}<br>
+		 {{#each form_values.sex}}
+ 			 <input type="radio" name="sex" value="{{this.value}}" {{this.checked}}>{{this.text}}<br>
 		 {{/each}}
 	</div>
 

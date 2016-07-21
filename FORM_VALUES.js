@@ -1,5 +1,5 @@
 module.exports = {
-		gender:[	{"value":"male","text":" Male"},
+		sex:[	{"value":"male","text":" Male"},
 		 			{"value":"female","text":" Female"},
 		 			{"value":"other","text":" Other"}
 		 ],
