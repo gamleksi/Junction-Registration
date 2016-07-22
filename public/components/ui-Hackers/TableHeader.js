@@ -5,20 +5,20 @@ export default React.createClass({
         var names = [];
         for(var key in this.props.rowAttributes){
           if(this.props.rowAttributes[key]) {
-            names.push(<td class="row" key={key}>{key}</td>)  
+            names.push(<td class="row" style={this.props.tdRowStyle} key={key}>{key}</td>)  
           }
         };
-        names.push(<td class="row" key="reimburesement">travel</td>)
-        names.push(<td class="row" key="button">Button</td>)                  
+        console.log("this.props.tdRowStyle")
+        console.log(this.props.tdRowStyle)
+        names.push(<td class="row" style={this.props.tdRowStyle} key="reimburesement">travel</td>)
+        names.push(<td class="row" style={this.props.tdRowStyle} key="button">Button</td>)                  
         return(
-          <table class="hacker table table-bordered">
 
             <thead>
                   <tr>
                    {names}
                   </tr>
             </thead>
-          </table>
             )
     }
 });

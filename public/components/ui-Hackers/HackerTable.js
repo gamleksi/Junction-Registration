@@ -4,12 +4,16 @@ import TableBody from "./TableBody";
 
 export default React.createClass({
     render:function(){
-        console.log(this.props.rowAttributes)
+                console.log("fuck")
+        console.log(this.props.tdRowStyle)
         return(
             <table class="hacker table table-bordered">
-
-              
-                <TableBody 
+                 <TableHeader
+                    tdRowStyle={this.props.tdRowStyle}
+                    rowAttributes={this.props.rowAttributes}
+                        />
+                <TableBody
+                    tdRowStyle={this.props.tdRowStyle}
                     hackers={this.props.hackers}
                     rowAttributes={this.props.rowAttributes}
                     addToSelectedList={this.props.addToSelectedList}

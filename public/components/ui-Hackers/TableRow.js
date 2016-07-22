@@ -45,7 +45,7 @@ var RadioInputs =  React.createClass({
             // </div>
             <td>
                <div class="dropdown">
-                   <select id="lang" onChange={this.inputSelected} value={this.props.travelReImbursement}>
+                   <select onChange={this.inputSelected} value={this.props.travelReImbursement}>
                       <option value="select">Select</option>
                       <option value="No">No</option>                  
                       <option value="Fin">Fin</option>
@@ -156,7 +156,7 @@ var RowInfo = React.createClass({
         for(var key in this.props.hackerInfo){
             if(this.props.visibleColumns[key]) {
                 var value = this.props.hackerInfo[key]
-                values.push(<td class="row" key={value}><p>{value}</p></td>)
+                values.push(<td class="row" style={this.props.tdRowStyle} key={value}><p>{value}</p></td>)
             }
         }        
 
@@ -164,16 +164,18 @@ var RowInfo = React.createClass({
         if(this.props.selected) {
             classColor="success"
         }
-
+        var buttonStyle = this.props.tdRowStyle
+        buttonStyle["align"] = "right"
         return(            
 
             <tr  class={classColor} >
                 {values}
                 <RadioInputs inputSelected={this.props.inputSelected} travelReImbursement={this.props.travelReImbursement} inputChanged={this.inputChanged} hackerId={this.props.hackerInfo.email}/>
-                <td class="row">
+                <td class="row" style={buttonStyle}>
                     <div>
-                        <button onClick={this.props.expandClick}>EXPAND</button>
+                        <button onClick={this.props.expandClick}>EXPAND</button> 
                         <button onClick={this.props.selectClick}>SELECT</button>
+                       
                     </div>
                 </td>
             </tr>
@@ -261,7 +263,6 @@ export default React.createClass({
 
     
     render: function() {
-        console.log("RENDER")
         if(this.state.expand) {
             return (
                 <ExpandedInfo
@@ -278,6 +279,7 @@ export default React.createClass({
         } else {
             return (
                 <RowInfo
+                    tdRowStyle={this.props.tdRowStyle}
                     travelReImbursement={this.state.travelReImbursement}
                     selected={this.state.selected}
                     visibleColumns={this.props.visibleColumns}

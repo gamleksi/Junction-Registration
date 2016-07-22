@@ -92,7 +92,6 @@ router.post('/register', function(req, res) {
     for(i in form_values_with_errors  ){
       console.log(i)
       if(failedPost[i]){
-          console.log("FAILEDPOST I")
                // console.log(failedPost[i])
             form_values_with_errors[i].forEach(function(obj){
               // console.log("OBJECT")
