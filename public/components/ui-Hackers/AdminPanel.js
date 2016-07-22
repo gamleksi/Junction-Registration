@@ -144,6 +144,16 @@ export default React.createClass ({
         if(Object.getOwnPropertyNames(this.state.hackers).length <= 0) {
             this.getHackers()
         }
+        var i = 2;
+        for(var key in this.state.rowAttributes) {
+            if(this.state.rowAttributes[key]) {
+                i++;
+            }
+        }
+        var tdRowStyle = {"width": 100/i + '%'};
+        console.log(tdRowStyle)
+
+
 
     return (
     <div id="init">
@@ -154,10 +164,8 @@ export default React.createClass ({
                 findHackers={this.getHackers}
                 selectedParticipants={this.state.selectedParticipants} 
         /> 
-         <TableHeader
-            rowAttributes={this.state.rowAttributes}
-                />
-      <HackerTable 
+      <HackerTable
+            tdRowStyle={tdRowStyle}
             rowAttributes={this.state.rowAttributes}
             hackers={this.state.hackers}
             addToSelectedList={this.addToSelectedList}

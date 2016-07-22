@@ -1,50 +1,31 @@
-.hacker table {
+div {
+	position: relative;
+}
+
+table .hacker{
  height:700px; 
 }
+
+.hacker > thead{ 
+	min-width: 100%;	
+}
 .hacker > tbody{
+  min-width: 100%;	
   overflow-y: scroll;
   height: 600px;
-  min-width: 100%;
+  width: 100%;
   position: absolute;
 }
 
-tr { 
+tr {
 	width: 100%;
 	display: inline-table;
 }
 
+.row > p {
+	word-break: break-all;
+}
 
 .alert-text{
 	color: red;
 }
-
-.hacker > thead {
-	width: 100%;
-	background-color: yellow;
-	margin-top: 100px;
-}
-
-.header {
-	position: fixed;
-	word-wrap: break-word;        
-    overflow-wrap: break-word; 
-}
-.select-hackers{
-	float:right;
-}
-
-.row td {
-	width: 7.6923076923%;
-	word-wrap: break-word;        
-    overflow-wrap: break-word; 
-}
-
-div {
-	position: relative;
-}
-#expand {
-	position:absolute; 
-
-	float:right; clear:left;
-}
-
