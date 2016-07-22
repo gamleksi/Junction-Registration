@@ -167,7 +167,7 @@ module.exports = {
 			});
 		};
 		Users.getAcceptedUsers = function(callback){
-			Users.find({"admin":false}).omit('admin').where("accepted = ?", []).run(function(err, results) {
+			Users.find({"admin":false}).omit('admin').run(function(err, results) {
 				if(err) {
 					throw err;
 				}
