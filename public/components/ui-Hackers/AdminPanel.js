@@ -2,6 +2,7 @@ import React from "react";
 import ControlPanel from "./ControlPanel";
 import HackerTable from "./HackerTable";
 import SearchButton from "./SearchButton";
+import TableHeader from "./TableHeader";
 
 
 //Hardcoded values
@@ -153,6 +154,9 @@ export default React.createClass ({
                 findHackers={this.getHackers}
                 selectedParticipants={this.state.selectedParticipants} 
         /> 
+         <TableHeader
+            rowAttributes={this.state.rowAttributes}
+                />
       <HackerTable 
             rowAttributes={this.state.rowAttributes}
             hackers={this.state.hackers}
