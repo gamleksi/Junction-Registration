@@ -118,9 +118,8 @@ export default React.createClass ({
                 selectedParticipants: selected
             })            
         } 
-    },
-
-    acceptSelectedHackers: function() {
+    }
+    ,acceptSelectedHackers: function() {
         var self = this;
         var xhr = new XMLHttpRequest();
         var url = "http://localhost:3000/admin/hackers/accept-selected"
@@ -155,7 +154,7 @@ export default React.createClass ({
 
 
 
-    return (
+    return (        
     <div id="init">
         <SearchButton findHackers={this.acceptSelectedHackers}/>
         <ControlPanel
@@ -165,6 +164,7 @@ export default React.createClass ({
                 selectedParticipants={this.state.selectedParticipants} 
         /> 
       <HackerTable
+            selectedParticipants={this.state.selectedParticipants} 
             tdRowStyle={tdRowStyle}
             rowAttributes={this.state.rowAttributes}
             hackers={this.state.hackers}
