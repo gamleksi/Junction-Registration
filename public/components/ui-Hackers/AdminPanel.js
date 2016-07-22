@@ -23,7 +23,58 @@ export default React.createClass ({
         var url = "http://localhost:3000/admin/hackers/all"
          // () => {   == same as function(){
         xhr.onload = () => {
+          //request finished and response is ready  
+          if (xhr.readyState === 4) {
 
+            if (xhr.status === 200) {
+                var responseItem = xhr.response
+                var jsoned = JSON.parse(responseItem)
+                
+                var rowAttributes = {}
+
+                for(var key in jsoned.hackers[0]){
+                    rowAttributes[key] = true
+                }
+                attrNotBeShown.forEach(function(e) {
+                    delete rowAttributes[e]
+                })
+
+                var attributes = rowAttributes;
+
+                attrNotBeShownInRows.forEach(function(e) {
+                    delete rowAttributes[e]
+                })
+                notBeShownInOpeningRow.forEach(function(e) {
+                    if(rowAttributes[e]) {
+                        rowAttributes[e] = false;
+                    }
+                })                
+                this.setState({
+                    rowAttributes : rowAttributes,
+                    attributeNames: attributes,
+                    hackers:(jsoned.hackers),
+                    selectedParticipants: {}
+                })
+            } else {
+              console.error(xhr.statusText);
+
+            }
+          }
+        };
+        xhr.onerror = function (e) {
+          console.error(xhr.statusText);
+        };
+        xhr.open('GET', url);
+        xhr.send();
+    },
+
+
+        getAcceptedHackers: function(){
+        var self = this;
+        var xhr = new XMLHttpRequest();
+        var url = "http://localhost:3000/admin/hackers/accepted"
+         // () => {   == same as function(){
+        xhr.onload = () => {
           //request finished and response is ready  
           if (xhr.readyState === 4) {
 
@@ -147,6 +198,9 @@ export default React.createClass ({
 
     return (
     <div id="init">
+        <button onClick={this.getHackers}>All hackers</button>
+        <button onClick={this.getAcceptedHackers}>Accepted hackers</button>
+
         <SearchButton findHackers={this.acceptSelectedHackers}/>
         <ControlPanel
                 setAttributeValues ={this.setAttributeValues}

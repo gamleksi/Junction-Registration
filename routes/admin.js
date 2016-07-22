@@ -23,6 +23,14 @@ router.get('/hackers/all', ensureIsAuthenticatedAndAdmin, function(req, res) {
     res.send({hackers:users});
   });
 });
+router.get('/hackers/accepted', ensureIsAuthenticatedAndAdmin, function(req, res) {
+
+  req.models.users.getAcceptedUsers(function(users) {    
+    console.log('%s %s', req.method, req.url);
+    res.send({hackers:users});
+  });
+});
+
 
 
 router.post('/hackers/accept-selected', ensureIsAuthenticatedAndAdmin, function(req, res) {
@@ -31,6 +39,7 @@ router.post('/hackers/accept-selected', ensureIsAuthenticatedAndAdmin, function(
   sendgrid.sendApprovalMails(selected, function(statusCode) {
     if(statusCode === 202 || statusCode === 200) {
       console.log("Emails sent");
+      console.log(selected)
       req.models.users.acceptHackers(selected);
       res.send({statusCode: statusCode}) 
     } else {
