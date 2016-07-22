@@ -133,10 +133,11 @@ var ExpandedInfo = React.createClass({
                         {column1}
                     </td>
                     {textColums}
-                    <td>
+                    <td>                            
+                        <button class="expand" onClick={this.props.expandClick}>COLLAPSE</button>
+
                         <div>
                             <ExpandedRadioInput inputSelected={this.props.inputSelected} travelReImbursement={this.props.travelReImbursement} inputChanged={this.inputChanged} hackerId={this.props.hackerInfo.email}/>                            
-                            <button onClick={this.props.expandClick}>EXPAND</button>
                             <button onClick={this.props.selectClick}>SELECT</button>
                         </div>
                     </td>                      
@@ -155,7 +156,7 @@ var RowInfo = React.createClass({
         for(var key in this.props.hackerInfo){
             if(this.props.visibleColumns[key]) {
                 var value = this.props.hackerInfo[key]
-                values.push(<td key={value}><p>{value}</p></td>)
+                values.push(<td class="row" key={value}><p>{value}</p></td>)
             }
         }        
 
@@ -169,7 +170,7 @@ var RowInfo = React.createClass({
             <tr  class={classColor} >
                 {values}
                 <RadioInputs inputSelected={this.props.inputSelected} travelReImbursement={this.props.travelReImbursement} inputChanged={this.inputChanged} hackerId={this.props.hackerInfo.email}/>
-                <td>
+                <td class="row">
                     <div>
                         <button onClick={this.props.expandClick}>EXPAND</button>
                         <button onClick={this.props.selectClick}>SELECT</button>

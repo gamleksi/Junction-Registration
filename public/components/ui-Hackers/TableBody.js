@@ -5,6 +5,16 @@ export default React.createClass({
     
     render:function(){
 
+        var names = [];
+        for(var key in this.props.rowAttributes){
+          if(this.props.rowAttributes[key]) {
+            names.push(<td class="row" key={key}><p>{key}</p></td>)  
+          }
+        };
+        names.push(<td class="row" key="reimburesement"><p>Reimburesement</p></td>)
+        names.push(<td class="row" key="button"><p>Button</p></td>)  
+
+
         var rows = []
         for(var i in this.props.hackers){
             var hacker = this.props.hackers[i]          
@@ -20,8 +30,13 @@ export default React.createClass({
         }
         return(
             <tbody>
+             
                 {rows}
             </tbody>
             )
     }
 });
+
+   // <tr class="header">
+   //                  {names}
+   //              </tr>

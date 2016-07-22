@@ -6,10 +6,9 @@ export default React.createClass({
     render:function(){
         console.log(this.props.rowAttributes)
         return(
-            <table class="hacker table table-striped">
-                <TableHeader
-                    rowAttributes={this.props.rowAttributes}
-                /> 
+            <table class="hacker table table-bordered">
+
+              
                 <TableBody 
                     hackers={this.props.hackers}
                     rowAttributes={this.props.rowAttributes}

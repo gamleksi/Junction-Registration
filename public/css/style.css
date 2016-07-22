@@ -1,4 +1,4 @@
-table .hacker{
+.hacker table {
  height:700px; 
 }
 .hacker > tbody{
@@ -7,10 +7,42 @@ table .hacker{
   width: 100%;
   position: absolute;
 }
+
 .alert-text{
 	color: red;
 }
-.hacker > tr {
-width: 100%;
-display: inline-table;
+
+.hacker > thead {
+	width: 100%;
+	background-color: yellow;
+	margin-top: 100px;
 }
+
+.header {
+	position: fixed;
+	word-wrap: break-word;        
+    overflow-wrap: break-word; 
+}
+
+tr {
+	width: 100%;
+	display: inline-table;
+		word-wrap: break-word;        
+    overflow-wrap: break-word; 
+}
+
+.row td {
+	width: 7.6923076923%;
+	word-wrap: break-word;        
+    overflow-wrap: break-word; 
+}
+div {
+	    position: relative;
+
+}
+#expand {
+	position:absolute; 
+
+	float:right; clear:left;
+}
+
