@@ -1,8 +1,3 @@
-.hacker > tr { 
-width: 100%;
-display: inline-table;
-}
-
 table .hacker{
  height:700px; 
 }
@@ -13,6 +8,12 @@ table .hacker{
   width: 100%;
   position: absolute;
 }
+
+tr { 
+	width: 100%;
+	display: inline-table;
+}
+
 .alert-text{
 	color: red;
 }

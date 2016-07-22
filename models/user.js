@@ -63,8 +63,7 @@ module.exports = {
 					user["password"] = hash;
 					Users.create(user, function(err,items){
 						if(err){
-							console.log("ERRRRROR")
-							//console.error(err);
+							console.error(err);
 							callback(false)
 						} else {
 							console.log("User has been created succesfully.")

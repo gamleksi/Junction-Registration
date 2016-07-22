@@ -260,7 +260,6 @@ export default React.createClass({
 
     
     render: function() {
-        console.log("RENDER")
         if(this.state.expand) {
             return (
                 <ExpandedInfo
