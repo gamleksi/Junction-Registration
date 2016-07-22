@@ -25,8 +25,9 @@
 
   module.exports = {
     sendApprovalMails: function(emails, callback) {
-    
+      console.log("SEND APPROVALMAILS")
       event.on('newMailSent', function(statusCode) {
+        console.log("EMITTED")
         callback(statusCode);
       });
 
@@ -36,16 +37,15 @@
       mail.personalizations[0].addSubstitution({"-mail-":emails[0]}) 
 
 
-      emails.shift()
 
       for(var i in emails) {
-
-        to_email = new helper.Email(emails[i]);  
-        var personalization = new helper.Personalization();
-        personalization.addTo(to_email);
-        personalization.addSubstitution({"-mail-":emails[i]})
-        mail.addPersonalization(personalization);
-     
+        if(i > 0){
+          to_email = new helper.Email(emails[i]);  
+          var personalization = new helper.Personalization();
+          personalization.addTo(to_email);
+          personalization.addSubstitution({"-mail-":emails[i]})
+          mail.addPersonalization(personalization);
+        }
       }
       var requestBody = mail.toJSON()
       requestBody.template_id = "7b141e1e-d840-406c-902f-cfd8294e011d"
@@ -57,10 +57,15 @@
       sg.API(request, function (response) {
         console.log("Mail")
         console.log(response.statusCode)
-        console.log(response.body)
+        console.log("BODY FROM SendGrid")
+        //console.log(response.body)
         // console.log(response.headers)
         //TODO pitääkö statusCode jo tässä vaiheessa tsekata
-        event.emit('emailsSent', response.statusCode);
+        event.emit('newMailSent', {"statusCode": response.statusCode,
+                                    "emails": emails
+                                  });
+
+
       });
       
       }

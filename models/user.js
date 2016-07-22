@@ -94,6 +94,8 @@ module.exports = {
 		};
 
 		Users.acceptHackers = function(users) {
+			console.log("USERS IN ACCEPTHACKERS")
+			console.log(users)
 			var date = dateFormat(new Date(), "isoDate");
 			for(var i in users){
 				Users.one({"email": users[i]}, function(err, user) {
@@ -158,6 +160,14 @@ module.exports = {
 		Users.getUsersWithParameters = function(params,callback){
 			params.admin = false
 			Users.find(params).omit('admin').run(function(err, results) {
+				if(err) {
+					throw err;
+				}
+				callback(results);
+			});
+		};
+		Users.getAcceptedUsers = function(callback){
+			Users.find({"admin":false}).omit('admin').run(function(err, results) {
 				if(err) {
 					throw err;
 				}
