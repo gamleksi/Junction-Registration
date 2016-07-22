@@ -23,7 +23,9 @@
 	word-wrap: break-word;        
     overflow-wrap: break-word; 
 }
-
+.select-hackers{
+	float:right;
+}
 tr {
 	width: 100%;
 	display: inline-table;
