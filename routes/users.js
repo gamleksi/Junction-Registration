@@ -36,7 +36,7 @@ router.post('/register', function(req, res) {
   var password2 = req.body.password2;
   var age = req.body.age
   var country = req.body.country
-  var gender = req.body.gender
+  var sex = req.body.sex
   var shirtsize = req.body.shirtsize
   var dietary = req.body.dietary
   var track = req.body.track
@@ -61,7 +61,7 @@ router.post('/register', function(req, res) {
     req.checkBody('q1', 'Please answer the question.').notEmpty();
   req.checkBody('q2', 'Please answer the question.').notEmpty();
 
-  req.checkBody('gender', 'Gender is required').notEmpty();
+  req.checkBody('sex', 'Gender is required').notEmpty();
 
   var errors = req.validationErrors();
  
@@ -73,7 +73,7 @@ router.post('/register', function(req, res) {
         age: age,
         email: email,
         country: country,
-        gender: gender,
+        sex: sex,
         shirtsize: shirtsize,
         dietary: dietary,
         track:track,
@@ -126,7 +126,7 @@ router.post('/register', function(req, res) {
         age: age,
         email: email,
         country: country,
-        gender: gender,
+        sex: sex,
         shirtsize: shirtsize,
         dietary: dietary,
         portfolio:portfolio,

@@ -155,7 +155,7 @@ var RowInfo = React.createClass({
         for(var key in this.props.hackerInfo){
             if(this.props.visibleColumns[key]) {
                 var value = this.props.hackerInfo[key]
-                values.push(<td key={value}>{value}</td>)
+                values.push(<td key={value}><p>{value}</p></td>)
             }
         }        
 
