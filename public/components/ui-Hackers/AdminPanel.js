@@ -59,11 +59,15 @@ export default React.createClass ({
                     if(rowAttributes[e]) {
                         rowAttributes[e] = false;
                     }
-                })                
+                })
+                var hackers = jsoned.hackers.map(function(obj, i) {
+                    obj["index"] = i;
+                    return obj;
+                })
                 this.setState({
                     rowAttributes : rowAttributes,
                     attributeNames: attributes,
-                    hackers:(jsoned.hackers),
+                    hackers: hackers,
                     selectedParticipants: {}
                 })
             } else {
@@ -80,7 +84,7 @@ export default React.createClass ({
     },
 
 
-        getAcceptedHackers: function(){
+    getAcceptedHackers: function(){
         var self = this;
         var xhr = new XMLHttpRequest();
         var url = "http://localhost:3000/admin/hackers/accepted"
@@ -151,28 +155,35 @@ export default React.createClass ({
         });
     },
     addToSelectedList: function(hacker, travelReimbursement) {
-        var selected = this.state.selectedParticipants
-        if(!selected[hacker.email]) {
-            console.log("selected")
+        var selected = this.state.selectedParticipants;
+        console.log("selected")
+        console.log(travelReimbursement);
+        if(!selected[hacker.email] || hacker["travelReimbursement"] !== travelReimbursement) {
+            
             hacker["travelReimbursement"] = travelReimbursement;
             selected[hacker.email] = hacker; 
+            var hackers = this.state.hackers;
+            hackers[hacker.index].travelReimbursement = travelReimbursement;
+            console.log(hackers[hacker.index])
+            this.setState({
+                    rowAttributes: this.state.rowAttributes,
+                    attributeNames: this.state.attributeNames,
+                    hackers: hackers,
+                    selectedParticipants: selected,
+            })        
         }
-        this.setState({
-                rowAttributes: this.state.rowAttributes,
-                attributeNames: this.state.attributeNames,
-                hackers: this.state.hackers,
-                selectedParticipants: selected,
-        })
     },
     dropFromSelectedList: function(hacker) {
         var selected = this.state.selectedParticipants        
         if(selected[hacker.email]) {
             console.log("dropped: " + "hacker.email")
             delete selected[hacker.email];
+            var hackers = this.state.hackers;
+            hackers[hacker.index].travelReimbursement = undefined;            
             this.setState({
                 rowAttributes: this.state.rowAttributes,
                 attributeNames: this.state.attributeNames,
-                hackers: this.state.hackers,
+                hackers: hackers,
                 selectedParticipants: selected,
             })            
         } 
