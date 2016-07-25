@@ -47,7 +47,8 @@ module.exports = {
 				comment:String,
 				password: String,
 				admin: {type: "boolean", defaultValue: false},
-				accepted: Date,
+				accepted:  {type: "boolean", defaultValue: false},
+				batch: Date,
 				acceptedEmail: {type: "text", defaultValue: "not send"}
 			}, {
 
@@ -96,14 +97,18 @@ module.exports = {
 		Users.acceptHackers = function(users) {
 			console.log("USERS IN ACCEPTHACKERS")
 			console.log(users)
-			var date = dateFormat(new Date(), "isoDate");
+
 			for(var i in users){
 				Users.one({"email": users[i]}, function(err, user) {
 					if(err) {
 						throw err;
 					} 
 					if(user) {
-						user.accepted = date;
+						var date = dateFormat(new Date(), "isoDate").split("T")[0]
+						console.log("DATE")
+						console.log(date)
+						user.accepted = true
+						user.batch = date;
 						user.save();							
 					}
 				});
@@ -167,7 +172,7 @@ module.exports = {
 			});
 		};
 		Users.getAcceptedUsers = function(callback){
-			Users.find({"admin":false}).omit('admin').run(function(err, results) {
+			Users.find({"admin":false,"accepted":true}).omit('admin').run(function(err, results) {
 				if(err) {
 					throw err;
 				}

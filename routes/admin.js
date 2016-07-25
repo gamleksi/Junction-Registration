@@ -56,7 +56,10 @@ router.post('/webhook', isFromSendGrid, function(req, res) {
   console.log("webhook"); 
   console.log(req.body)
   console.log(req.body[0].email + ": " +req.body[0].event);
-  req.models.users.addApprovalEmailInformation(req.body[0].email, req.body[0].event)
+  
+  for(i in req.body){
+      req.models.users.addApprovalEmailInformation(req.body[i].email, req.body[i].event)
+  }
   res.send();
 });
 

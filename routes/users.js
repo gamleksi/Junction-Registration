@@ -126,6 +126,7 @@ router.post('/register', function(req, res) {
         age: age,
         email: email,
         country: country,
+        track:track,
         sex: sex,
         shirtsize: shirtsize,
         dietary: dietary,

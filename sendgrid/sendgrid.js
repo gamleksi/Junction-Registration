@@ -6,7 +6,7 @@
   
   var approvalMail = {
     content: new helper.Content("text/plain", "some text here"),  
-    subject: "Registrationshit",
+    subject: "Registration",
   };
   console.log("sendgrid env");
   console.log(process.env.SENDGRID_API_KEY);
@@ -26,9 +26,9 @@
   module.exports = {
     sendApprovalMails: function(emails, callback) {
       console.log("SEND APPROVALMAILS")
-      event.on('newMailSent', function(statusCode) {
+      event.on('newMailSent', function(responseObject) {
         console.log("EMITTED")
-        callback(statusCode);
+        callback(responseObject);
       });
 
       var to_email = new helper.Email(emails[0])
