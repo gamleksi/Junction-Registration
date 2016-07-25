@@ -14,6 +14,7 @@ var passport = require('passport');
 var exphbs = require('express-handlebars');
 var LocalStrategy = require('passport-local').Strategy;
 var config = require('./config/app-config')
+var csv = require('express-csv')
 
 var orm = require('orm');
 
@@ -22,7 +23,6 @@ var Users = require('./models/user');
 
 //init app
 var app = express();
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.engine('handlebars', exphbs({defaultLayout:'layout'}));

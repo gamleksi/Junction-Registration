@@ -113,7 +113,7 @@ module.exports = {
 						user.accepted = true
 						user.batch = date;
 						user.travelReimbursement = hacker.travelReimbursement;
-			console.log("acceptHackers");
+						console.log("acceptHackers");
 						console.log(user.travelReimbursement) 
 						user.save();							
 					}

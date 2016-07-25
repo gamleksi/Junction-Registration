@@ -5,6 +5,7 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var UserDB = require('../models/user');
  form_values = require('../FORM_VALUES.js')
+var sendgrid = require('../sendgrid/sendgrid.js')
 
 /* GET users listing. */
 router.get('/register', ensureIsNotAuthenticated, function(req, res) {
@@ -138,7 +139,8 @@ router.post('/register', function(req, res) {
     };
   	req.models.users.createUser(newUser, function(success) {
       if(success){ 
-        req.flash('success_msg', 'You are registered and can now login')
+        sendgrid.sendRegisterConfirmation(email);
+        req.flash('success_msg', "You are registered succesfully, we sent you a email to your email address '"+email+"'. Please check your inbox and trash/spam folder. In case you didn't get it, please get in contact or register again.")
         res.redirect('login');
       }
       else {
