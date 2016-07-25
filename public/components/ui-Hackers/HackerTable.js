@@ -6,18 +6,28 @@ import HackerTab from "./HackerTab";
 export default React.createClass({
     getInitialState: function(){
         return {
-            tabChanged: false    
+            tabObject: this.props.tabObject    
         } 
     },
-    changeSheet: function() {
-        console.log("huhuun")
+    changeSheet: function(index) {
+        var tabObj = []
+        for(var i in this.state.tabObject) {
+            var t = this.state.tabObject[i];
+            if(i==index) {
+                t.visible = true;
+
+            } else {
+                t.visible = false;
+            }
+            tabObj.push(t)
+        }
         this.setState({
-            tabChanged: !this.state.tabChanged                      
+            tabObject: tabObj                      
         })
     },    
-    render:function(){
+    render: function(){
         var hackers = this.props.hackers;
-        if(this.state.tabChanged) {
+        if(this.state.tabObject[1].visible) {
             hackers = this.props.selectedParticipants
         }
 
@@ -25,7 +35,7 @@ export default React.createClass({
             <div>
                 <HackerTab
                     changeSheet={this.changeSheet}
-                    tabChanged={this.state.tabChanged}
+                    tabObject={this.state.tabObject}
                 />
                 <table class="hacker table table-bordered">
                      <TableHeader

@@ -2,7 +2,6 @@ var express = require('express');
 var router = express.Router();
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
-var sendgrid = require('../sendgrid/sendgrid.js')
 
 
 router.get('/', ensureIsAuthenticatedAndAdmin, function(req, res) {
@@ -31,24 +30,25 @@ router.get('/hackers/accepted', ensureIsAuthenticatedAndAdmin, function(req, res
   });
 });
 
+var sendgrid = require('../sendgrid/sendgrid.js')
 
-
-router.post('/hackers/accept-selected', ensureIsAuthenticatedAndAdmin, function(req, res) {
+router.post('/hackers/accept-selected', ensureIsAuthenticatedAndAdmin, function(req, res, next) {
   var selected=req.body.selected;
-  console.log("SELECTED")
-  console.log(selected)
+  console.log("SELECTED");
+  console.log(selected);
   sendgrid.sendApprovalMails(selected, function(responseObject) {
     if(responseObject.statusCode === 202 || responseObject.statusCode === 200) {
         console.log("Emails sent");
-        console.log(responseObject.emails)
-        req.models.users.acceptHackers(responseObject.emails);
-        res.send({statusCode: responseObject.statusCode}) 
+        console.log(responseObject.emails);
+        req.models.users.acceptHackers(selected);
+
     } else {
         console.log("Sending failed");
-        res.send({statusCode: responseObject.statusCode})
+        
     }
     });
 
+        res.send();
 });
 
 

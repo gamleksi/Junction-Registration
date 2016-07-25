@@ -27,7 +27,3 @@ export default React.createClass({
             )
     }
 });
-
-   // <tr class="header">
-   //                  {names}
-   //              </tr>
