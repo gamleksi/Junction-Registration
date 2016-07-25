@@ -24,18 +24,20 @@
   };
 
   module.exports = {
-    sendApprovalMails: function(emails, callback) {
+    sendApprovalMails: function(emailObjects, callback) {
       console.log("SEND APPROVALMAILS")
       event.on('newMailSent', function(responseObject) {
         console.log("EMITTED")
         callback(responseObject);
       });
 
+      var emails = Object.keys(emailObjects);
+
       var to_email = new helper.Email(emails[0])
 
       mail = new helper.Mail(from_email, approvalMail.subject, to_email, approvalMail.content);  
       mail.personalizations[0].addSubstitution({"-mail-":emails[0]}) 
-
+      sg.emptyRequest();
 
 
       for(var i in emails) {
@@ -51,7 +53,8 @@
       requestBody.template_id = "7b141e1e-d840-406c-902f-cfd8294e011d"
       console.log("request body")
       console.log(requestBody);
-    
+      
+      
       var request = createNewRequest(requestBody);
       
       sg.API(request, function (response) {

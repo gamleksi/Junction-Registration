@@ -43,7 +43,6 @@ var RadioInputs =  React.createClass({
             //             name={this.props.hackerId}/>
             //     </td>
             // </div>
-            <td>
                <div class="dropdown">
                    <select onChange={this.inputSelected} value={this.props.travelReImbursement}>
                       <option value="select">Select</option>
@@ -55,7 +54,6 @@ var RadioInputs =  React.createClass({
                    </select>
 
                </div>
-            </td>
         )
     }
 });
@@ -67,7 +65,7 @@ var ExpandedRadioInput = React.createClass({
         this.props.inputSelected(e.target.value);
     },
     render: function(){
-        var reimburesements = ["No", "Fin", "Nord", "Eu", "Out"]
+        var reimburesements = ["No", "Fin", "Nord", "Eu", "Out"];
         var radioInputs = []
         for(var i in reimburesements) {
                 radioInputs.push(
@@ -102,12 +100,6 @@ var ExpandedInfo = React.createClass({
                     var value = hacker[key]
                     column1.push(<p key={value}> <b> {key + ":"} </b> {value}</p>)
                 }
-                // } else {
-                //     if(this.props.visibleColumns[key]) {
-                //         var value = this.props.hackerInfo[key]
-                //         values2.push(<p key={value}><b>{key}</b><br/><br/><br/>{value}</p>)
-                //     }
-                // }
             }
 
 
@@ -155,10 +147,15 @@ var RowInfo = React.createClass({
         var values = []
         for(var key in this.props.hackerInfo){
             if(this.props.visibleColumns[key]) {
-                var value = this.props.hackerInfo[key]
-                values.push(<td class="row" style={this.props.tdRowStyle} key={value}><p>{value}</p></td>)
+
+                if(key === "travelReimbursement" && (!this.props.hackerInfo[key] || !this.props.hackerInfo["accepted"])) {
+                    values.push(<td class="row"><RadioInputs inputSelected={this.props.inputSelected} travelReImbursement={this.props.travelReImbursement} inputChanged={this.inputChanged} hackerId={this.props.hackerInfo.email}/></td>)
+                } else {
+                    var value = this.props.hackerInfo[key]
+                    values.push(<td class="row" style={this.props.tdRowStyle} key={value}><p>{value}</p></td>)
+                }
             }
-        }        
+        }
 
         var classColor="active"
         if(this.props.selected) {
@@ -170,7 +167,6 @@ var RowInfo = React.createClass({
 
             <tr  class={classColor} >
                 {values}
-                <RadioInputs inputSelected={this.props.inputSelected} travelReImbursement={this.props.travelReImbursement} inputChanged={this.inputChanged} hackerId={this.props.hackerInfo.email}/>
                 <td class="row" style={buttonStyle}>
                     <div>
                         <button onClick={this.props.expandClick}>EXPAND</button> 
@@ -226,40 +222,6 @@ export default React.createClass({
             travelReImbursement: travelReImbursement
         })
     },
-    // render: function() {
-    //     var hackerRow = [
-    //                 <RowInfo
-    //                     travelReImbursement={this.state.travelReImbursement}
-    //                     selected={this.state.selected}
-    //                     visibleColumns={this.props.visibleColumns}
-    //                     hackerInfo={this.props.hackerInfo}
-    //                     selectClick={this.selectClick}
-    //                     expandClick={this.expandClick}
-    //                     inputSelected={this.inputSelected}
-    //                 />
-    //     ]
-
-    //     if(this.state.expand) {
-    //         hackerRow.push[
-    //                 <RowInfo
-    //                     travelReImbursement={this.state.travelReImbursement}
-    //                     selected={this.state.selected}
-    //                     visibleColumns={this.props.visibleColumns}
-    //                     hackerInfo={this.props.hackerInfo}
-    //                     selectClick={this.selectClick}
-    //                     expandClick={this.expandClick}
-    //                     inputSelected={this.inputSelected}
-    //                 />
-    //         ]
-    //     }
-    //     return (
-    //         <div>
-    //             {hackerRow}                
-    //         </div>
-    //     )        
-    // }
-
-
 
     
     render: function() {

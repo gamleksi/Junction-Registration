@@ -1,8 +1,9 @@
 import React from "react";
 import ControlPanel from "./ControlPanel";
-import HackerTable from "./HackerTable";
 import SearchButton from "./SearchButton";
 import TableHeader from "./TableHeader";
+import HackerTable from "./HackerTable";
+
 
 
 //Hardcoded values
@@ -13,6 +14,16 @@ var attrNotBeShown = ["admin", "password"]; //TODO: deleting needs to be done al
 var attrNotBeShownInRows = ["question1", "question2", "comment"];
 
 var notBeShownInOpeningRow = ["email"];
+
+var tabObject = [
+    {
+        tabValue: "Hackers",
+        visible: true
+    },{
+        tabValue: "Selected",
+        visible: false
+    }
+];
 
 
 export default React.createClass ({
@@ -118,11 +129,6 @@ export default React.createClass ({
         };
         xhr.open('GET', url);
         xhr.send();
-
-
-
-
-
     },
     
     getInitialState: function() {
@@ -130,7 +136,8 @@ export default React.createClass ({
             rowAttributes: {},
             attributeNames: [],
             hackers: {},
-            selectedParticipants: {}
+            selectedParticipants: {},
+            tabObject: tabObject
         }
     },
     setAttributeValues: function(key){
@@ -140,21 +147,21 @@ export default React.createClass ({
             rowAttributes: attributes,
             attributeNames: this.state.attributeNames,
             hackers:this.state.hackers,
-            selectedParticipants: this.state.selectedParticipants
+            selectedParticipants: this.state.selectedParticipants,
         });
     },
-    addToSelectedList: function(hacker, travelReImbursement) {
+    addToSelectedList: function(hacker, travelReimbursement) {
         var selected = this.state.selectedParticipants
         if(!selected[hacker.email]) {
             console.log("selected")
-            hacker["travelReImbursement"] = travelReImbursement;
+            hacker["travelReimbursement"] = travelReimbursement;
             selected[hacker.email] = hacker; 
         }
         this.setState({
                 rowAttributes: this.state.rowAttributes,
                 attributeNames: this.state.attributeNames,
                 hackers: this.state.hackers,
-                selectedParticipants: selected
+                selectedParticipants: selected,
         })
     },
     dropFromSelectedList: function(hacker) {
@@ -166,18 +173,17 @@ export default React.createClass ({
                 rowAttributes: this.state.rowAttributes,
                 attributeNames: this.state.attributeNames,
                 hackers: this.state.hackers,
-                selectedParticipants: selected
+                selectedParticipants: selected,
             })            
         } 
-    },
-
-    acceptSelectedHackers: function() {
+    }
+    ,acceptSelectedHackers: function() {
         var self = this;
         var xhr = new XMLHttpRequest();
         var url = "http://localhost:3000/admin/hackers/accept-selected"
         xhr.open('POST', url);
         xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-        var selectedArr = Object.keys(this.state.selectedParticipants);
+        var selectedObj = this.state.selectedParticipants;
         xhr.onload = function() {
             if (this.readyState === 4) {
                 var responseItem = this.response;
@@ -186,8 +192,8 @@ export default React.createClass ({
             }
         }
         console.log("selectedarr")
-        console.log(selectedArr);
-        xhr.send(JSON.stringify({"selected": selectedArr}));
+        console.log(selectedObj);
+        xhr.send(JSON.stringify({"selected": selectedObj}));
     },
     render: function() {
         
@@ -202,11 +208,11 @@ export default React.createClass ({
             }
         }
         var tdRowStyle = {"width": 100/i + '%'};
-        console.log(tdRowStyle)
+
+        console.log("")
 
 
-
-    return (
+    return (        
     <div id="init">
         <button onClick={this.getHackers}>All hackers</button>
         <button onClick={this.getAcceptedHackers}>Accepted hackers</button>
@@ -219,6 +225,8 @@ export default React.createClass ({
                 selectedParticipants={this.state.selectedParticipants} 
         /> 
       <HackerTable
+            tabObject={tabObject}
+            selectedParticipants={this.state.selectedParticipants} 
             tdRowStyle={tdRowStyle}
             rowAttributes={this.state.rowAttributes}
             hackers={this.state.hackers}

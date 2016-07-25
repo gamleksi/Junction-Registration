@@ -26,10 +26,11 @@ module.exports = {
 		// - question 2: String
 		// - comments for organizers
 
-		var shirtsizes = ["xs","s","m","l","xl","xxl"]
-		var	dietarys = ["no","veg","pork","glut"]
-		var tracks = ["junction","other"]
-		var sexes =["male", "female","other"]
+		var shirtsizes = ["xs","s","m","l","xl","xxl"];
+		var	dietarys = ["no","veg","pork","glut"];
+		var tracks = ["junction","other"];
+		var sexes =["male", "female","other"];
+		var travels = ["Fin", "No", "Nord", "Eu", "Out"]
 
 		var Users = db.define("users", {
 				firstname: String,
@@ -49,18 +50,18 @@ module.exports = {
 				admin: {type: "boolean", defaultValue: false},
 				accepted:  {type: "boolean", defaultValue: false},
 				batch: Date,
+				travelReimbursement: {type: "text", defaultValue: undefined},				
+
 				acceptedEmail: {type: "text", defaultValue: "not send"}
 			}, {
 
 				validations: {
 					email: orm.enforce.unique("email taken!"),
 				    sex: orm.validators.insideList(sexes, "Invalid sex"),
+				    travelReimbursement: orm.validators.insideList(travels, "Invalid travel reimbursement"),
 				    shirtsize: orm.validators.insideList(shirtsizes, "Invalid shirtsize"),
 				    track: orm.validators.insideList(tracks, "Invalid track"),
 				    dietary: orm.validators.insideList(dietarys, "Invalid dietary"),
-
-
-
 				},
 				methods:{
 					getPassword:function(){
@@ -98,8 +99,10 @@ module.exports = {
 			console.log("USERS IN ACCEPTHACKERS")
 			console.log(users)
 
-			for(var i in users){
-				Users.one({"email": users[i]}, function(err, user) {
+
+			var date = dateFormat(new Date(), "isoDate");
+			function inner(hacker) {
+				Users.one({"email": hacker.email}, function(err, user) {
 					if(err) {
 						throw err;
 					} 
@@ -109,9 +112,17 @@ module.exports = {
 						console.log(date)
 						user.accepted = true
 						user.batch = date;
+						user.travelReimbursement = hacker.travelReimbursement;
+			console.log("acceptHackers");
+						console.log(user.travelReimbursement) 
 						user.save();							
 					}
-				});
+				});				
+			} 
+			
+			for(var key in users){
+			
+				inner(users[key]);
 			}
 		};
 
@@ -154,7 +165,7 @@ module.exports = {
 
 	*/
 		Users.getUsers = function(callback){
-			Users.find({admin: false}).omit('admin').omit('password').run(function(err, results) {
+			Users.find({admin: false,accepted:false}).omit('admin').omit('password').run(function(err, results) {
 				if(err) {
 					throw err;
 				}
