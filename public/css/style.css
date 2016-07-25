@@ -1,0 +1,35 @@
+div {
+	position: relative;
+}
+
+table .hacker{
+ height:700px; 
+}
+
+.hacker > thead{ 
+	min-width: 100%;	
+}
+.hacker > tbody{
+  min-width: 100%;	
+  overflow-y: scroll;
+  height: 600px;
+  width: 100%;
+  position: absolute;
+}
+
+tr {
+	width: 100%;
+	display: inline-table;
+}
+
+.row > p {
+	word-break: break-all;
+}
+
+.alert-text{
+	color: red;
+}
+.select-hackers{
+	float: right;
+}
+

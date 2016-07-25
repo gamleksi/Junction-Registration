@@ -1,3 +1,5 @@
+var dotenv = require('dotenv').config();
+
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -6,7 +8,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var ejs = require('ejs');
 var expressValidator = require('express-validator');
-var flash = require('connect-flash');
+var flash = require('express-flash');
 var session = require('express-session');
 var passport = require('passport');
 var exphbs = require('express-handlebars');
@@ -76,7 +78,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //Bodyparser middleware
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
 
 

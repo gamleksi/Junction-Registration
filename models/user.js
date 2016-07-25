@@ -1,7 +1,36 @@
 var bcrypt = require('bcryptjs');
-var orm = require('orm')
+var orm = require('orm');
+var dateFormat = require('dateformat');
+
+
+
 module.exports = {
 	createModel: function(db) {
+		// Form attributes:
+		// - age: Int [CHECK]
+		// - firstname: String [CHECK]
+		// - lastname: String [CHECK]
+		// - country: String (määrämuotoinen) [CHECK]
+		// - email: String (määrämuotoinen) [CHECK]
+		// - gender [male, female, other] [CHECK]
+		// - t-shirt size: [xs, s, m, l, xl, xxl] [CHECK]
+		// - dietary restrictions: String (määräpituus, esim 160 merkkiä) 
+		/*	Vegetarian:
+		 	No Pork:
+	 		Gluten-Free:
+		   	No special restrictions: */
+
+		// - top track choice (checkbox trackeistä, 1 valinta)
+		// - portfolio: String (url)
+		// - question 1: String
+		// - question 2: String
+		// - comments for organizers
+
+		var shirtsizes = ["xs","s","m","l","xl","xxl"];
+		var	dietarys = ["no","veg","pork","glut"];
+		var tracks = ["junction","other"];
+		var sexes =["male", "female","other"];
+		var travels = ["Fin", "No", "Nord", "Eu", "Out"]
 
 		var Users = db.define("users", {
 				firstname: String,
@@ -9,21 +38,34 @@ module.exports = {
 				age: {type: 'integer'},
 				email: {type:"text", key: true},
 				country: String,
-				gender: ["male", "female"],
+				sex: String,
+				shirtsize: String,
+				dietary: String,
+				track: String,
+				portfolio:String,
+				question1:String,
+				question2:String,
+				comment:String,
 				password: String,
-				motivation: String,
-				skillDescription: String,
-				admin: {type: "boolean", defaultValue: false}
+				admin: {type: "boolean", defaultValue: false},
+				accepted:  {type: "boolean", defaultValue: false},
+				batch: Date,
+				travelReimbursement: {type: "text", defaultValue: undefined},				
+
+				acceptedEmail: {type: "text", defaultValue: "not send"}
 			}, {
 
-
 				validations: {
-					email: orm.enforce.unique("email taken!")
-
+					email: orm.enforce.unique("email taken!"),
+				    sex: orm.validators.insideList(sexes, "Invalid sex"),
+				    travelReimbursement: orm.validators.insideList(travels, "Invalid travel reimbursement"),
+				    shirtsize: orm.validators.insideList(shirtsizes, "Invalid shirtsize"),
+				    track: orm.validators.insideList(tracks, "Invalid track"),
+				    dietary: orm.validators.insideList(dietarys, "Invalid dietary"),
 				},
 				methods:{
 					getPassword:function(){
-						return this.password
+						return this.password;
 					}
 				}
 			}
@@ -36,8 +78,10 @@ module.exports = {
 					Users.create(user, function(err,items){
 						if(err){
 							console.error(err);
+							callback(false)
 						} else {
 							console.log("User has been created succesfully.")
+							callback(true)
 						}
 					});					
 				});
@@ -50,6 +94,49 @@ module.exports = {
 				else callback(user);
 			});
 		};
+
+		Users.acceptHackers = function(users) {
+			console.log("USERS IN ACCEPTHACKERS")
+			console.log(users)
+
+
+			var date = dateFormat(new Date(), "isoDate");
+			function inner(hacker) {
+				Users.one({"email": hacker.email}, function(err, user) {
+					if(err) {
+						throw err;
+					} 
+					if(user) {
+						var date = dateFormat(new Date(), "isoDate").split("T")[0]
+						console.log("DATE")
+						console.log(date)
+						user.accepted = true
+						user.batch = date;
+						user.travelReimbursement = hacker.travelReimbursement;
+			console.log("acceptHackers");
+						console.log(user.travelReimbursement) 
+						user.save();							
+					}
+				});				
+			} 
+			
+			for(var key in users){
+			
+				inner(users[key]);
+			}
+		};
+
+		Users.addApprovalEmailInformation = function(email, event) {
+
+			Users.one({"email":email}, function(err,user){
+				if(err) throw err;
+				if(user) {
+					user.acceptedEmail = event;
+					user.save();
+				}
+			});
+		}; 
+			
 
 		Users.comparePasswords = function(candidatePassword, hash, callback){
 			bcrypt.compare(candidatePassword,hash, function(err, isMatch){
@@ -72,15 +159,38 @@ module.exports = {
 		// 	});
 		// 	});
 		// };
+	/*
+	Different DB queries?
+	-
 
+	*/
 		Users.getUsers = function(callback){
-			Users.find({admin: false}, function(err, results) {
+			Users.find({admin: false,accepted:false}).omit('admin').omit('password').run(function(err, results) {
 				if(err) {
 					throw err;
 				}
 				callback(results);
 			});
 		};
+
+		Users.getUsersWithParameters = function(params,callback){
+			params.admin = false
+			Users.find(params).omit('admin').run(function(err, results) {
+				if(err) {
+					throw err;
+				}
+				callback(results);
+			});
+		};
+		Users.getAcceptedUsers = function(callback){
+			Users.find({"admin":false,"accepted":true}).omit('admin').run(function(err, results) {
+				if(err) {
+					throw err;
+				}
+				callback(results);
+			});
+		};
+
 
 		return Users;
 	}

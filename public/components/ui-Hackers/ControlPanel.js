@@ -1,5 +1,6 @@
 import React from "react";
 import CheckboxRow from "./CheckboxRow";
+import SessionInfo from "./SessionInfo";
 
 
 export default React.createClass({
@@ -9,12 +10,16 @@ export default React.createClass({
         return(
             <table class="table table-bordered">
             <tbody>
-                    
-                        <CheckboxRow 
-                            setAttributeNames={this.props.setAttributeNames}
-                            attributeNames={this.props.attributeNames} 
+                        <SessionInfo
+                            selectedParticipants={this.props.selectedParticipants}
                         />
-                    
+            </tbody>
+            <tbody>
+
+                        <CheckboxRow 
+                            setAttributeValues={this.props.setAttributeValues}
+                            rowAttributes={this.props.rowAttributes} 
+                        />  
                 
             </tbody>
             </table>

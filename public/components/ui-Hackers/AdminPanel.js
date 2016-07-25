@@ -1,41 +1,74 @@
 import React from "react";
 import ControlPanel from "./ControlPanel";
-import HackerTable from "./HackerTable";
 import SearchButton from "./SearchButton";
+import TableHeader from "./TableHeader";
+import HackerTable from "./HackerTable";
+
+
+
+//Hardcoded values
+
+
+var attrNotBeShown = ["admin", "password"]; //TODO: deleting needs to be done already in backend!!
+
+var attrNotBeShownInRows = ["question1", "question2", "comment"];
+
+var notBeShownInOpeningRow = ["email"];
+
+var tabObject = [
+    {
+        tabValue: "Hackers",
+        visible: true
+    },{
+        tabValue: "Selected",
+        visible: false
+    }
+];
 
 
 export default React.createClass ({
 
     getHackers: function(){
-            var self = this;
+        var self = this;
         var xhr = new XMLHttpRequest();
-         var url = "http://localhost:3000/admin/hackers/all"
+        var url = "http://localhost:3000/admin/hackers/all"
          // () => {   == same as function(){
         xhr.onload = () => {
+          //request finished and response is ready  
           if (xhr.readyState === 4) {
+
             if (xhr.status === 200) {
                 var responseItem = xhr.response
                 var jsoned = JSON.parse(responseItem)
                 
-                var panelArray =[]
-                var rowArray = []
+                var rowAttributes = {}
+
                 for(var key in jsoned.hackers[0]){
-                    if(key !== "admin" && key !== "password" && key !== "motivation" && key !== "skillDescription"){
-                        panelArray.push({name:key,visible:true})
-                    }
-                     if(key !== "admin" && key !== "password" ){
-                        rowArray.push({name:key,visible:true})
-                    }
+                    rowAttributes[key] = true
                 }
-                self.setState({
-                    panelValues : panelArray,
-                    attributeNames: rowArray,
-                    hackers:(jsoned.hackers)
-                });
-                console.log(jsoned.hackers)
-                console.log("jsoned.hackers")
+                attrNotBeShown.forEach(function(e) {
+                    delete rowAttributes[e]
+                })
+
+                var attributes = rowAttributes;
+
+                attrNotBeShownInRows.forEach(function(e) {
+                    delete rowAttributes[e]
+                })
+                notBeShownInOpeningRow.forEach(function(e) {
+                    if(rowAttributes[e]) {
+                        rowAttributes[e] = false;
+                    }
+                })                
+                this.setState({
+                    rowAttributes : rowAttributes,
+                    attributeNames: attributes,
+                    hackers:(jsoned.hackers),
+                    selectedParticipants: {}
+                })
             } else {
               console.error(xhr.statusText);
+
             }
           }
         };
@@ -44,66 +77,162 @@ export default React.createClass ({
         };
         xhr.open('GET', url);
         xhr.send();
-//          getHackers      
-//       /           \
-//    panelArray     <rowArray>
-//     /              \ 
-//  ControlPanel       <HackerTable>
-//                          \
-//                          <TableBody>
-//                              \
-//                          <TableRow>   
-//                          filteröinti
-// 
-// 
-// 
+    },
 
 
+        getAcceptedHackers: function(){
+        var self = this;
+        var xhr = new XMLHttpRequest();
+        var url = "http://localhost:3000/admin/hackers/accepted"
+         // () => {   == same as function(){
+        xhr.onload = () => {
+          //request finished and response is ready  
+          if (xhr.readyState === 4) {
+
+            if (xhr.status === 200) {
+                var responseItem = xhr.response
+                var jsoned = JSON.parse(responseItem)
+                
+                var rowAttributes = {}
+
+                for(var key in jsoned.hackers[0]){
+                    rowAttributes[key] = true
+                }
+                attrNotBeShown.forEach(function(e) {
+                    delete rowAttributes[e]
+                })
+
+                var attributes = rowAttributes;
+
+                attrNotBeShownInRows.forEach(function(e) {
+                    delete rowAttributes[e]
+                })
+                notBeShownInOpeningRow.forEach(function(e) {
+                    if(rowAttributes[e]) {
+                        rowAttributes[e] = false;
+                    }
+                })                
+                this.setState({
+                    rowAttributes : rowAttributes,
+                    attributeNames: attributes,
+                    hackers:(jsoned.hackers),
+                    selectedParticipants: {}
+                })
+            } else {
+              console.error(xhr.statusText);
+
+            }
+          }
+        };
+        xhr.onerror = function (e) {
+          console.error(xhr.statusText);
+        };
+        xhr.open('GET', url);
+        xhr.send();
     },
     
-        // xhr.open('GET', url,true);
-        // xhr.send(null);
     getInitialState: function() {
-        //var initialHackers = this.getHackers();
         return {
-            panelValues:[],
+            rowAttributes: {},
             attributeNames: [],
-            hackers: {}
+            hackers: {},
+            selectedParticipants: {},
+            tabObject: tabObject
         }
     },
-    setAttributeNames: function(attributes){
+    setAttributeValues: function(key){
+        var attributes = this.state.rowAttributes
+        attributes[key] = !(attributes[key]) 
         this.setState({
-            panelValues: this.state.panelValues,
-            attributeNames: attributes,
-            hackers:this.state.hackers
-        });
-    },setHackers: function(hackers){
-        this.setState({
-            panelValues : this.state.panelValues,
+            rowAttributes: attributes,
             attributeNames: this.state.attributeNames,
-            hackers:hackers
+            hackers:this.state.hackers,
+            selectedParticipants: this.state.selectedParticipants,
         });
+    },
+    addToSelectedList: function(hacker, travelReimbursement) {
+        var selected = this.state.selectedParticipants
+        if(!selected[hacker.email]) {
+            console.log("selected")
+            hacker["travelReimbursement"] = travelReimbursement;
+            selected[hacker.email] = hacker; 
+        }
+        this.setState({
+                rowAttributes: this.state.rowAttributes,
+                attributeNames: this.state.attributeNames,
+                hackers: this.state.hackers,
+                selectedParticipants: selected,
+        })
+    },
+    dropFromSelectedList: function(hacker) {
+        var selected = this.state.selectedParticipants        
+        if(selected[hacker.email]) {
+            console.log("dropped: " + "hacker.email")
+            delete selected[hacker.email];
+            this.setState({
+                rowAttributes: this.state.rowAttributes,
+                attributeNames: this.state.attributeNames,
+                hackers: this.state.hackers,
+                selectedParticipants: selected,
+            })            
+        } 
+    }
+    ,acceptSelectedHackers: function() {
+        var self = this;
+        var xhr = new XMLHttpRequest();
+        var url = "http://localhost:3000/admin/hackers/accept-selected"
+        xhr.open('POST', url);
+        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        var selectedObj = this.state.selectedParticipants;
+        xhr.onload = function() {
+            if (this.readyState === 4) {
+                var responseItem = this.response;
+                console.log("Accepted");
+                console.log(JSON.parse(responseItem).accepted)
+            }
+        }
+        console.log("selectedarr")
+        console.log(selectedObj);
+        xhr.send(JSON.stringify({"selected": selectedObj}));
     },
     render: function() {
         
-        var newArray = {}
-            for(var key in this.state.attributeNames){
-                if(this.state.attributeNames[key].visible){
-                    newArray[this.state.attributeNames[key].name] = true;
-                }
-            }
 
-    return (
+        if(Object.getOwnPropertyNames(this.state.hackers).length <= 0) {
+            this.getHackers()
+        }
+        var i = 2;
+        for(var key in this.state.rowAttributes) {
+            if(this.state.rowAttributes[key]) {
+                i++;
+            }
+        }
+        var tdRowStyle = {"width": 100/i + '%'};
+
+        console.log("")
+
+
+    return (        
     <div id="init">
-        <SearchButton findHackers={this.getHackers}/>
-      <ControlPanel
-                setAttributeNames ={this.setAttributeNames}
-                attributeNames={this.state.panelValues}
+        <button onClick={this.getHackers}>All hackers</button>
+        <button onClick={this.getAcceptedHackers}>Accepted hackers</button>
+
+        <SearchButton findHackers={this.acceptSelectedHackers}/>
+        <ControlPanel
+                setAttributeValues ={this.setAttributeValues}
+                rowAttributes={this.state.rowAttributes}
                 findHackers={this.getHackers}
+                selectedParticipants={this.state.selectedParticipants} 
         /> 
-      <HackerTable 
-            columnNames={newArray}
+      <HackerTable
+            tabObject={tabObject}
+            selectedParticipants={this.state.selectedParticipants} 
+            tdRowStyle={tdRowStyle}
+            rowAttributes={this.state.rowAttributes}
             hackers={this.state.hackers}
+            addToSelectedList={this.addToSelectedList}
+            dropFromSelectedList={this.dropFromSelectedList}
+            expandedInfo={attrNotBeShownInRows}
       />
       </div>
     )

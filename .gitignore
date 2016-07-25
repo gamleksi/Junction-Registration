@@ -16,4 +16,6 @@ public/.DS_Store
 
 views/.DS_Store
 
-.DS_Store
+.DS_Storesendgrid.env
+sendgrid.env
+.env

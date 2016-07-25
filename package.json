@@ -1,5 +1,5 @@
 {
-  "name": "Junction",
+  "name": "admin",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -19,12 +19,16 @@
     "connect-flash": "*",
     "cookie-parser": "~1.3.5",
     "debug": "~2.2.0",
+    "dotenv": "2.0.0",
     "ejs": "~2.3.3",
     "express": "~4.13.1",
+    "express-flash": "*",
     "express-handlebars": "*",
     "express-messages": "*",
     "express-session": "*",
     "express-validator": "*",
+    "lodash": "^4.13.1",
+    "mailchimp-api": "*",
     "migrate-orm2": "^1.2.14",
     "morgan": "~1.6.1",
     "orm": "^3.0.0",
@@ -33,8 +37,22 @@
     "passport-local": "*",
     "react": "^0.14.6",
     "react-dom": "^0.14.6",
+    "sendgrid": "*",
     "serve-favicon": "~2.3.0",
     "webpack": "^1.12.9",
     "webpack-dev-server": "^1.14.1"
-  }
+  },
+  "main": "admin-generator.js",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/gamleksi/Junction-2016.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gamleksi/Junction-2016/issues"
+  },
+  "homepage": "https://github.com/gamleksi/Junction-2016#readme",
+  "description": ""
 }

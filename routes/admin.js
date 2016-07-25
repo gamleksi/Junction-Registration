@@ -3,6 +3,7 @@ var router = express.Router();
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 
+
 router.get('/', ensureIsAuthenticatedAndAdmin, function(req, res) {
   res.render('admin', {layout: 'admin-layout'});     
 });
@@ -21,7 +22,53 @@ router.get('/hackers/all', ensureIsAuthenticatedAndAdmin, function(req, res) {
     res.send({hackers:users});
   });
 });
+router.get('/hackers/accepted', ensureIsAuthenticatedAndAdmin, function(req, res) {
 
+  req.models.users.getAcceptedUsers(function(users) {    
+    console.log('%s %s', req.method, req.url);
+    res.send({hackers:users});
+  });
+});
+
+var sendgrid = require('../sendgrid/sendgrid.js')
+
+router.post('/hackers/accept-selected', ensureIsAuthenticatedAndAdmin, function(req, res, next) {
+  var selected=req.body.selected;
+  console.log("SELECTED");
+  console.log(selected);
+  sendgrid.sendApprovalMails(selected, function(responseObject) {
+    if(responseObject.statusCode === 202 || responseObject.statusCode === 200) {
+        console.log("Emails sent");
+        console.log(responseObject.emails);
+        req.models.users.acceptHackers(selected);
+
+    } else {
+        console.log("Sending failed");
+        
+    }
+    });
+
+        res.send();
+});
+
+
+router.post('/webhook', isFromSendGrid, function(req, res) {
+  console.log("webhook"); 
+  console.log(req.body)
+  console.log(req.body[0].email + ": " +req.body[0].event);
+  
+  for(i in req.body){
+      req.models.users.addApprovalEmailInformation(req.body[i].email, req.body[i].event)
+  }
+  res.send();
+});
+
+
+function isFromSendGrid(req, res, next) {
+  // TODO
+  next();
+}
+  
 
 function ensureIsAuthenticatedAndAdmin(req, res, next){
   

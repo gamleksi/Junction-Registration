@@ -9,7 +9,7 @@ export default React.createClass({
 	},
 	render: function() {
 		    return (
-		        <button onClick={this.findHackers}>Search hackers</button>
+		        <button class="select-hackers" onClick={this.findHackers}>Accept hackers</button>
 		    )
 	}	
 })
