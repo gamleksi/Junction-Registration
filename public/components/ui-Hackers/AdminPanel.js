@@ -201,7 +201,7 @@ export default React.createClass ({
         if(Object.getOwnPropertyNames(this.state.hackers).length <= 0) {
             this.getHackers()
         }
-        var i = 2;
+        var i = 1;
         for(var key in this.state.rowAttributes) {
             if(this.state.rowAttributes[key]) {
                 i++;

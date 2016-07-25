@@ -50,7 +50,7 @@
         }
       }
       var requestBody = mail.toJSON()
-      requestBody.template_id = "7b141e1e-d840-406c-902f-cfd8294e011d"
+      requestBody.template_id = process.env.SENGRID_ACCEPTED_TEMPLATE_ID
       console.log("request body")
       console.log(requestBody);
       

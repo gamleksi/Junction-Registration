@@ -43,7 +43,6 @@ var RadioInputs =  React.createClass({
             //             name={this.props.hackerId}/>
             //     </td>
             // </div>
-               <div class="dropdown">
                    <select onChange={this.inputSelected} value={this.props.travelReImbursement}>
                       <option value="select">Select</option>
                       <option value="No">No</option>                  
@@ -53,7 +52,6 @@ var RadioInputs =  React.createClass({
                       <option value="Out">Out</option>
                    </select>
 
-               </div>
         )
     }
 });
