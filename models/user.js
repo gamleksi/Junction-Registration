@@ -31,7 +31,7 @@ module.exports = {
 		var tracks = ["junction","other"];
 		var sexes =["male", "female","other"];
 		var travels = ["Fin", "No", "Nord", "Eu", "Out"]
-
+		var statuses = ["accept","reject","pending"];
 		var Users = db.define("users", {
 				firstname: String,
 				lastname: String,
@@ -50,6 +50,9 @@ module.exports = {
 				admin: {type: "boolean", defaultValue: false},
 				accepted:  {type: "boolean", defaultValue: false},
 				batch: Date,
+				hash: String,
+				status: {type: "text", defaultValue: "pending"},
+
 				travelReimbursement: {type: "text", defaultValue: undefined},				
 
 				acceptedEmail: {type: "text", defaultValue: "not send"}
@@ -62,6 +65,8 @@ module.exports = {
 				    shirtsize: orm.validators.insideList(shirtsizes, "Invalid shirtsize"),
 				    track: orm.validators.insideList(tracks, "Invalid track"),
 				    dietary: orm.validators.insideList(dietarys, "Invalid dietary"),
+				    status: orm.validators.insideList(statuses, "Invalid status"),
+
 				},
 				methods:{
 					getPassword:function(){
@@ -94,6 +99,8 @@ module.exports = {
 				else callback(user);
 			});
 		};
+
+
 
 		Users.acceptHackers = function(users) {
 			console.log("USERS IN ACCEPTHACKERS")
@@ -145,6 +152,22 @@ module.exports = {
 			});
 		};
 
+		Users.changeStatusWithHash = function(status,hash,callback){
+      		var reverseHash = hash.split("").reverse().join("");
+
+			Users.one({"hash":reverseHash}, function(err,user){
+				if(err){
+					throw err;
+					callback("status not changed")
+
+				} 
+				if(user) {
+					user.status = status;
+					user.save();
+					callback("status changed")
+				}
+			});
+		};
 		// Users.isAdmin = function(userEmail){
 		// 	this.getUserByEmail(userEmail, function(err, user) {
 		// 		Users.one({"email":userEmail}, function(err,user){

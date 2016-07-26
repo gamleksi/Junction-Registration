@@ -14,7 +14,6 @@ var passport = require('passport');
 var exphbs = require('express-handlebars');
 var LocalStrategy = require('passport-local').Strategy;
 var config = require('./config/app-config')
-var csv = require('express-csv')
 
 var orm = require('orm');
 
@@ -56,6 +55,8 @@ app.use(orm.express(config.databaseUrl, {
 
 
 var routes = require('./routes/index');
+var confirm = require('./routes/confirm');
+
 var users = require('./routes/users');
 var admin = require('./routes/admin');
 
@@ -115,6 +116,7 @@ app.use(function (req, res, next){
 
 app.use('/', routes);
 app.use('/users', users);
+app.use('/confirm', confirm);
 app.use('/admin', admin);
 
 app.set('port', (process.env.PORT || 3000));

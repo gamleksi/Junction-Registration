@@ -38,7 +38,11 @@
       mail = new helper.Mail(from_email, "You have been accepted to Junction", to_email, approvalMail.content);  
       mail.personalizations[0].addSubstitution({"-mail-":emails[0]}) 
       mail.personalizations[0].addSubstitution({"-travel-":travelValues.message(emailObjects[emails[0]].travelReimbursement)})
+      
+      var reverseHash = emailObjects[emails[0]].hash.split("").reverse().join("");
+      
       mail.personalizations[0].addSubstitution({"-name-":emailObjects[emails[0]].firstname}) 
+      mail.personalizations[0].addSubstitution({"-hash-":reverseHash}) 
  
 
       sg.emptyRequest();
@@ -48,10 +52,15 @@
         if(i > 0){
           to_email = new helper.Email(emails[i]);  
           var personalization = new helper.Personalization();
+          var reverseHash = emailObjects[emails[i]].hash.split("").reverse().join("");
+
           personalization.addTo(to_email);
           personalization.addSubstitution({"-mail-":emails[i]})
           personalization.addSubstitution({"-travel-":travelValues.message(emailObjects[emails[i]].travelReimbursement)}) 
           personalization.addSubstitution({"-name-":emailObjects[emails[i]].firstname}) 
+          personalization.addSubstitution({"-hash-":reverseHash}) 
+          
+
 
           mail.addPersonalization(personalization);
         }

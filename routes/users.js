@@ -120,7 +120,7 @@ router.post('/register', function(req, res) {
                             form_values: form_values_with_errors})
   } else {
   	 
-
+      var userHash = Math.random().toString(36).substring(7).toUpperCase()
       var newUser = {
         firstname: firstname,
         lastname: lastname,
@@ -135,7 +135,8 @@ router.post('/register', function(req, res) {
         question1:q1,
         question2:q2,
         comment:comment,
-        password: password
+        password: password,
+        hash: userHash
     };
   	req.models.users.createUser(newUser, function(success) {
       if(success){ 
