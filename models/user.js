@@ -157,17 +157,38 @@ module.exports = {
 
 			Users.one({"hash":reverseHash}, function(err,user){
 				if(err){
-					throw err;
 					callback("status not changed")
+					throw err;
 
 				} 
 				if(user) {
 					user.status = status;
 					user.save();
-					callback("status changed")
+					callback(true)
+				}else {
+					callback(false)
+
 				}
 			});
 		};
+		Users.hashMatches = function(hashString,callback){
+
+			console.log("HASH" + hashString)
+      		var reverseHash = hashString.split("").reverse().join("");
+			Users.exists({"hash":reverseHash}, function(err,exists){
+				if(err){
+					callback("status not changed")
+					throw err;
+				} 
+				if(exists) {
+					
+					callback(true)
+				}else {
+					callback(false)
+
+				}
+			});
+		}
 		// Users.isAdmin = function(userEmail){
 		// 	this.getUserByEmail(userEmail, function(err, user) {
 		// 		Users.one({"email":userEmail}, function(err,user){

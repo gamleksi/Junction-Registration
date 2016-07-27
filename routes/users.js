@@ -5,11 +5,12 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var UserDB = require('../models/user');
  form_values = require('../FORM_VALUES.js')
+ country_values = require('../COUNTRIES_DATA.js')
 var sendgrid = require('../sendgrid/sendgrid.js')
 
 /* GET users listing. */
 router.get('/register', ensureIsNotAuthenticated, function(req, res) {
-  res.render('register',{form_values: form_values})
+  res.render('register',{form_values: form_values,country_values:country_values})
 });
 
 router.get('/login', ensureIsNotAuthenticated, function(req, res) {
@@ -84,7 +85,7 @@ router.post('/register', function(req, res) {
         comment:comment
       };
       console.log("FORM VALUES ")
-      console.log(form_values)
+      console.log(failedPost)
       
     var form_values_with_errors = JSON.parse(JSON.stringify(form_values));
     // for(i in form_values){
@@ -98,12 +99,26 @@ router.post('/register', function(req, res) {
               // console.log("OBJECT")
               // console.log(obj)
               if(failedPost[i] === obj.value){
-              
                 obj.checked = "checked"
               }
             });
           }
         }
+
+    var country_values_with_errors = JSON.parse(JSON.stringify(country_values));
+  
+      console.log(i)
+      if(failedPost["country"]){
+            country_values_with_errors.forEach(function(obj){
+          
+              if(failedPost["country"] === obj.code){
+                obj.selected = "selected"
+              }
+            });
+          }
+        
+        console.log(country_values_with_errors)
+
 
   if(errors) {
      var error_messages = {}
@@ -117,10 +132,12 @@ router.post('/register', function(req, res) {
 	  res.render("register", {errors: errors,
                             error_messages:error_messages,
                             failedPost:failedPost,
-                            form_values: form_values_with_errors})
+                            form_values: form_values_with_errors,
+                            country_values:country_values_with_errors})
   } else {
   	 
-      var userHash = Math.random().toString(36).substring(7).toUpperCase()
+      var time =  new Date().getTime() 
+      var hash = Math.random().toString(36).substring(7).toUpperCase() + time
       var newUser = {
         firstname: firstname,
         lastname: lastname,
@@ -136,7 +153,7 @@ router.post('/register', function(req, res) {
         question2:q2,
         comment:comment,
         password: password,
-        hash: userHash
+        hash: hash
     };
   	req.models.users.createUser(newUser, function(success) {
       if(success){ 
@@ -149,7 +166,7 @@ router.post('/register', function(req, res) {
           res.render('register',{
               errors:{'error': 'Already registered with the given email.'},
               failedPost:failedPost,
-              form_values: form_values_with_errors,
+              form_values: form_values_with_errors,country_values:country_values_with_errors,
               error_messages: {"email":"Email already in use." }
             });
       }

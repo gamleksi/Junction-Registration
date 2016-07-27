@@ -36,3 +36,6 @@ tr {
 select {
 	width: 100%;
 }
+.country{
+	height: 50px;
+}

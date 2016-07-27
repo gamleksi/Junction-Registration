@@ -43,7 +43,8 @@
     "webpack-dev-server": "^1.14.1",
     "express-csv":"*",
     "json2csv":"*",
-    "fs":"*"
+    "fs":"*",
+    "socket.io":"*"
 
 
   },
