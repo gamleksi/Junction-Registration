@@ -29,10 +29,3 @@
   });
 
 
-
-  //IiQZVjzXSfmR2fYpuYdzDQ
-
-
-// echo "export SENDGRID_API_KEY='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'" > sendgrid.env
-// echo "sendgrid.env" >> .gitignore
-// source ./sendgrid.env

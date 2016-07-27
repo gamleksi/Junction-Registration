@@ -31,7 +31,7 @@ module.exports = {
 		var tracks = ["junction","other"];
 		var sexes =["male", "female","other"];
 		var travels = ["Fin", "No", "Nord", "Eu", "Out"]
-
+		var statuses = ["accept","reject","pending"];
 		var Users = db.define("users", {
 				firstname: String,
 				lastname: String,
@@ -50,6 +50,9 @@ module.exports = {
 				admin: {type: "boolean", defaultValue: false},
 				accepted:  {type: "boolean", defaultValue: false},
 				batch: Date,
+				hash: String,
+				status: {type: "text", defaultValue: "pending"},
+
 				travelReimbursement: {type: "text", defaultValue: undefined},				
 				acceptedEmail: {type: "text", defaultValue: "not send"}
 			}, {
@@ -61,6 +64,8 @@ module.exports = {
 				    shirtsize: orm.validators.insideList(shirtsizes, "Invalid shirtsize"),
 				    track: orm.validators.insideList(tracks, "Invalid track"),
 				    dietary: orm.validators.insideList(dietarys, "Invalid dietary"),
+				    status: orm.validators.insideList(statuses, "Invalid status"),
+
 				},
 				methods:{
 					getPassword:function(){
@@ -94,7 +99,9 @@ module.exports = {
 			});
 		};
 
+
 		Users.acceptHackers = function(hackers, callback) {
+
 			console.log("USERS IN ACCEPTHACKERS")
 
 
@@ -122,6 +129,7 @@ module.exports = {
 						user.batch = date;
 						user.travelReimbursement = hacker.travelReimbursement;
 						console.log("acceptHackers");
+
 						console.log(user.travelReimbursement);
 						user.save(function(err) {
 							if(err) {
@@ -137,6 +145,7 @@ module.exports = {
 								event.emit('event');
 							}
 						});							
+
 					}
 
 				});				
@@ -166,6 +175,43 @@ module.exports = {
 			});
 		};
 
+		Users.changeStatusWithHash = function(status,hash,callback){
+      		var reverseHash = hash.split("").reverse().join("");
+
+			Users.one({"hash":reverseHash}, function(err,user){
+				if(err){
+					callback("status not changed")
+					throw err;
+
+				} 
+				if(user) {
+					user.status = status;
+					user.save();
+					callback(true)
+				}else {
+					callback(false)
+
+				}
+			});
+		};
+		Users.hashMatches = function(hashString,callback){
+
+			console.log("HASH" + hashString)
+      		var reverseHash = hashString.split("").reverse().join("");
+			Users.exists({"hash":reverseHash}, function(err,exists){
+				if(err){
+					callback("status not changed")
+					throw err;
+				} 
+				if(exists) {
+					
+					callback(true)
+				}else {
+					callback(false)
+
+				}
+			});
+		}
 		// Users.isAdmin = function(userEmail){
 		// 	this.getUserByEmail(userEmail, function(err, user) {
 		// 		Users.one({"email":userEmail}, function(err,user){
