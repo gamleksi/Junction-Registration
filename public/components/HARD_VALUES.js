@@ -1,5 +1,3 @@
-import {DOMAIN_ADDRESS}from '../../.env'
-
 module.exports = {
 		tabObject: [
 		    {
@@ -18,5 +16,5 @@ module.exports = {
 		notBeShownInOpeningRow: ["email", "country"],
 		attrNotBeShownInRows: ["question1", "question2", "comment"],
 		attrNotBeShown: ["admin", "password"],
-		domain: DOMAIN_ADDRESS
+		domain: "http://localhost:3000"
 };
