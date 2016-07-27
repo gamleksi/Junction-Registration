@@ -15,9 +15,7 @@ var RadioInputs =  React.createClass({
         if(!travelReimbursement) {
 
             travelReimbursement = reimburesements[0]
-        } else {
-            console.log("Wadap")
-        }
+        } 
         for(var i in reimburesements) {
             options.push(<option value={reimburesements[i]}>{reimburesements[i]}</option>)
         }
@@ -34,7 +32,6 @@ var RadioInputs =  React.createClass({
 var ExpandedRadioInput = React.createClass({
 
     inputSelected: function(e) {
-        console.log(e.target.value)
         this.props.inputSelected(e.target.value);
     },
     render: function(){
@@ -74,33 +71,29 @@ var ExpandedInfo = React.createClass({
         var hacker = this.props.hackerInfo
         var column1 = []
         var radioInputs = undefined
-        if(this.props.hackerInfo.travelReimbursement !== "Select") {
-            console.log("expandedInfo " + this.props.hackerInfo.index)
-        }
+
         for(var key in this.props.hackerInfo){
 
             if(key === "travelReimbursement" && (!this.props.hackerInfo[key] || !this.props.hackerInfo["accepted"])) {
                 radioInputs = <ExpandedRadioInput inputSelected={this.props.inputSelected} travelReimbursement={this.props.hackerInfo.travelReimbursement} inputChanged={this.inputChanged} hackerId={this.props.hackerInfo.email}/>;
             } else {
-                var value = hacker[key]
-                column1.push(<p key={value}> <b> {key + ":"} </b> {value}</p>)
+                if(this.props.visibleColumns[key]) {
+                    var value = hacker[key]
+                    column1.push(<p key={value}> <b> {key + ":"} </b> {value}</p>)
+                }
             }                
 
 
         }
 
-
         var textColums = []; //Motivation, skillDescription etc
-
+    
         this.props.expandedInfo.forEach(function(key) {
-            console.log(key)
-            
-
-            textColums.push(
-                <td>
-                    <b> {key + ":"} + </b> {hacker[key]}                    
-                </td>
-                )
+                textColums.push(
+                    <td>
+                        <b> {key + ":"} + </b> {hacker[key]}                    
+                    </td>
+                    )                
         })
 
         var classColor="active"
@@ -135,7 +128,6 @@ var RowInfo = React.createClass({
         var values = []
         for(var key in this.props.hackerInfo){
             if(this.props.visibleColumns[key]) {
-
                 if(key === "travelReimbursement" && (!this.props.hackerInfo[key] || !this.props.hackerInfo["accepted"])) {
                     values.push(<td class="row"><RadioInputs inputSelected={this.props.inputSelected} travelReimbursement={this.props.hackerInfo["travelReimbursement"]} inputChanged={this.inputChanged} hackerId={this.props.hackerInfo.email}/></td>)
                 } else {
@@ -174,7 +166,6 @@ export default React.createClass({
         }
     },
     expandClick: function(){
-        console.log("Expand clicked")
         this.setState({
             expand: !(this.state.expand),
         })
@@ -191,7 +182,6 @@ export default React.createClass({
 
     
     render: function() {
-        console.log("FUCK")
         if(this.state.expand) {
             return (
                 <ExpandedInfo

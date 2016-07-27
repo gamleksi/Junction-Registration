@@ -60,13 +60,11 @@
       sg.API(request, function (response) {
         console.log("Mail")
         console.log(response.statusCode)
-        console.log("BODY FROM SendGrid")
+        // console.log("BODY FROM SendGrid")
         //console.log(response.body)
         // console.log(response.headers)
         //TODO pitääkö statusCode jo tässä vaiheessa tsekata
-        event.emit('newMailSent', {"statusCode": response.statusCode,
-                                    "emails": emails
-                                  });
+        event.emit('newMailSent', response.statusCode);
 
 
       });

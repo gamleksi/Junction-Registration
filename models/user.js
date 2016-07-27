@@ -1,8 +1,8 @@
 var bcrypt = require('bcryptjs');
 var orm = require('orm');
 var dateFormat = require('dateformat');
-
-
+var EventEmitter = require('events');
+var event = new EventEmitter();
 
 module.exports = {
 	createModel: function(db) {
@@ -51,7 +51,6 @@ module.exports = {
 				accepted:  {type: "boolean", defaultValue: false},
 				batch: Date,
 				travelReimbursement: {type: "text", defaultValue: undefined},				
-
 				acceptedEmail: {type: "text", defaultValue: "not send"}
 			}, {
 
@@ -95,34 +94,56 @@ module.exports = {
 			});
 		};
 
-		Users.acceptHackers = function(users) {
+		Users.acceptHackers = function(hackers, callback) {
 			console.log("USERS IN ACCEPTHACKERS")
-			console.log(users)
 
 
 			var date = dateFormat(new Date(), "isoDate");
+			var errors = 0; 
+			var savedUsers = [];
+
+			event.once('event', function(){
+				console.log(savedUsers);
+				callback(savedUsers);
+			});
+
 			function inner(hacker) {
 				Users.one({"email": hacker.email}, function(err, user) {
+					
 					if(err) {
+						errors++;
 						throw err;
 					} 
 					if(user) {
-						var date = dateFormat(new Date(), "isoDate").split("T")[0]
-						console.log("DATE")
-						console.log(date)
-						user.accepted = true
+						var date = dateFormat(new Date(), "isoDate").split("T")[0];
+						console.log("DATE");
+						console.log(date);
+						user.accepted = true;
 						user.batch = date;
 						user.travelReimbursement = hacker.travelReimbursement;
-			console.log("acceptHackers");
-						console.log(user.travelReimbursement) 
-						user.save();							
+						console.log("acceptHackers");
+						console.log(user.travelReimbursement);
+						user.save(function(err) {
+							if(err) {
+								errors++;
+								throw err;
+							} else {
+								savedUsers.push(user);
+							}
+							console.log("errors + savedUsers.length")
+							var length = errors + savedUsers.length
+							console.log(length)
+							if(Object.keys(hackers).length === (length)) {
+								event.emit('event');
+							}
+						});							
 					}
+
 				});				
 			} 
 			
-			for(var key in users){
-			
-				inner(users[key]);
+			for(var key in hackers){
+				inner(hackers[key]);
 			}
 		};
 
@@ -165,7 +186,7 @@ module.exports = {
 
 	*/
 		Users.getUsers = function(callback){
-			Users.find({admin: false,accepted:false}).omit('admin').omit('password').run(function(err, results) {
+			Users.find({admin: false}).omit('admin').omit('password').run(function(err, results) {
 				if(err) {
 					throw err;
 				}
@@ -175,7 +196,7 @@ module.exports = {
 
 		Users.getUsersWithParameters = function(params,callback){
 			params.admin = false
-			Users.find(params).omit('admin').run(function(err, results) {
+			Users.find(params).omit('admin').omit('password').run(function(err, results) {
 				if(err) {
 					throw err;
 				}

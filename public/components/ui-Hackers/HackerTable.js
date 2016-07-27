@@ -27,16 +27,33 @@ export default React.createClass({
     },    
     render: function(){
         var hackers = this.props.hackers;
+        var tab = [
+            <HackerTab 
+                changeSheet={this.changeSheet}
+                tabObject={this.state.tabObject}
+                />]
         if(this.state.tabObject[1].visible) {
-            hackers = this.props.selectedParticipants
+            hackers = this.props.selectedParticipants;
+            tab[0] = [<HackerTab 
+                buttonClicked={this.props.acceptSelectedHackers}
+                changeSheet={this.changeSheet}
+                tabObject={this.state.tabObject}
+                tabButton={this.state.tabObject[1].buttonValue}
+                />]
+        }
+        if(this.state.tabObject[2].visible) {
+            hackers = this.props.previousAccepted
+            tab[0] = [<HackerTab 
+                buttonClicked={this.props.reloadPrevious}
+                changeSheet={this.changeSheet}
+                tabObject={this.state.tabObject}
+                tabButton={this.state.tabObject[2].buttonValue}
+                />]            
         }
 
         return(
             <div>
-                <HackerTab
-                    changeSheet={this.changeSheet}
-                    tabObject={this.state.tabObject}
-                />
+                {tab}
                 <table class="hacker table table-bordered">
                      <TableHeader
                         tdRowStyle={this.props.tdRowStyle}

@@ -1,5 +1,4 @@
 import React from "react"
-// import CheckboxElement from "./CheckboxElement"
 
 
 export default React.createClass({

@@ -1,38 +1,22 @@
 import React from "react";
 import ControlPanel from "./ControlPanel";
-import SearchButton from "./SearchButton";
 import TableHeader from "./TableHeader";
 import HackerTable from "./HackerTable";
+import {attrNotBeShown, attrNotBeShownInRows, notBeShownInOpeningRow, tabObject} from "../HARD_VALUES.js"
 
 
 
-//Hardcoded values
 
-
-var attrNotBeShown = ["admin", "password"]; //TODO: deleting needs to be done already in backend!!
-
-var attrNotBeShownInRows = ["question1", "question2", "comment"];
-
-var notBeShownInOpeningRow = ["email"];
-
-var tabObject = [
-    {
-        tabValue: "Hackers",
-        visible: true
-    },{
-        tabValue: "Selected",
-        visible: false
-    }
-];
-
+var domain = "http://localhost:3000"
 
 export default React.createClass ({
 
     getHackers: function(){
         var self = this;
         var xhr = new XMLHttpRequest();
-        var url = "http://localhost:3000/admin/hackers/all"
+        var url = domain + "/admin/hackers/all"
          // () => {   == same as function(){
+            console.log("moro")
         xhr.onload = () => {
           //request finished and response is ready  
           if (xhr.readyState === 4) {
@@ -52,6 +36,7 @@ export default React.createClass ({
 
                 var attributes = rowAttributes;
 
+
                 attrNotBeShownInRows.forEach(function(e) {
                     delete rowAttributes[e]
                 })
@@ -64,11 +49,14 @@ export default React.createClass ({
                     obj["index"] = i;
                     return obj;
                 })
+                console.log("rowAttributes")
+                console.log(rowAttributes)
                 this.setState({
-                    rowAttributes : rowAttributes,
+                    rowAttributes: rowAttributes,
                     attributeNames: attributes,
                     hackers: hackers,
-                    selectedParticipants: {}
+                    selectedParticipants: {},
+                    previousAccepted: this.state.previousAccepted
                 })
             } else {
               console.error(xhr.statusText);
@@ -87,7 +75,7 @@ export default React.createClass ({
     getAcceptedHackers: function(){
         var self = this;
         var xhr = new XMLHttpRequest();
-        var url = "http://localhost:3000/admin/hackers/accepted"
+        var url = domain + "/admin/hackers/accepted"
          // () => {   == same as function(){
         xhr.onload = () => {
           //request finished and response is ready  
@@ -120,7 +108,8 @@ export default React.createClass ({
                     rowAttributes : rowAttributes,
                     attributeNames: attributes,
                     hackers:(jsoned.hackers),
-                    selectedParticipants: {}
+                    selectedParticipants: this.state.selectedParticipants,
+                    previousAccepted: this.state.previousAccepted
                 })
             } else {
               console.error(xhr.statusText);
@@ -141,7 +130,8 @@ export default React.createClass ({
             attributeNames: [],
             hackers: {},
             selectedParticipants: {},
-            tabObject: tabObject
+            tabObject: tabObject,
+            previousAccepted: {}
         }
     },
     setAttributeValues: function(key){
@@ -156,8 +146,7 @@ export default React.createClass ({
     },
     addToSelectedList: function(hacker, travelReimbursement) {
         var selected = this.state.selectedParticipants;
-        console.log("selected")
-        console.log(travelReimbursement);
+
         if(!selected[hacker.email] || hacker["travelReimbursement"] !== travelReimbursement) {
             
             hacker["travelReimbursement"] = travelReimbursement;
@@ -170,6 +159,7 @@ export default React.createClass ({
                     attributeNames: this.state.attributeNames,
                     hackers: hackers,
                     selectedParticipants: selected,
+                    previousAccepted: this.state.previousAccepted
             })        
         }
     },
@@ -185,25 +175,95 @@ export default React.createClass ({
                 attributeNames: this.state.attributeNames,
                 hackers: hackers,
                 selectedParticipants: selected,
+                previousAccepted: this.state.previousAccepted
             })            
         } 
-    }
-    ,acceptSelectedHackers: function() {
+    },
+    updateHackersAfterReload: function(updated) {
+
+        var hackersObj = {}
+        var hackers = this.state.hackers;
+        for(var i in updated) {
+            console.log(updated[i]);
+            var hacker = updated[i]
+            if(hackers[hacker.index].email === hacker.email) {
+                hackers[hacker.index] = hacker; 
+                hackersObj[hacker.email] = hacker;
+            }
+        }
+
+        this.setState({
+            rowAttributes: this.state.rowAttributes,
+            attributeNames: this.state.attributeNames,
+            hackers: hackers,
+            selectedParticipants: this.state.selectedParticipants,
+            previousAccepted: hackersObj,      
+        })
+    },
+    reloadPrevious: function() {
         var self = this;
         var xhr = new XMLHttpRequest();
-        var url = "http://localhost:3000/admin/hackers/accept-selected"
+        var url = domain + "/admin/hackers/reload-previous"
+        xhr.open('POST', url);
+        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        var previousObj = this.state.previousAccepted;
+        xhr.onload = function() {
+
+            if (this.readyState === 4 && this.status === 200) {
+
+                var responseItem = xhr.response;
+                var jsoned = JSON.parse(responseItem)
+
+                self.updateHackersAfterReload(jsoned.updated)
+            } else {
+                console.log("Something went wrong, error code: " + this.status);
+            }
+        }
+        console.log("previousObj")
+        console.log(previousObj);
+        xhr.send(JSON.stringify({"previous": previousObj}));        
+    },    
+    updateHackersAfterInvitation: function(accepted) {
+        var hackersObj = this.state.previousAccepted;
+        var hackers = this.state.hackers;
+        for(var i in accepted) {
+            var hacker = accepted[i]
+            if(hackers[hacker.index].email === hacker.email) {
+                hackers[hacker.index] = hacker; 
+                hackersObj[hacker.email] = hacker;
+            }
+        }
+
+        this.setState({
+            rowAttributes: this.state.rowAttributes,
+            attributeNames: this.state.attributeNames,
+            hackers: hackers,
+            selectedParticipants: {},
+            previousAccepted: hackersObj,      
+        })
+    },
+    acceptSelectedHackers: function() {
+        var self = this;
+        var xhr = new XMLHttpRequest();
+        var url = domain + "/admin/hackers/accept-selected"
         xhr.open('POST', url);
         xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
         var selectedObj = this.state.selectedParticipants;
         xhr.onload = function() {
-            if (this.readyState === 4) {
-                var responseItem = this.response;
-                console.log("Accepted");
-                console.log(JSON.parse(responseItem).accepted)
+
+            if (this.readyState === 4 && this.status === 200) {
+                var responseItem = xhr.response;
+                var jsoned = JSON.parse(responseItem)
+                console.log(jsoned)
+                if(jsoned.statusCode === 200 || jsoned.statusCode === 202) {
+                    console.log("responseItem.statusCode")
+                    self.updateHackersAfterInvitation(jsoned.accepted)
+                }
+            } else {
+                console.log("Something went wrong, error code: " + this.status);
             }
         }
-        console.log("selectedarr")
-        console.log(selectedObj);
+
         xhr.send(JSON.stringify({"selected": selectedObj}));
     },
     render: function() {
@@ -220,15 +280,12 @@ export default React.createClass ({
         }
         var tdRowStyle = {"width": 100/i + '%'};
 
-        console.log("")
-
 
     return (        
     <div id="init">
         <button onClick={this.getHackers}>All hackers</button>
         <button onClick={this.getAcceptedHackers}>Accepted hackers</button>
-
-        <SearchButton findHackers={this.acceptSelectedHackers}/>
+        
         <ControlPanel
                 setAttributeValues ={this.setAttributeValues}
                 rowAttributes={this.state.rowAttributes}
@@ -236,7 +293,10 @@ export default React.createClass ({
                 selectedParticipants={this.state.selectedParticipants} 
         /> 
       <HackerTable
+            reloadPrevious={this.reloadPrevious}
             tabObject={tabObject}
+            acceptSelectedHackers={this.acceptSelectedHackers}
+            previousAccepted={this.state.previousAccepted}
             selectedParticipants={this.state.selectedParticipants} 
             tdRowStyle={tdRowStyle}
             rowAttributes={this.state.rowAttributes}
