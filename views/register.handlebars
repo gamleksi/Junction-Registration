@@ -50,10 +50,18 @@
 	<!-- country: String, -->
 	<div class="form-group">
 		<label>Home Country</label>
+
+<!-- 		<input type="text" class="form-control"  value="{{failedPost.country}}" placeholder="Country" name="country" list="country">
+ -->		<select name="country" id="country" class="country">
+		 {{#each country_values}}
+			<option value="{{this.code}}" {{this.selected}}>{{this.name}}</option>
+		 {{/each}}
+		</select>
+
 		{{#if error_messages.country}}
 			<p class = "alert-text"> {{error_messages.country}}</p>
 		{{/if}}
-		<input type="text" class="form-control"  value="{{failedPost.country}}" placeholder="Finland" name="country">
+		
 	</div>	
 	
 
