@@ -16,6 +16,8 @@ public/.DS_Store
 
 views/.DS_Store
 
+npm-debug.log
+
 .DS_Storesendgrid.env
 sendgrid.env
 .env
