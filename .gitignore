@@ -1,4 +1,3 @@
-
 # Dependency directories
 node_modules
 jspm_packages
@@ -21,3 +20,12 @@ npm-debug.log
 .DS_Storesendgrid.env
 sendgrid.env
 .env
+
+
+#Server
+
+bin/start
+bin/node
+bin/stop
+bin/npm
+run/
