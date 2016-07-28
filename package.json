@@ -3,7 +3,10 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon app.js"
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "webpack": "webpack & nodemon app.js"
+
   },
   "dependencies": {
     "babel-loader": "^6.2.0",
@@ -40,7 +43,13 @@
     "sendgrid": "*",
     "serve-favicon": "~2.3.0",
     "webpack": "^1.12.9",
-    "webpack-dev-server": "^1.14.1"
+    "webpack-dev-server": "^1.14.1",
+    "express-csv":"*",
+    "json2csv":"*",
+    "fs":"*",
+    "socket.io":"*"
+
+
   },
   "main": "admin-generator.js",
   "devDependencies": {},

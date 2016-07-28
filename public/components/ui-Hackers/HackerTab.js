@@ -4,8 +4,7 @@ var _ = require('lodash');
 export default React.createClass({ 
 
     defineClass: function(index) {
-    	console.log("index")
-    	console.log(index)
+
     	this.props.changeSheet(index)
 	},
 	renderTabs: function(index){
@@ -24,7 +23,11 @@ export default React.createClass({
 	    for(var index in this.props.tabObject) {
 	    	tabs.push(this.renderTabs(index))
 	    }
-		return (	
+	    var tabButton = []
+	    if(this.props.buttonClicked) {
+	    	tabs.push(<li class="active tab-button" onClick={this.props.buttonClicked}><a>{this.props.tabButton}</a></li>)
+	    }
+		return (
 			<ul class="nav nav-tabs">
 				{tabs}
 			</ul>

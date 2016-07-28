@@ -1,8 +1,8 @@
 var bcrypt = require('bcryptjs');
 var orm = require('orm');
 var dateFormat = require('dateformat');
-
-
+var EventEmitter = require('events');
+var event = new EventEmitter();
 
 module.exports = {
 	createModel: function(db) {
@@ -31,7 +31,7 @@ module.exports = {
 		var tracks = ["junction","other"];
 		var sexes =["male", "female","other"];
 		var travels = ["Fin", "No", "Nord", "Eu", "Out"]
-
+		var statuses = ["accept","reject","pending"];
 		var Users = db.define("users", {
 				firstname: String,
 				lastname: String,
@@ -50,8 +50,10 @@ module.exports = {
 				admin: {type: "boolean", defaultValue: false},
 				accepted:  {type: "boolean", defaultValue: false},
 				batch: Date,
-				travelReimbursement: {type: "text", defaultValue: undefined},				
+				hash: String,
+				status: {type: "text", defaultValue: "pending"},
 
+				travelReimbursement: {type: "text", defaultValue: undefined},				
 				acceptedEmail: {type: "text", defaultValue: "not send"}
 			}, {
 
@@ -62,6 +64,8 @@ module.exports = {
 				    shirtsize: orm.validators.insideList(shirtsizes, "Invalid shirtsize"),
 				    track: orm.validators.insideList(tracks, "Invalid track"),
 				    dietary: orm.validators.insideList(dietarys, "Invalid dietary"),
+				    status: orm.validators.insideList(statuses, "Invalid status"),
+
 				},
 				methods:{
 					getPassword:function(){
@@ -95,34 +99,60 @@ module.exports = {
 			});
 		};
 
-		Users.acceptHackers = function(users) {
+
+		Users.acceptHackers = function(hackers, callback) {
+
 			console.log("USERS IN ACCEPTHACKERS")
-			console.log(users)
 
 
 			var date = dateFormat(new Date(), "isoDate");
+			var errors = 0; 
+			var savedUsers = [];
+
+			event.once('event', function(){
+				console.log(savedUsers);
+				callback(savedUsers);
+			});
+
 			function inner(hacker) {
 				Users.one({"email": hacker.email}, function(err, user) {
+					
 					if(err) {
+						errors++;
 						throw err;
 					} 
 					if(user) {
-						var date = dateFormat(new Date(), "isoDate").split("T")[0]
-						console.log("DATE")
-						console.log(date)
-						user.accepted = true
+						var date = dateFormat(new Date(), "isoDate").split("T")[0];
+						console.log("DATE");
+						console.log(date);
+						user.accepted = true;
 						user.batch = date;
 						user.travelReimbursement = hacker.travelReimbursement;
-			console.log("acceptHackers");
-						console.log(user.travelReimbursement) 
-						user.save();							
+						console.log("acceptHackers");
+
+						console.log(user.travelReimbursement);
+						user.save(function(err) {
+							if(err) {
+								errors++;
+								throw err;
+							} else {
+								savedUsers.push(user);
+							}
+							console.log("errors + savedUsers.length")
+							var length = errors + savedUsers.length
+							console.log(length)
+							if(Object.keys(hackers).length === (length)) {
+								event.emit('event');
+							}
+						});							
+
 					}
+
 				});				
 			} 
 			
-			for(var key in users){
-			
-				inner(users[key]);
+			for(var key in hackers){
+				inner(hackers[key]);
 			}
 		};
 
@@ -145,6 +175,43 @@ module.exports = {
 			});
 		};
 
+		Users.changeStatusWithHash = function(status,hash,callback){
+      		var reverseHash = hash.split("").reverse().join("");
+
+			Users.one({"hash":reverseHash}, function(err,user){
+				if(err){
+					callback("status not changed")
+					throw err;
+
+				} 
+				if(user) {
+					user.status = status;
+					user.save();
+					callback(true)
+				}else {
+					callback(false)
+
+				}
+			});
+		};
+		Users.hashMatches = function(hashString,callback){
+
+			console.log("HASH" + hashString)
+      		var reverseHash = hashString.split("").reverse().join("");
+			Users.exists({"hash":reverseHash}, function(err,exists){
+				if(err){
+					callback("status not changed")
+					throw err;
+				} 
+				if(exists) {
+					
+					callback(true)
+				}else {
+					callback(false)
+
+				}
+			});
+		}
 		// Users.isAdmin = function(userEmail){
 		// 	this.getUserByEmail(userEmail, function(err, user) {
 		// 		Users.one({"email":userEmail}, function(err,user){
@@ -165,7 +232,7 @@ module.exports = {
 
 	*/
 		Users.getUsers = function(callback){
-			Users.find({admin: false,accepted:false}).omit('admin').omit('password').run(function(err, results) {
+			Users.find({admin: false}).omit('admin').omit('password').run(function(err, results) {
 				if(err) {
 					throw err;
 				}
@@ -175,7 +242,7 @@ module.exports = {
 
 		Users.getUsersWithParameters = function(params,callback){
 			params.admin = false
-			Users.find(params).omit('admin').run(function(err, results) {
+			Users.find(params).omit('admin').omit('password').run(function(err, results) {
 				if(err) {
 					throw err;
 				}
