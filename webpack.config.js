@@ -1,10 +1,18 @@
 var debug = process.env.NODE_ENV !== "production"; //tämä config
 var webpack = require('webpack');
+var path = require('path');
+
+var BUILD_DIR = path.resolve(__dirname, 'public/js/');
+var APP_DIR = path.resolve(__dirname, 'public/components/');
+
+console.log("BUILD_DIR");
+console.log(BUILD_DIR);
+console.log("APP_DIR");
+console.log(APP_DIR);
 
 module.exports = {
-  context: __dirname,
   devtool: debug ? "inline-sourcemap" : null,
-  entry: "./public/components/App.js",
+  entry: APP_DIR + '/App.js',
   module: {
     loaders: [
       {
@@ -19,7 +27,7 @@ module.exports = {
     ]
   },
   output: {
-    path: __dirname + "/public/js/",
+    path: BUILD_DIR,
     filename: "scripts.min.js"
   },
   plugins: debug ? [] : [
@@ -27,4 +35,4 @@ module.exports = {
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.optimize.UglifyJsPlugin({ mangle: false, sourcemap: false }),
   ],
-};
+};  

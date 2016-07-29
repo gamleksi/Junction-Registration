@@ -28,4 +28,7 @@ bin/start
 bin/node
 bin/stop
 bin/npm
+bin/webpack
+bing/psql
 run/
+bin/nodemon
