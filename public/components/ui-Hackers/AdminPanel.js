@@ -249,7 +249,7 @@ export default React.createClass ({
         xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
         var selectedObj = this.state.selectedParticipants;
         xhr.onload = function() {
-
+            
             if (this.readyState === 4 && this.status === 200) {
                 var responseItem = xhr.response;
                 var jsoned = JSON.parse(responseItem)
