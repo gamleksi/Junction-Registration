@@ -46,10 +46,7 @@
     "webpack-dev-server": "^1.14.1",
     "express-csv":"*",
     "json2csv":"*",
-    "fs":"*",
-    "socket.io":"*"
-
-
+    "fs":"*"  
   },
   "main": "admin-generator.js",
   "devDependencies": {},

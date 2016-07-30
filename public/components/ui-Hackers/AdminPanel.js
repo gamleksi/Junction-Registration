@@ -10,9 +10,9 @@ export default React.createClass ({
     getHackers: function(){
         var self = this;
         var xhr = new XMLHttpRequest();
-        var url = domain + "/admin/hackers/all"
+
+        var url = "/admin/hackers/all"
          // () => {   == same as function(){
-            console.log("moro")
         xhr.onload = () => {
           //request finished and response is ready  
           if (xhr.readyState === 4) {
@@ -71,7 +71,7 @@ export default React.createClass ({
     getAcceptedHackers: function(){
         var self = this;
         var xhr = new XMLHttpRequest();
-        var url = domain + "/admin/hackers/accepted"
+        var url =  "/admin/hackers/accepted"
          // () => {   == same as function(){
         xhr.onload = () => {
           //request finished and response is ready  
@@ -202,7 +202,7 @@ export default React.createClass ({
     reloadPrevious: function() {
         var self = this;
         var xhr = new XMLHttpRequest();
-        var url = domain + "/admin/hackers/reload-previous"
+        var url = "/admin/hackers/reload-previous"
         xhr.open('POST', url);
         xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
         var previousObj = this.state.previousAccepted;
@@ -244,7 +244,7 @@ export default React.createClass ({
     acceptSelectedHackers: function() {
         var self = this;
         var xhr = new XMLHttpRequest();
-        var url = domain + "/admin/hackers/accept-selected"
+        var url = "/admin/hackers/accept-selected"
         xhr.open('POST', url);
         xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
         var selectedObj = this.state.selectedParticipants;
