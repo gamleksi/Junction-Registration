@@ -1,5 +1,0 @@
-"firstname","lastname","age","email","country","sex","shirtsize","dietary","track","portfolio","question1","question2","comment","password","admin","accepted","batch","hash","status","travelReimbursement","acceptedEmail"
-"Elias","Mikkola",23,"eliasdsdf@gmail.com","AF","male","xs","no","junction","ASd","asd","asd","asd",,false,true,"""2016-07-27T00:00:00.000Z""","ETLBYTRCNMI1469614687902","reject","Nord","click"
-"Luukas","Castren",99,"luukas.castren@gmail.com","FI","female","l","glut","junction","Asd","sad","asd","vedy good hack",,false,true,"""2016-07-27T00:00:00.000Z""","7G1LT3P7GB91469618396589","reject","Fin","processed"
-"Joakim","Isoaho",14,"joakim.isoaho@aalto.fi","CN","male","xxl","pork","junction","jommi9","Im the best","Yes no","hanks for this !!! <a href=""adpoaksdopK""> adassfpasofjkposafpoasd pasdofgposaddgpo asdjgpjasdp HACKER ASDA </a>",,false,true,"""2016-07-27T00:00:00.000Z""","IJGR946XBT91469619526522","accept","No","click"
-"Elias","23",23,"elias.mikkola@aaltoes.com","AF","male","xs","no","junction","asd","asd","asd","asd",,false,false,,"3UPB59G4X6R1470049783773","pending",,"processed"
