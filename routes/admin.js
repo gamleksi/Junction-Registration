@@ -37,12 +37,9 @@ var sendgrid = require('../sendgrid/sendgrid.js')
 
 router.post('/hackers/accept-selected', ensureIsAuthenticatedAndAdmin, sendEmails, function(req, res, statusCode) {
   console.log("statuscode")
-  console.log(req.body.selected);
-  console.log(req.body.statusCode);
   if(req.body.statusCode === 202 || req.body.statusCode === 200) {
-
+    
     req.models.users.acceptHackers(req.body.selected, function(accepted) {
-      
       for(var i in accepted) {
         accepted[i].index = req.body.selected[accepted[i].email].index;
       }
