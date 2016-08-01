@@ -1,5 +1,4 @@
 var dotenv = require('dotenv').config();
-
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -13,7 +12,7 @@ var session = require('express-session');
 var passport = require('passport');
 var exphbs = require('express-handlebars');
 var LocalStrategy = require('passport-local').Strategy;
-var config = require('./config/app-config')
+//var config = require('./config/app-config')
 
 var orm = require('orm');
 
@@ -29,7 +28,7 @@ app.set('view engine', 'handlebars');
 
 
 //Database connection middleware
-app.use(orm.express(config.databaseUrl, {
+app.use(orm.express(process.env.DATABASE_URL, {
     error: function(err){
       console.error(err);
     }, 
@@ -119,9 +118,7 @@ app.use('/users', users);
 app.use('/confirm', confirm);
 app.use('/admin', admin);
 
-app.set('port', (process.env.PORT || 3000));
-
-
+app.set('port', (process.env.PORT));
 
 
 app.listen(app.get('port'), function(){
