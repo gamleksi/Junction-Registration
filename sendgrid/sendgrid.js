@@ -97,6 +97,7 @@
           console.log("Mail");
           console.log(response.statusCode);
           console.log("BODY FROM SendGrid");
+          console.log(response.body)
         });
       }
 

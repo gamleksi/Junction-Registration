@@ -31,4 +31,4 @@
 var dotenv = require('dotenv').config();
 var sendgrid = require('./sendgrid/sendgrid.js')
 
-sendgrid.sendRegisterConfirmation("aleksi.hamalainen@aaltoes.com", "Aleksi");
+sendgrid.sendRegisterConfirmation("elias.mikkola1@gmail.com", "Aleksi");
