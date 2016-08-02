@@ -29,7 +29,7 @@ router.get('/:value/:hash', function (req, res, next) {
 		}
 		else{
 			next();
-		}
+		}	
 });
 
 router.get('/decide/:hash', function (req, res, next) {
@@ -42,6 +42,5 @@ router.get('/decide/:hash', function (req, res, next) {
 	});
 	
 });
-
 
 module.exports = router;
