@@ -10,6 +10,10 @@ router.get('/', ensureIsAuthenticatedAndAdmin, function(req, res) {
   res.render('admin', {layout: 'admin-layout'});     
 });
 
+router.get('/login', function(req, res) {
+  res.render('login');
+});
+
 router.get('/hackers', ensureIsAuthenticatedAndAdmin, function(req, res) {
   req.models.users.getUsers(function(users) {
     
@@ -43,10 +47,8 @@ var sendgrid = require('../sendgrid/sendgrid.js')
 
 router.post('/hackers/accept-selected', ensureIsAuthenticatedAndAdmin, sendEmails, function(req, res, statusCode) {
   console.log("statuscode")
-  console.log(req.body.selected);
-  console.log(req.body.statusCode);
   if(req.body.statusCode === 202 || req.body.statusCode === 200) {
-
+    
     req.models.users.acceptHackers(req.body.selected, function(accepted) {
 
       for(var i in accepted) {
@@ -97,12 +99,17 @@ var fields = Object.keys(users[0])
 
   });
 });
-router.post('/webhook', isFromSendGrid, function(req, res) {
-  console.log("webhook"); 
-  console.log(req.body);
-  console.log(req.body[0].email + ": " +req.body[0].event);
-  req.models.users.addApprovalEmailInformation(req.body[0].email, req.body[0].event)
-  res.send();
+router.post('/webhook/:key', isFromSendGrid, function(req, res) {
+  console.log("webhook");  
+  console.log(process.env.WEBHOOK_KEY)
+  console.log(req.params.key)
+  if(process.env.WEBHOOK_KEY === req.params.key) {
+    console.log(req.body[0].email + ": " + req.body[0].event);
+    req.models.users.addWebhookInformation(req.body[0].email, req.body[0].event)
+    res.send();
+  } else {
+    console.log("wrong key")
+  }
 });
 
 function isFromSendGrid(req, res, next) {

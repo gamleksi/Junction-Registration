@@ -1,14 +1,12 @@
 var dotenv = require('dotenv').config();
-
-var config = require('./config/app-config')
-
 var orm = require('orm');
-
 var Users = require('./models/user');
 
 
 
-orm.express(config.databaseUrl, {
+
+
+orm.express(process.env.DATABASE_URL, {
     error: function(err){
       console.error(err);
     }, 
@@ -16,17 +14,22 @@ orm.express(config.databaseUrl, {
         models.users = Users.createModel(db);
         db.sync(function(err,success){
           if(err){
-
-            // TODO: Mitä tehdä jos sync error
-
             console.log(err);
           }
           else{
-            console.log("synced");
-          	models.users.createUser(config.admin, function(err, user) {
-		      if(err) {
-		      	console.error(err);   	
-		      }
+          var admin = {
+            firstname: "Luukas",
+            lastname: "Castren",
+            email: "hackjunction@aaltoes.com",
+            password: "admin",
+            admin: true
+          };
+            
+          models.users.createUser(admin, function(err, user) {
+  		      console.log("what")
+            if(err) {
+  		      	console.error(err);   	
+  		      }
 		  		console.log(user);
 		  	});
           }

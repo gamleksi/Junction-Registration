@@ -8,9 +8,6 @@
     content: new helper.Content("text/plain", "some text here"),  
     subject: "Registration",
   };
-  console.log("sendgrid env");
-  console.log(process.env.SENDGRID_API_KEY);
-
 
   var sg = require('sendgrid').SendGrid(process.env.SENDGRID_API_KEY)
 
@@ -24,6 +21,8 @@
   };
 
   module.exports = {
+
+
     sendApprovalMails: function(emailObjects, callback) {
       console.log("SEND APPROVALMAILS")
       event.on('newMailSent', function(responseObject) {
@@ -36,7 +35,7 @@
       var to_email = new helper.Email(emails[0])
 
       mail = new helper.Mail(from_email, "You have been accepted to Junction", to_email, approvalMail.content);  
-      mail.personalizations[0].addSubstitution({"-mail-":emails[0]}) 
+      mail.personalizations[0].addSubstitution({"-email-":emails[0]}) 
       mail.personalizations[0].addSubstitution({"-travel-":travelValues.message(emailObjects[emails[0]].travelReimbursement)})
       
       var reverseHash = emailObjects[emails[0]].hash.split("").reverse().join("");
@@ -55,13 +54,10 @@
           var reverseHash = emailObjects[emails[i]].hash.split("").reverse().join("");
 
           personalization.addTo(to_email);
-          personalization.addSubstitution({"-mail-":emails[i]})
+          personalization.addSubstitution({"-email-":emails[i]})
           personalization.addSubstitution({"-travel-":travelValues.message(emailObjects[emails[i]].travelReimbursement)}) 
-          personalization.addSubstitution({"-name-":emailObjects[emails[i]].firstname}) 
+          personalization.addSubstitution({"-first_name-":emailObjects[emails[i]].firstname}) 
           personalization.addSubstitution({"-hash-":reverseHash}) 
-          
-
-
           mail.addPersonalization(personalization);
         }
       }
@@ -77,37 +73,32 @@
         console.log("Mail")
         console.log(response.statusCode)
         // console.log("BODY FROM SendGrid")
-        //console.log(response.body)
+        // console.log(response.body)
         // console.log(response.headers)
-        //TODO pitääkö statusCode jo tässä vaiheessa tsekata
         event.emit('newMailSent', response.statusCode);
-
-
       });
       
       },
-      sendRegisterConfirmation: function(email){
-        var to_email = new helper.Email(email)
+      
+      sendRegisterConfirmation: function(email, firstname){
+        var to_email = new helper.Email(email);
         var mail = new helper.Mail(from_email, "Junction registeration", to_email, approvalMail.content);  
-        mail.personalizations[0].addSubstitution({"-mail-":email}) 
+        mail.personalizations[0].addSubstitution({"%email%":email});
+        mail.personalizations[0].addSubstitution({"%first_name%": firstname});  
         sg.emptyRequest();
+        console.log("mail.personalizations[0]")
+        console.log(mail.personalizations[0])
 
-      var requestBody = mail.toJSON()
-      requestBody.template_id = process.env.SENDGRID_REGISTER_TEMPLATE_ID
-      
-      
-      
-      var request = createNewRequest(requestBody);
-      
-      sg.API(request, function (response) {
-        console.log("Mail")
-        console.log(response.statusCode)
-        console.log("BODY FROM SendGrid")
-        //console.log(response.body)
-        // console.log(response.headers)
-  
-
-      });
+        var requestBody = mail.toJSON();
+        requestBody.template_id = process.env.SENDGRID_REGISTER_TEMPLATE_ID;  
+        var request = createNewRequest(requestBody);
+        
+        sg.API(request, function (response) {
+          console.log("Mail");
+          console.log(response.statusCode);
+          console.log("BODY FROM SendGrid");
+          console.log(response.body)
+        });
       }
 
   };
