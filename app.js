@@ -13,6 +13,7 @@ var passport = require('passport');
 var exphbs = require('express-handlebars');
 var LocalStrategy = require('passport-local').Strategy;
 //var config = require('./config/app-config')
+var helmet = require('helmet');
 
 var orm = require('orm');
 
@@ -21,6 +22,10 @@ var Users = require('./models/user');
 
 //init app
 var app = express();
+
+//use helmet
+app.use(helmet());
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.engine('handlebars', exphbs({defaultLayout:'layout'}));
@@ -64,7 +69,7 @@ var admin = require('./routes/admin');
 
 
 app.use(session({
-  secret: 'secret', //Helps to improve encyption. TODO: text should keep private and unique for this app!! 
+  secret: 'junction2016BestTechnology9000', //Helps to improve encyption. TODO: text should keep private and unique for this app!! 
   resave: true, // 'True' updates session every new view. Helps avoiding session expiring.
   saveUninitialized: true //Earlier true. Change to reduce database traffic when anonymous users.
 }));
