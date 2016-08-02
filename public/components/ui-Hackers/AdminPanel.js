@@ -7,6 +7,7 @@ import {attrNotBeShown, attrNotBeShownInRows, notBeShownInOpeningRow, tabObject,
 
 export default React.createClass ({
 
+
     getHackers: function(){
         var self = this;
         var xhr = new XMLHttpRequest();
@@ -21,28 +22,34 @@ export default React.createClass ({
                 var responseItem = xhr.response
                 var jsoned = JSON.parse(responseItem)
                 
-                var rowAttributes = {}
-
-                for(var key in jsoned.hackers[0]){
-                    rowAttributes[key] = true
-                }
-                attrNotBeShown.forEach(function(e) {
-                    delete rowAttributes[e]
-                })
-
+                var rowAttributes = {}                
                 var attributes = rowAttributes;
+                
+                if(Object.getOwnPropertyNames(this.state.rowAttributes).length === 0) {
 
-
-                attrNotBeShownInRows.forEach(function(e) {
-                    delete rowAttributes[e]
-                })
-                notBeShownInOpeningRow.forEach(function(e) {
-                    if(rowAttributes[e]) {
-                        rowAttributes[e] = false;
+                    for(var key in jsoned.hackers[0]){
+                        rowAttributes[key] = true
                     }
-                })
-                var hackers = jsoned.hackers.map(function(obj, i) {
-                    obj["index"] = i;
+                    attrNotBeShown.forEach(function(e) {
+                        delete rowAttributes[e]
+                    })
+
+                    attrNotBeShownInRows.forEach(function(e) {
+                        delete rowAttributes[e]
+                    })
+                    notBeShownInOpeningRow.forEach(function(e) {
+                        if(rowAttributes[e]) {
+                            rowAttributes[e] = false;
+                        }
+                    })
+                } else {
+                    rowAttributes = this.state.rowAttributes;
+                    attributes = this.state.attributeNames;                    
+                }
+                var hackers = jsoned.hackers
+                var hackerMap = hackers.map(function(hacker, i) {
+                    var obj = {}
+                    obj[hacker.email] = i;
                     return obj;
                 })
                 console.log("rowAttributes")
@@ -51,6 +58,7 @@ export default React.createClass ({
                     rowAttributes: rowAttributes,
                     attributeNames: attributes,
                     hackers: hackers,
+                    hackerMap: hackerMap,
                     selectedParticipants: {},
                     previousAccepted: this.state.previousAccepted
                 })
@@ -80,30 +88,42 @@ export default React.createClass ({
             if (xhr.status === 200) {
                 var responseItem = xhr.response
                 var jsoned = JSON.parse(responseItem)
-                
-                var rowAttributes = {}
 
-                for(var key in jsoned.hackers[0]){
-                    rowAttributes[key] = true
-                }
-                attrNotBeShown.forEach(function(e) {
-                    delete rowAttributes[e]
-                })
 
+                var rowAttributes = {}                
                 var attributes = rowAttributes;
+                if(Object.getOwnPropertyNames(this.state.rowAttributes).length === 0) {
 
-                attrNotBeShownInRows.forEach(function(e) {
-                    delete rowAttributes[e]
-                })
-                notBeShownInOpeningRow.forEach(function(e) {
-                    if(rowAttributes[e]) {
-                        rowAttributes[e] = false;
+                    for(var key in jsoned.hackers[0]){
+                        rowAttributes[key] = true
                     }
-                })                
+                    attrNotBeShown.forEach(function(e) {
+                        delete rowAttributes[e]
+                    })
+
+                    attrNotBeShownInRows.forEach(function(e) {
+                        delete rowAttributes[e]
+                    })
+                    notBeShownInOpeningRow.forEach(function(e) {
+                        if(rowAttributes[e]) {
+                            rowAttributes[e] = false;
+                        }
+                    })
+                } else {
+                    rowAttributes = this.state.rowAttributes;
+                    attributes = this.state.attributeNames;                    
+                }
+                var hackers = jsoned.hackers
+                var hackerMap = hackers.map(function(hacker, i) {
+                    var obj = {}
+                    obj[hacker.email] = i;
+                    return obj;
+                })                        
                 this.setState({
-                    rowAttributes : rowAttributes,
+                    rowAttributes: rowAttributes,
                     attributeNames: attributes,
                     hackers:(jsoned.hackers),
+                    hackerMap: hackerMap,
                     selectedParticipants: this.state.selectedParticipants,
                     previousAccepted: this.state.previousAccepted
                 })
@@ -128,6 +148,7 @@ export default React.createClass ({
             rowAttributes: {},
             attributeNames: [],
             hackers: {},
+            hackerMap: {},
             selectedParticipants: {},
             tabObject: tabObject,
             previousAccepted: {}
@@ -140,23 +161,31 @@ export default React.createClass ({
             rowAttributes: attributes,
             attributeNames: this.state.attributeNames,
             hackers:this.state.hackers,
+            hackerMap: this.state.hackerMap,
             selectedParticipants: this.state.selectedParticipants,
         });
+    },
+    updateHackerIntoList: function(hacker) {
+        var hackers = this.state.hackers
+        var index = this.state.hackerMap[hacker.email]
+        if(index) {
+            hackers[index] = hacker;
+        }
+        return hackers;
     },
     addToSelectedList: function(hacker, travelReimbursement) {
         var selected = this.state.selectedParticipants;
 
         if(!selected[hacker.email] || hacker["travelReimbursement"] !== travelReimbursement) {
-            
+    
             hacker["travelReimbursement"] = travelReimbursement;
-            selected[hacker.email] = hacker; 
-            var hackers = this.state.hackers;
-            hackers[hacker.index].travelReimbursement = travelReimbursement;
-            console.log(hackers[hacker.index])
+            selected[hacker.email] = hacker;
+            var hackers = this.updateHackerIntoList(hacker);
             this.setState({
                     rowAttributes: this.state.rowAttributes,
                     attributeNames: this.state.attributeNames,
                     hackers: hackers,
+                    hackerMap: this.state.hackerMap,
                     selectedParticipants: selected,
                     previousAccepted: this.state.previousAccepted
             })        
@@ -167,12 +196,13 @@ export default React.createClass ({
         if(selected[hacker.email]) {
             console.log("dropped: " + "hacker.email")
             delete selected[hacker.email];
-            var hackers = this.state.hackers;
-            hackers[hacker.index].travelReimbursement = undefined;            
+            delete hacker["travelReimbursement"];
+            var hackers = this.updateHackerIntoList(hacker);
             this.setState({
                 rowAttributes: this.state.rowAttributes,
                 attributeNames: this.state.attributeNames,
                 hackers: hackers,
+                hackerMap: this.state.hackerMap,
                 selectedParticipants: selected,
                 previousAccepted: this.state.previousAccepted
             })            
@@ -185,9 +215,10 @@ export default React.createClass ({
         for(var i in updated) {
             console.log(updated[i]);
             var hacker = updated[i]
-            if(hackers[hacker.index].email === hacker.email) {
-                hackers[hacker.index] = hacker; 
-                hackersObj[hacker.email] = hacker;
+            hackersObj[hacker.email] = hacker;
+            var index = this.state.hackerMap[hacker.email];
+            if(index) {
+                hackers[index] = hacker;
             }
         }
 
@@ -195,6 +226,7 @@ export default React.createClass ({
             rowAttributes: this.state.rowAttributes,
             attributeNames: this.state.attributeNames,
             hackers: hackers,
+            hackerMap: this.state.hackerMap,
             selectedParticipants: this.state.selectedParticipants,
             previousAccepted: hackersObj,      
         })
@@ -226,17 +258,18 @@ export default React.createClass ({
         var hackersObj = this.state.previousAccepted;
         var hackers = this.state.hackers;
         for(var i in accepted) {
-            var hacker = accepted[i]
-            if(hackers[hacker.index].email === hacker.email) {
-                hackers[hacker.index] = hacker; 
-                hackersObj[hacker.email] = hacker;
+            var hacker = accepted[i];
+            hackersObj[hacker.email] = hacker;
+            var index = this.state.hackerMap[hacker.email];
+            if(index) {
+                hackers[index] = hacker;
             }
         }
-
         this.setState({
             rowAttributes: this.state.rowAttributes,
             attributeNames: this.state.attributeNames,
             hackers: hackers,
+            hackerMap: this.state.hackerMap,
             selectedParticipants: {},
             previousAccepted: hackersObj,      
         })

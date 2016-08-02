@@ -52,9 +52,9 @@ module.exports = {
 				batch: Date,
 				hash: String,
 				status: {type: "text", defaultValue: "pending"},
-
 				travelReimbursement: {type: "text", defaultValue: undefined},				
-				acceptedEmail: {type: "text", defaultValue: "not send"}
+				invitationEmailStatus: {type: "text", defaultValue: "Not Send"},
+				registerEmailStatus: {type: "text", defaultValue: "Should be sent??"}
 			}, {
 
 				validations: {
@@ -91,6 +91,23 @@ module.exports = {
 				});
 			});
 		};
+
+		Users.createAdmin = function(user, callback){
+			bcrypt.genSalt(10, function(err, salt) {
+				bcrypt.hash(user.password, salt, function(err, hash) {
+					user["admin"] = true;
+					Users.create(user, function(err,items){
+						if(err){
+							console.error(err);
+							callback(false)
+						} else {
+							console.log("User has been created succesfully.")
+							callback(true)
+						}
+					});					
+				});
+			});
+		};		
 
 		Users.getUserByEmail = function(addr, callback){
 			Users.one({"email":addr}, function(err,user){
@@ -156,12 +173,17 @@ module.exports = {
 			}
 		};
 
-		Users.addApprovalEmailInformation = function(email, event) {
+		Users.addWebhookInformation = function(email, event) {
 
 			Users.one({"email":email}, function(err,user){
 				if(err) throw err;
 				if(user) {
-					user.acceptedEmail = event;
+					if(user.travelReimbursement) {
+						user.invitationEmailStatus = event;
+						
+					} else {
+						user.registerEmailStatus = event;
+					}
 					user.save();
 				}
 			});
@@ -182,7 +204,6 @@ module.exports = {
 				if(err){
 					callback("status not changed")
 					throw err;
-
 				} 
 				if(user) {
 					user.status = status;
@@ -204,33 +225,13 @@ module.exports = {
 					throw err;
 				} 
 				if(exists) {
-					
-					callback(true)
+					callback(true);
 				}else {
-					callback(false)
-
+					callback(false);
 				}
 			});
 		}
-		// Users.isAdmin = function(userEmail){
-		// 	this.getUserByEmail(userEmail, function(err, user) {
-		// 		Users.one({"email":userEmail}, function(err,user){
-		// 		if(err) {
-		// 			throw err;	
-		// 		} 
-		// 		if(!user) {
-		// 			return false;	
-		// 		} else {
-		// 			return user.admin;	
-		// 		}
-		// 	});
-		// 	});
-		// };
-	/*
-	Different DB queries?
-	-
 
-	*/
 		Users.getUsers = function(callback){
 			Users.find({admin: false}).omit('admin').omit('password').run(function(err, results) {
 				if(err) {
@@ -249,16 +250,15 @@ module.exports = {
 				callback(results);
 			});
 		};
+
 		Users.getAcceptedUsers = function(callback){
-			Users.find({"admin":false,"accepted":true}).omit('admin').run(function(err, results) {
+			Users.find({"admin": false,"accepted":true}).omit('admin').run(function(err, results) {
 				if(err) {
 					throw err;
 				}
 				callback(results);
 			});
 		};
-
-
 		return Users;
 	}
 

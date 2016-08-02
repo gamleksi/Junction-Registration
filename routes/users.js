@@ -59,7 +59,7 @@ router.post('/register', function(req, res) {
   req.checkBody('shirtsize', 'shirtsize is required').notEmpty();
   req.checkBody('track', 'track choice is required').notEmpty();
   req.checkBody('country', 'Country is required').notEmpty();
-    req.checkBody('q1', 'Please answer the question.').notEmpty();
+  req.checkBody('q1', 'Please answer the question.').notEmpty();
   req.checkBody('q2', 'Please answer the question.').notEmpty();
 
   req.checkBody('sex', 'Gender is required').notEmpty();
@@ -156,7 +156,7 @@ router.post('/register', function(req, res) {
     };
   	req.models.users.createUser(newUser, function(success) {
       if(success){ 
-        sendgrid.sendRegisterConfirmation(email);
+        sendgrid.sendRegisterConfirmation(email, firstname);
         req.flash('success_msg', "You are registered succesfully, we sent you a email to your email address '"+email+"'. Please check your inbox and trash/spam folder. In case you didn't get it, please get in contact or register again.")
         res.redirect('login');
       }

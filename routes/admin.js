@@ -95,12 +95,17 @@ var fields = Object.keys(users[0])
 
   });
 });
-router.post('/webhook', isFromSendGrid, function(req, res) {
-  console.log("webhook"); 
-  console.log(req.body);
-  console.log(req.body[0].email + ": " +req.body[0].event);
-  req.models.users.addApprovalEmailInformation(req.body[0].email, req.body[0].event)
-  res.send();
+router.post('/webhook/:key', isFromSendGrid, function(req, res) {
+  console.log("webhook");  
+  console.log(process.env.WEBHOOK_KEY)
+  console.log(req.params.key)
+  if(process.env.WEBHOOK_KEY === req.params.key) {
+    console.log(req.body[0].email + ": " + req.body[0].event);
+    req.models.users.addWebhookInformation(req.body[0].email, req.body[0].event)
+    res.send();
+  } else {
+    console.log("wrong key")
+  }
 });
 
 function isFromSendGrid(req, res, next) {
