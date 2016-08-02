@@ -8,8 +8,14 @@ var UserDB = require('../models/user');
 var sendgrid = require('../sendgrid/sendgrid.js')
 
 /* GET users listing. */
-router.get('/register', ensureIsNotAuthenticated, function(req, res) {
+router.get('/', ensureIsNotAuthenticated, function(req, res) {
+  console.log("IN USERS")
   res.render('register',{form_values: form_values,country_values:country_values})
+});
+
+
+router.get('/thanks', ensureIsNotAuthenticated, function(req, res) {
+  res.render('thanks')
 });
 
 router.get('/login', ensureIsNotAuthenticated, function(req, res) {
@@ -45,6 +51,11 @@ router.post('/register', function(req, res) {
   var q1 = req.body.q1
   var q2 = req.body.q2
   var comment = req.body.comment
+  var skills = req.body.skills
+  var role = req.body.role
+  var secret = req.body.secret
+  var team = req.body.team
+
 
 
   //Validator 
@@ -52,8 +63,8 @@ router.post('/register', function(req, res) {
   req.checkBody('lastname', 'Lastname is required.').notEmpty();
   req.checkBody('email', 'Email is required.').notEmpty();
   req.checkBody('email', 'Email is not valid.').isEmail();
-  req.checkBody('password', 'password is required').notEmpty();
-  req.checkBody('password2', 'Passwords have to match').equals(password);
+  // req.checkBody('password', 'password is required').notEmpty();
+  // req.checkBody('password2', 'Passwords have to match').equals(password);
   req.checkBody('age', 'age is required').notEmpty();
   req.checkBody('dietary', 'dietary is required').notEmpty();
   req.checkBody('shirtsize', 'shirtsize is required').notEmpty();
@@ -61,6 +72,8 @@ router.post('/register', function(req, res) {
   req.checkBody('country', 'Country is required').notEmpty();
   req.checkBody('q1', 'Please answer the question.').notEmpty();
   req.checkBody('q2', 'Please answer the question.').notEmpty();
+  req.checkBody('skills', 'Please answer the question.').notEmpty();
+  req.checkBody('role', 'Choose a role please.').notEmpty();
 
   req.checkBody('sex', 'Gender is required').notEmpty();
 
@@ -81,7 +94,11 @@ router.post('/register', function(req, res) {
         portfolio:portfolio,
         q1:q1,
         q2:q2,
-        comment:comment
+        comment:comment,
+        role:role,
+        skills:skills,
+        secret:secret,
+        team:team
       };
       console.log("FORM VALUES ")
       console.log(failedPost)
@@ -91,7 +108,6 @@ router.post('/register', function(req, res) {
     //   form_values_with_errors[i] = form_values[i]
     // }
     for(i in form_values_with_errors  ){
-      console.log(i)
       if(failedPost[i]){
                // console.log(failedPost[i])
             form_values_with_errors[i].forEach(function(obj){
@@ -106,7 +122,6 @@ router.post('/register', function(req, res) {
 
     var country_values_with_errors = JSON.parse(JSON.stringify(country_values));
   
-      console.log(i)
       if(failedPost["country"]){
             country_values_with_errors.forEach(function(obj){
           
@@ -116,7 +131,6 @@ router.post('/register', function(req, res) {
             });
           }
         
-        console.log(country_values_with_errors)
 
 
   if(errors) {
@@ -151,14 +165,18 @@ router.post('/register', function(req, res) {
         question1:q1,
         question2:q2,
         comment:comment,
-        password: password,
-        hash: hash
+        role:role,
+        team:team,
+        secret:secret,
+        skills:skills,
+        hash: hash,
+        password:"junction2016"
     };
   	req.models.users.createUser(newUser, function(success) {
       if(success){ 
         sendgrid.sendRegisterConfirmation(email, firstname);
         req.flash('success_msg', "You are registered succesfully, we sent you a email to your email address '"+email+"'. Please check your inbox and trash/spam folder. In case you didn't get it, please get in contact or register again.")
-        res.redirect('login');
+        res.redirect('thanks');
       }
       else {
          //req.flash('error', 'Already registered with the given email.');

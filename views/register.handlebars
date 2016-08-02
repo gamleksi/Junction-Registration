@@ -5,7 +5,7 @@
 	
 {{/if}}
 
-<form method="post" action="/users/register">
+<form method="post" action="/register">
 	<!-- firstname: String, -->
 
 	<div class="form-group">
@@ -13,7 +13,7 @@
 		{{#if error_messages.firstname}}
 			<p class = "alert-text"> {{error_messages.firstname}}</p>
 		{{/if}}
-		<input type="text" class="form-control" value="{{failedPost.firstname}}" placeholder="first name" name="firstname">
+		<input type="text" class="form-control" value="{{failedPost.firstname}}" placeholder="firstname" name="firstname">
 	</div>
 
 
@@ -101,6 +101,30 @@
 		{{/each}}
 	</div>	
 
+	<!-- role: -->
+	<div class="form-group">
+		<label>What's your role in a hackathon team?</label><br>
+		{{#if error_messages.role}}
+			<p class = "alert-text"> {{error_messages.role}}</p>
+		{{/if}}
+		 {{#each form_values.role}}
+				 <input type="radio" name="role" value="{{this.value}}" {{this.checked}}>{{this.text}}<br>
+		 {{/each}}
+	</div>	
+
+	<!-- Skills (e.x.:String, -->
+	<div class="form-group">
+		<label>Describe your skills briefly (e.x "Frontend, Backend, React.js, UX, Concept design, etc.")</label>
+		{{#if error_messages.skills}}
+			<p class = "alert-text"> {{error_messages.skills}}</p>
+		{{/if}}
+			<textarea type="textarea" class="form-control"  value="{{failedPost.skills}}" placeholder="" name="skills">{{failedPost.skills}}</textarea>
+	</div>
+
+
+
+
+
 	<!-- track: -->
 	<div class="form-group">
 		<label>First track choice</label><br>
@@ -145,38 +169,23 @@
 
 	<!-- comment:String, -->
 
-
 	<div class="form-group">
 		<label>Free comment</label>
-		{{#if error_messages.comment}}
-			<p class = "alert-text"> {{error_messages.comment}}</p>
-		{{/if}}
 			<textarea type="textarea" class="form-control"  value="{{failedPost.comment}}" placeholder="" name="comment">{{failedPost.comment}}</textarea>
 	</div>
 
 
-
-
-
-
-
-
-<!-- password: String, -->
 	<div class="form-group">
-		<label>Password</label>
-		{{#if error_messages.password}}
-			<p class = "alert-text"> {{error_messages.password}}</p>
-		{{/if}}
-		{{#if error_messages.password2}}
-			<p class = "alert-text"> {{error_messages.password2}}</p>
-		{{/if}}
-		<input type="password" class="form-control" placeholder="password" name="password">
+		<label>Team Code  (Please come up with somewhat unique string)</label>
+		<input type="text" class="form-control" value="{{failedPost.team}}" placeholder="" name="team">
 	</div>
 
 	<div class="form-group">
-		<label>Password again</label>
-		<input type="password" class="form-control" placeholder="password" name="password2">
+		<label>SECRET CODE</label>
+		<input type="text" class="form-control" value="{{failedPost.secret}}" placeholder="" name="secret">
 	</div>
+
+
 
 
 	<button type="submit" class="btn btn-default">LOGIN</button>

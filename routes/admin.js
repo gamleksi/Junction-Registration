@@ -10,6 +10,10 @@ router.get('/', ensureIsAuthenticatedAndAdmin, function(req, res) {
   res.render('admin', {layout: 'admin-layout'});     
 });
 
+router.get('/login', function(req, res) {
+  res.render('login');
+});
+
 router.get('/hackers', ensureIsAuthenticatedAndAdmin, function(req, res) {
   req.models.users.getUsers(function(users) {
     
