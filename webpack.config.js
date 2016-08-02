@@ -5,10 +5,6 @@ var path = require('path');
 var BUILD_DIR = path.resolve(__dirname, 'public/js/');
 var APP_DIR = path.resolve(__dirname, 'public/components/');
 
-console.log("BUILD_DIR");
-console.log(BUILD_DIR);
-console.log("APP_DIR");
-console.log(APP_DIR);
 
 module.exports = {
   devtool: debug ? "inline-sourcemap" : null,
@@ -17,7 +13,7 @@ module.exports = {
     loaders: [
       {
         test: /\.jsx?$/,
-        exclude: /(node_modules|bower_components|.env)/,
+        exclude: /(node_modules|bower_components)/,
         loader: 'babel-loader',
         query: {
           presets: ['react', 'es2015', 'stage-0'],

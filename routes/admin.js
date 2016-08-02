@@ -16,6 +16,12 @@ router.get('/hackers', ensureIsAuthenticatedAndAdmin, function(req, res) {
     res.render('hackers',{hackers:users, layout: 'admin-layout'});
   });
 });
+// router.get('/logout', ensureIsAuthenticatedAndAdmin, function(req, res) {
+//   req.models.users.getUsers(function(users) {
+    
+//     res.redirect('/users/logout/',{hackers:users, layout: 'admin-layout'});
+//   });
+// });
 
 router.get('/hackers/all', ensureIsAuthenticatedAndAdmin, function(req, res) {
 
@@ -40,6 +46,7 @@ router.post('/hackers/accept-selected', ensureIsAuthenticatedAndAdmin, sendEmail
   if(req.body.statusCode === 202 || req.body.statusCode === 200) {
     
     req.models.users.acceptHackers(req.body.selected, function(accepted) {
+
       for(var i in accepted) {
         accepted[i].index = req.body.selected[accepted[i].email].index;
       }
@@ -65,7 +72,7 @@ function sendEmails(req, res, next) {
     });
 };
 
-router.get('/backup', function(req, res) {
+router.get('/backup',ensureIsAuthenticatedAndAdmin, function(req, res) {
     console.log('%s %s', req.method, req.url);
    req.models.users.getUsers(function(users) {
       
@@ -102,7 +109,7 @@ function isFromSendGrid(req, res, next) {
 }
 
 
-router.post('/hackers/reload-previous', function(req, res) {
+router.post('/hackers/reload-previous',ensureIsAuthenticatedAndAdmin, function(req, res) {
   console.log('/hackers/reload-previous')
   var updated = [];
   var previous = req.body.previous;
@@ -122,22 +129,20 @@ router.post('/hackers/reload-previous', function(req, res) {
   } else {
     res.sendStatus(404)
   }
-
 });
   
 
 function ensureIsAuthenticatedAndAdmin(req, res, next){
-  
-  //Outcommented for testing purpose
-  // if(!req.isAuthenticated()) {
-  //   res.redirect('/');   
-  // } else {
-  //   if(!req.user.admin) {
-  //     res.redirect('/'); 
-  //   } else {
+  //  Outcommented for testing purpose
+  if(!req.isAuthenticated()) {
+    res.redirect('/');   
+  } else {
+    if(!req.user.admin) {
+      res.redirect('/'); 
+    } else {
       next();
-  //   }
-  // }
+    }
+  }
 }
 
 module.exports = router; 
