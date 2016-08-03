@@ -18,10 +18,8 @@ orm.express(process.env.DATABASE_URL, {
           }
           else{
           var admin = {
-            firstname: "Luukas",
-            lastname: "Castren",
-            email: "hackjunction@aaltoes.com",
-            password: "admin",
+            email: process.env.EMAIL_FROM,
+            password: process.env.ADMIN_PASSWORD,
             admin: true
           };
             
