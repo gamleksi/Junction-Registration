@@ -31,4 +31,8 @@
 var dotenv = require('dotenv').config();
 var sendgrid = require('./sendgrid/sendgrid.js')
 
-sendgrid.sendRegisterConfirmation("elias.mikkola1@gmail.com", "Aleksi");
+// sendgrid.sendRegisterConfirmation("luukas.castren@aaltoes.com", "Aleksi");
+
+sendgrid.sendApprovalMails({"luukas.castren@aaltoes.com": {"email": "luukas.castren@aaltoes.com", firstname: "Luukasfucker", "hash": "eitoimi", "travelReimbursement": "Nord"},
+  "luukas.castren@aaltoes.com": {"email": "luukas.castren@aaltoes.com", firstname: "Allu", "hash": "eitoimi", "travelReimbursement": "No"}
+}, console.log("onnistui"));

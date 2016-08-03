@@ -9,20 +9,21 @@ export default React.createClass({
         var checkboxes= [];
         for(var key in this.props.rowAttributes) {
             checkboxes.push(            
-                <td id="checkbox-div"> 
-                    <p>{key}</p>
+                <label class="checkbox-inline"> 
                     <input
                         type="checkbox"
                         checked={this.props.rowAttributes[key]}
                         value={key}
                         onChange={this.checkBoxSelected}
                       />
-                </td> )
+                      {key}
+                </label> )
         }
         return(
-            <tr>
+            <form role="form">
                 {checkboxes}
-            </tr>
+            </form>
             )
     }
 });
+
