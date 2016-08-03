@@ -15,9 +15,9 @@ var LocalStrategy = require('passport-local').Strategy;
 //var config = require('./config/app-config')
 var helmet = require('helmet');
 
-var orm = require('orm');
+//var orm = require('orm');
 
-var Users = require('./models/user');
+//var Users = require('./models/user');
 
 
 //init app
@@ -33,36 +33,36 @@ app.set('view engine', 'handlebars');
 
 
 //Database connection middleware
-app.use(orm.express(process.env.DATABASE_URL, {
-    error: function(err){
-      console.error(err);
-    }, 
-    define: function (db, models, next) {
-        models.users = Users.createModel(db);
+// app.use(orm.express(process.env.DATABASE_URL, {
+//     error: function(err){
+//       console.error(err);
+//     }, 
+//     define: function (db, models, next) {
+//         models.users = Users.createModel(db);
 
-        db.sync(function(err,success){
-          if(err){
+//         db.sync(function(err,success){
+//           if(err){
 
-            // TODO: Mitä tehdä jos sync error
+//             // TODO: Mitä tehdä jos sync error
 
-            console.log(err);
-          }
-          else{
-            console.log("Database synced");
-          }
-        });
-        next();
-    }
-}));
+//             console.log(err);
+//           }
+//           else{
+//             console.log("Database synced");
+//           }
+//         });
+//         next();
+//     }
+// }));
 
 
 
 
 var routes = require('./routes/index');
-var confirm = require('./routes/confirm');
+// var confirm = require('./routes/confirm');
 
 var users = require('./routes/users');
-var admin = require('./routes/admin');
+// var admin = require('./routes/admin');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -120,8 +120,8 @@ app.use(function (req, res, next){
 
 app.use('/', routes);
 app.use('/', users);
-app.use('/confirm', confirm);
-app.use('/admin', admin);
+// app.use('/confirm', confirm);
+// app.use('/admin', admin);
 
 app.set('port', (process.env.PORT));
 

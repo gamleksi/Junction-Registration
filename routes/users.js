@@ -172,23 +172,23 @@ router.post('/register', function(req, res) {
         hash: hash,
         password:"junction2016"
     };
-  	req.models.users.createUser(newUser, function(success) {
-      if(success){ 
-        sendgrid.sendRegisterConfirmation(email, firstname);
+  	// req.models.users.createUser(newUser, function(success) {
+   //    if(success){ 
+   //     sendgrid.sendRegisterConfirmation(email, firstname);
         req.flash('success_msg', "You are registered succesfully, we sent you a email to your email address '"+email+"'. Please check your inbox and trash/spam folder. In case you didn't get it, please get in contact or register again.")
         res.redirect('thanks');
-      }
-      else {
+  //    }
+  //    else {
          //req.flash('error', 'Already registered with the given email.');
-          res.render('register',{
-              errors:{'error': 'Already registered with the given email.'},
-              failedPost:failedPost,
-              form_values: form_values_with_errors,country_values:country_values_with_errors,
-              error_messages: {"email":"Email already in use." }
-            });
+          // res.render('register',{
+          //     errors:{'error': 'Already registered with the given email.'},
+          //     failedPost:failedPost,
+          //     form_values: form_values_with_errors,country_values:country_values_with_errors,
+          //     error_messages: {"email":"Email already in use." }
+          //   });
       }
-  	});
-  }
+  //	});
+  //}
 });
 
 
@@ -219,14 +219,14 @@ passport.use('user-local', new LocalStrategy(
 
 ));
 
-router.post('/login',
-  passport.authenticate('user-local', {successRedirect: '/', failureRedirect:'/users/login',failureFlash: true}));
+// router.post('/login',
+//   passport.authenticate('user-local', {successRedirect: '/', failureRedirect:'/users/login',failureFlash: true}));
 
-router.get('/logout', function(req, res){
-	req.logout();
-	req.flash('success_msg', 'You are logget out.');
-	res.redirect('/');
-});
+// router.get('/logout', function(req, res){
+// 	req.logout();
+// 	req.flash('success_msg', 'You are logget out.');
+// 	res.redirect('/');
+// });
 
 
 passport.serializeUser(function(user, done) {

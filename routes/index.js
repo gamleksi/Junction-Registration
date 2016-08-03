@@ -5,11 +5,11 @@ var router = express.Router();
 /* GET home page. */
 router.get('/', function(req, res, next) {
 	console.log(req.user);
-	if(req.user && req.user.admin){
-			res.redirect('/admin/')
-	} else {
+	//if(req.user && req.user.admin){
+	//		res.redirect('/admin/')
+	//} else {
   		res.render('register',{form_values: form_values,country_values:country_values})
-	}
+	//}
   	
 });
 
