@@ -150,7 +150,8 @@ router.post('/register', function(req, res) {
   } else {
   	 
       var time =  new Date().getTime() 
-      var hash = Math.random().toString(36).substring(7).toUpperCase() + time
+      var refuseHash = time + Math.random().toString(36).substring(7).toUpperCase();
+      var invitationHash = Math.random().toString(36).substring(7).toUpperCase() + time;
       var newUser = {
         firstname: firstname,
         lastname: lastname,
@@ -169,12 +170,13 @@ router.post('/register', function(req, res) {
         team:team,
         secret:secret,
         skills:skills,
-        hash: hash,
+        invitationHash: invitationHash,
+        refuseHash: refuseHash,
         password:"junction2016"
     };
   	req.models.users.createUser(newUser, function(success) {
       if(success){ 
-        sendgrid.sendRegisterConfirmation(email, firstname);
+        sendgrid.sendRegisterConfirmation(email, firstname, refuseHash);
         req.flash('success_msg', "You are registered succesfully, we sent you a email to your email address '"+email+"'. Please check your inbox and trash/spam folder. In case you didn't get it, please get in contact or register again.")
         res.redirect('thanks');
       }
@@ -208,7 +210,7 @@ passport.use('user-local', new LocalStrategy(
     			return done(null, user);
     		} 
         else {
-    			done(null,false,{message:'Invalid passwrong'});
+    			done(null,false,{message:'Invalid password'});
     		}
 
     	});
@@ -220,7 +222,7 @@ passport.use('user-local', new LocalStrategy(
 ));
 
 router.post('/login',
-  passport.authenticate('user-local', {successRedirect: '/', failureRedirect:'/users/login',failureFlash: true}));
+  passport.authenticate('user-local', {successRedirect: '/', failureRedirect:'/login',failureFlash: true}));
 
 router.get('/logout', function(req, res){
 	req.logout();

@@ -60,16 +60,16 @@ app.use(orm.express(process.env.DATABASE_URL, {
 
 var routes = require('./routes/index');
 var confirm = require('./routes/confirm');
-
 var users = require('./routes/users');
 var admin = require('./routes/admin');
+var refuse = require('./routes/refuse');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 
 
 app.use(session({
-  secret: 'junction2016BestTechnology9000', //Helps to improve encyption. TODO: text should keep private and unique for this app!! 
+  secret: process.env.SESSION_SECRET, //Helps to improve encyption. TODO: text should keep private and unique for this app!! 
   resave: true, // 'True' updates session every new view. Helps avoiding session expiring.
   saveUninitialized: true //Earlier true. Change to reduce database traffic when anonymous users.
 }));
@@ -120,6 +120,7 @@ app.use(function (req, res, next){
 
 app.use('/', routes);
 app.use('/', users);
+app.use('/refuse', refuse);
 app.use('/confirm', confirm);
 app.use('/admin', admin);
 

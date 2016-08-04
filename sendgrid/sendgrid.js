@@ -5,12 +5,10 @@
   var from_email = new helper.Email(process.env.EMAIL_FROM)  
   
   var approvalMail = {
-    content: new helper.Content("text/plain", "some text here"),  
-    subject: "Registration",
+    content: new helper.Content("text/html", "<div></div>")  
   };
 
   var sg = require('sendgrid').SendGrid(process.env.SENDGRID_API_KEY)
-
 
   var createNewRequest = function(requestBody) {
       var request = sg.emptyRequest()
@@ -31,18 +29,27 @@
       });
 
       var emails = Object.keys(emailObjects);
-
+      console.log("emails")
+      console.log(emails)
       var to_email = new helper.Email(emails[0])
 
       mail = new helper.Mail(from_email, "You have been accepted to Junction", to_email, approvalMail.content);  
-      mail.personalizations[0].addSubstitution({"-email-":emails[0]}) 
-      mail.personalizations[0].addSubstitution({"-travel-":travelValues.message(emailObjects[emails[0]].travelReimbursement)})
+      mail.personalizations[0].addSubstitution({"%email%":emails[0]})
+      mail.personalizations[0].addSubstitution({"%first_name%": emailObjects[emails[0]].firsname}) 
+      mail.personalizations[0].addSubstitution({"%travel%":travelValues.message(emailObjects[emails[0]].travelReimbursement)})
+
+      mail.personalizations[0].addSubstitution({"%name%":emailObjects[emails[0]].firstname}) 
+
+      var reverseInvitationHash = emailObjects[emails[0]].invitationHash.split("").reverse().join("");
+      var reverseRefuseHash = emailObjects[emails[0]].refuseHash.split("").reverse().join("");      
       
-      var reverseHash = emailObjects[emails[0]].hash.split("").reverse().join("");
-      
-      mail.personalizations[0].addSubstitution({"-name-":emailObjects[emails[0]].firstname}) 
-      mail.personalizations[0].addSubstitution({"-hash-":reverseHash}) 
- 
+      var confirmLink= process.env.DOMAIN_ADDRESS + "/confirm/" + reverseInvitationHash;
+      var decideLink= process.env.DOMAIN_ADDRESS + "/confirm/decide/" + reverseInvitationHash;
+      var refuseLink= process.env.DOMAIN_ADDRESS + "/refuse/" + reverseRefuseHash;
+
+      mail.personalizations[0].addSubstitution({"%confirm_link%": confirmLink}); 
+      mail.personalizations[0].addSubstitution({"%reject_link%": decideLink});
+      mail.personalizations[0].addSubstitution({"%refuse_link%": refuseLink});
 
       sg.emptyRequest();
 
@@ -51,46 +58,58 @@
         if(i > 0){
           to_email = new helper.Email(emails[i]);  
           var personalization = new helper.Personalization();
-          var reverseHash = emailObjects[emails[i]].hash.split("").reverse().join("");
+          var reverseInvitationHash = emailObjects[emails[i]].invitationHash.split("").reverse().join("");
+          var reverseRefuseHash = emailObjects[emails[i]].refuseHash.split("").reverse().join("");
+
+          var confirmLink= process.env.DOMAIN_ADDRESS + "/confirm/" + reverseInvitationHash;
+          var decideLink= process.env.DOMAIN_ADDRESS + "/confirm/decide/" + reverseInvitationHash;
+          var refuseLink= process.env.DOMAIN_ADDRESS + "/refuse/" + reverseRefuseHash;
 
           personalization.addTo(to_email);
-          personalization.addSubstitution({"-email-":emails[i]})
-          personalization.addSubstitution({"-travel-":travelValues.message(emailObjects[emails[i]].travelReimbursement)}) 
-          personalization.addSubstitution({"-first_name-":emailObjects[emails[i]].firstname}) 
-          personalization.addSubstitution({"-hash-":reverseHash}) 
+          personalization.addSubstitution({"%email%":emails[i]})
+          personalization.addSubstitution({"%travel%":travelValues.message(emailObjects[emails[i]].travelReimbursement)}) 
+          personalization.addSubstitution({"%first_name%":emailObjects[emails[i]].firstname}) 
+          personalization.addSubstitution({"%confirm_link%": confirmLink}); 
+          personalization.addSubstitution({"%reject_link%": decideLink});
+          personalization.addSubstitution({"%refuse_link%": refuseLink});
           mail.addPersonalization(personalization);
         }
       }
       var requestBody = mail.toJSON()
-      requestBody.template_id = process.env.SENDGRID_ACCEPTED_TEMPLATE_ID
+      requestBody.template_id = process.env.SENDGRID_INVITATION_FUCK_ID;
       console.log("request body")
       console.log(requestBody);
-      
-      
+          
       var request = createNewRequest(requestBody);
       
       sg.API(request, function (response) {
         console.log("Mail")
         console.log(response.statusCode)
-        // console.log("BODY FROM SendGrid")
-        // console.log(response.body)
-        // console.log(response.headers)
+        console.log("BODY FROM SendGrid")
+        console.log(response.body)
+        console.log(response.headers)
         event.emit('newMailSent', response.statusCode);
       });
       
       },
-      
-      sendRegisterConfirmation: function(email, firstname){
+  
+      sendRegisterConfirmation: function(email, firstname, hash){
         var to_email = new helper.Email(email);
         var mail = new helper.Mail(from_email, "Junction registeration", to_email, approvalMail.content);  
+        var reverseRefuseHash = hash.split("").reverse().join("");
+        var refuseLink= process.env.DOMAIN_ADDRESS + "/refuse/" + reverseRefuseHash;
+
+
         mail.personalizations[0].addSubstitution({"%email%":email});
         mail.personalizations[0].addSubstitution({"%first_name%": firstname});  
+        mail.personalizations[0].addSubstitution({"%refuse_link%": refuseLink});
+        
         sg.emptyRequest();
         console.log("mail.personalizations[0]")
         console.log(mail.personalizations[0])
 
         var requestBody = mail.toJSON();
-        requestBody.template_id = process.env.SENDGRID_REGISTER_TEMPLATE_ID;  
+        requestBody.template_id = process.env.SENDGRID_CONFIRMATION_FUCK_ID;  
         var request = createNewRequest(requestBody);
         
         sg.API(request, function (response) {

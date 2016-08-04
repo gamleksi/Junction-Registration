@@ -53,8 +53,10 @@ module.exports = {
 				team:String,
 				admin: {type: "boolean", defaultValue: false},
 				accepted:  {type: "boolean", defaultValue: false},
+				refused:  {type: "boolean", defaultValue: false},
 				batch: Date,
-				hash: String,
+				invitationHash: String,
+				refuseHash: String,
 				status: {type: "text", defaultValue: "pending"},
 				travelReimbursement: {type: "text", defaultValue: undefined},				
 				invitationEmailStatus: {type: "text", defaultValue: "Not Send"},
@@ -204,7 +206,7 @@ module.exports = {
 		Users.changeStatusWithHash = function(status,hash,callback){
       		var reverseHash = hash.split("").reverse().join("");
 
-			Users.one({"hash":reverseHash}, function(err,user){
+			Users.one({"invitationHash":reverseHash}, function(err,user){
 				if(err){
 					callback("status not changed")
 					throw err;
@@ -219,11 +221,43 @@ module.exports = {
 				}
 			});
 		};
-		Users.hashMatches = function(hashString,callback){
+
+		Users.refuseHashMatches = function(hashString,callback) {
+			console.log("HASH" + hashString)
+      		var reverseHash = hashString.split("").reverse().join("");
+			Users.one({"refuseHash": reverseHash}, function(err,user){
+				if(err){
+					callback("status not changed")
+					throw err;
+				} 
+				if(user) {
+					callback(user.email);
+				}else {
+					callback(undefined);
+				}
+			});
+		};
+
+		Users.refuseHacker = function(email) {
+
+			Users.one({"email": email}, function(err,user) {
+				if(err) {
+					throw err;
+				}
+
+				if(user) {
+					user.refused = true;
+					user.save();
+				}
+			});
+		};
+			
+
+		Users.invitationHashMatches = function(hashString,callback){
 
 			console.log("HASH" + hashString)
       		var reverseHash = hashString.split("").reverse().join("");
-			Users.exists({"hash":reverseHash}, function(err,exists){
+			Users.exists({"invitationHash":reverseHash}, function(err,exists){
 				if(err){
 					callback("status not changed")
 					throw err;
@@ -234,10 +268,10 @@ module.exports = {
 					callback(false);
 				}
 			});
-		}
+		};
 
 		Users.getUsers = function(callback){
-			Users.find({admin: false}).omit('admin').omit('password').run(function(err, results) {
+			Users.find({admin: false, refused: false}).omit('admin').omit('password').run(function(err, results) {
 				if(err) {
 					throw err;
 				}
@@ -246,7 +280,8 @@ module.exports = {
 		};
 
 		Users.getUsersWithParameters = function(params,callback){
-			params.admin = false
+			params.admin = false;
+			params.refused = false;
 			Users.find(params).omit('admin').omit('password').run(function(err, results) {
 				if(err) {
 					throw err;
@@ -256,7 +291,7 @@ module.exports = {
 		};
 
 		Users.getAcceptedUsers = function(callback){
-			Users.find({"admin": false,"accepted":true}).omit('admin').run(function(err, results) {
+			Users.find({"admin": false, refused: false, "accepted":true}).omit('admin').run(function(err, results) {
 				if(err) {
 					throw err;
 				}

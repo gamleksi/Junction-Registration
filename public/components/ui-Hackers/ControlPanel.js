@@ -6,22 +6,24 @@ export default React.createClass({
     render:function(){
         
         return(
+            <div>
             <table class="table table-bordered">
             <tbody>
                         <SessionInfo
                             selectedParticipants={this.props.selectedParticipants}
                         />
             </tbody>
-            <tbody>
+
+            </table>
+            <div class="container">
 
                         <CheckboxRow 
                             setAttributeValues={this.props.setAttributeValues}
                             rowAttributes={this.props.rowAttributes} 
                         />  
                 
-            </tbody>
-            </table>
-            
+            </div>
+            </div>
             )
     }
 });
