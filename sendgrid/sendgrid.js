@@ -43,7 +43,7 @@
       var reverseInvitationHash = emailObjects[emails[0]].invitationHash.split("").reverse().join("");
       var reverseRefuseHash = emailObjects[emails[0]].refuseHash.split("").reverse().join("");      
       
-      var confirmLink= process.env.DOMAIN_ADDRESS + "/confirm/" + reverseInvitationHash;
+      var confirmLink= process.env.DOMAIN_ADDRESS + "/confirm/accpet/" + reverseInvitationHash;
       var decideLink= process.env.DOMAIN_ADDRESS + "/confirm/decide/" + reverseInvitationHash;
       var refuseLink= process.env.DOMAIN_ADDRESS + "/refuse/" + reverseRefuseHash;
 
@@ -61,7 +61,7 @@
           var reverseInvitationHash = emailObjects[emails[i]].invitationHash.split("").reverse().join("");
           var reverseRefuseHash = emailObjects[emails[i]].refuseHash.split("").reverse().join("");
 
-          var confirmLink= process.env.DOMAIN_ADDRESS + "/confirm/" + reverseInvitationHash;
+          var confirmLink= process.env.DOMAIN_ADDRESS + "/confirm/accpet/" + reverseInvitationHash;
           var decideLink= process.env.DOMAIN_ADDRESS + "/confirm/decide/" + reverseInvitationHash;
           var refuseLink= process.env.DOMAIN_ADDRESS + "/refuse/" + reverseRefuseHash;
 
