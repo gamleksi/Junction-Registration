@@ -2,7 +2,7 @@ import React from "react";
 import ControlPanel from "./ControlPanel";
 import TableHeader from "./TableHeader";
 import HackerTable from "./HackerTable";
-import {attrNotBeShown, attrNotBeShownInRows, notBeShownInOpeningRow, tabObject, domain} from "../HARD_VALUES.js"
+import {attrNotBeShown, attrNotBeShownInRows, notBeShownInOpeningRow, tabObject} from "../HARD_VALUES.js"
 
 
 export default React.createClass ({
