@@ -3,7 +3,7 @@
 <head>
 	<title>Registeration Junction 2016</title>
 	<link rel="stylesheet" href="/css/bootstrap.css" />
-	<link rel="stylesheet" href="/css/style.css" />
+	<link rel="stylesheet" href="/css/user.css" />
 
 </head>
 
@@ -22,16 +22,16 @@
           <a class="navbar-brand" href="/">Junction</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
-          
+
           <ul class="nav navbar-nav navbar-right">
 
-            
+
             {{#if user}}
               <li><a href="/users/account/">MY PROFILE</a></li>
               <li><a href="/users/logout/">LOGOUT</a></li>
             {{else}}
             {{/if}}
-            
+
           </ul>
         </div><!--/.nav-collapse -->
     </nav>
@@ -41,11 +41,11 @@
     		{{#if success_msg}}
           <div class="alert alert-success"> {{{success_msg}}} </div>
         {{/if}}
-        
+
         {{#if error_msg}}
             <div class="alert alert-danger"> {{{error_msg}}}</div>
         {{/if}}
-        
+
         {{#if error}}
           <div class="alert alert-danger"> {{{error}}}</div>
         {{/if}}
@@ -58,7 +58,7 @@
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
   <script>
-  
+
     </script>
   </body>
 </html>
