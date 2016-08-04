@@ -34,5 +34,6 @@ var sendgrid = require('./sendgrid/sendgrid.js')
 // sendgrid.sendRegisterConfirmation("luukas.castren@aaltoes.com", "Aleksi");
 
 sendgrid.sendApprovalMails({"luukas.castren@aaltoes.com": {"email": "luukas.castren@aaltoes.com", firstname: "Luukasfucker", "hash": "eitoimi", "travelReimbursement": "Nord"},
-  "luukas.castren@aaltoes.com": {"email": "luukas.castren@aaltoes.com", firstname: "Allu", "hash": "eitoimi", "travelReimbursement": "No"}
+  "luukas.castren@gmail.com": {"email": "luukas.castren@gmail.com", firstname: "Allu", "hash": "eitoimi", "travelReimbursement": "No"},
+    "aleksi.hamalainen@gmail.com": {"email": "aleksi.hamalainen@aaltoes.com", firstname: "Allu", "hash": "eitoimi", "travelReimbursement": "Fin"}
 }, console.log("onnistui"));
