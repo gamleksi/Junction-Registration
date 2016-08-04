@@ -33,14 +33,13 @@ router.get('/:value/:hash', function (req, res, next) {
 });
 
 router.get('/decide/:hash', function (req, res, next) {
-	req.models.users.hashMatches(req.params.hash,function(result){
+	req.models.users.invitationHashMatches(req.params.hash,function(result){
 		if(result){
 			res.render('reject',{hash:req.params.hash})
 		}else{
 			res.render('message',{error:"Invalid link."})
 		}
 	});
-	
 });
 
 module.exports = router;

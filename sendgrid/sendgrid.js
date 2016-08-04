@@ -37,17 +37,19 @@
       mail.personalizations[0].addSubstitution({"%email%":emails[0]})
       mail.personalizations[0].addSubstitution({"%first_name%": emailObjects[emails[0]].firsname}) 
       mail.personalizations[0].addSubstitution({"%travel%":travelValues.message(emailObjects[emails[0]].travelReimbursement)})
-      
-      var reverseHash = emailObjects[emails[0]].hash.split("").reverse().join("");
-      
-      mail.personalizations[0].addSubstitution({"%name%":emailObjects[emails[0]].firstname}) 
-      
-      var confirmLink= process.env.DOMAIN_ADDRESS + "/confirm/accept/" + reverseHash;
-      var decideLink= process.env.DOMAIN_ADDRESS + "/confirm/decide/" + reverseHash;
 
-      mail.personalizations[0].addSubstitution({"%confirm_link%": confirmLink}) 
-      mail.personalizations[0].addSubstitution({"%reject_link%": decideLink}) 
- 
+      mail.personalizations[0].addSubstitution({"%name%":emailObjects[emails[0]].firstname}) 
+
+      var reverseInvitationHash = emailObjects[emails[0]].invitationHash.split("").reverse().join("");
+      var reverseRefuseHash = emailObjects[emails[0]].refuseHash.split("").reverse().join("");      
+      
+      var confirmLink= process.env.DOMAIN_ADDRESS + "/confirm/" + reverseInvitationHash;
+      var decideLink= process.env.DOMAIN_ADDRESS + "/confirm/decide/" + reverseInvitationHash;
+      var refuseLink= process.env.DOMAIN_ADDRESS + "/refuse/" + reverseRefuseHash;
+
+      mail.personalizations[0].addSubstitution({"%confirm_link%": confirmLink}); 
+      mail.personalizations[0].addSubstitution({"%reject_link%": decideLink});
+      mail.personalizations[0].addSubstitution({"%refuse_link%": refuseLink});
 
       sg.emptyRequest();
 
@@ -56,13 +58,20 @@
         if(i > 0){
           to_email = new helper.Email(emails[i]);  
           var personalization = new helper.Personalization();
-          var reverseHash = emailObjects[emails[i]].hash.split("").reverse().join("");
+          var reverseInvitationHash = emailObjects[emails[i]].invitationHash.split("").reverse().join("");
+          var reverseRefuseHash = emailObjects[emails[i]].refuseHash.split("").reverse().join("");
+
+          var confirmLink= process.env.DOMAIN_ADDRESS + "/confirm/" + reverseInvitationHash;
+          var decideLink= process.env.DOMAIN_ADDRESS + "/confirm/decide/" + reverseInvitationHash;
+          var refuseLink= process.env.DOMAIN_ADDRESS + "/refuse/" + reverseRefuseHash;
 
           personalization.addTo(to_email);
           personalization.addSubstitution({"%email%":emails[i]})
           personalization.addSubstitution({"%travel%":travelValues.message(emailObjects[emails[i]].travelReimbursement)}) 
           personalization.addSubstitution({"%first_name%":emailObjects[emails[i]].firstname}) 
-          personalization.addSubstitution({"%hash%":reverseHash}) 
+          personalization.addSubstitution({"%confirm_link%": confirmLink}); 
+          personalization.addSubstitution({"%reject_link%": decideLink});
+          personalization.addSubstitution({"%refuse_link%": refuseLink});
           mail.addPersonalization(personalization);
         }
       }
@@ -83,12 +92,18 @@
       });
       
       },
-      
-      sendRegisterConfirmation: function(email, firstname){
+  
+      sendRegisterConfirmation: function(email, firstname, hash){
         var to_email = new helper.Email(email);
         var mail = new helper.Mail(from_email, "Junction registeration", to_email, approvalMail.content);  
+        var reverseRefuseHash = hash.split("").reverse().join("");
+        var refuseLink= process.env.DOMAIN_ADDRESS + "/refuse/" + reverseRefuseHash;
+
+
         mail.personalizations[0].addSubstitution({"%email%":email});
         mail.personalizations[0].addSubstitution({"%first_name%": firstname});  
+        mail.personalizations[0].addSubstitution({"%refuse_link%": refuseLink});
+        
         sg.emptyRequest();
         console.log("mail.personalizations[0]")
         console.log(mail.personalizations[0])

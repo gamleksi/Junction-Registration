@@ -31,9 +31,8 @@
 var dotenv = require('dotenv').config();
 var sendgrid = require('./sendgrid/sendgrid.js')
 
-// sendgrid.sendRegisterConfirmation("luukas.castren@aaltoes.com", "Aleksi");
+// sendgrid.sendRegisterConfirmation("luukas.castren@gmail.com", "Luge", "1470329083142U2REAW3TYB9");
 
-sendgrid.sendApprovalMails({"luukas.castren@aaltoes.com": {"email": "luukas.castren@aaltoes.com", firstname: "Luukasfucker", "hash": "eitoimi", "travelReimbursement": "Nord"},
-  "luukas.castren@gmail.com": {"email": "luukas.castren@gmail.com", firstname: "Allu", "hash": "eitoimi", "travelReimbursement": "No"},
-    "aleksi.hamalainen@gmail.com": {"email": "aleksi.hamalainen@aaltoes.com", firstname: "Allu", "hash": "eitoimi", "travelReimbursement": "Fin"}
+sendgrid.sendApprovalMails({"luukas.castren@gmail.com": {"email": "luukas.castren@gmail.com", firstname: "Luukasfucker", "invitationHash": "eitoimi", "refuseHash": "3UTU4OHIA4I1470329083142", "travelReimbursement": "Nord"},
+    "aleksi.hamalainen@gmail.com": {"email": "aleksi.hamalainen@aaltoes.com", firstname: "Allu", "invitationHash": "eitoimi", "refuseHash": "nakkivene", "travelReimbursement": "Fin"}
 }, console.log("onnistui"));
