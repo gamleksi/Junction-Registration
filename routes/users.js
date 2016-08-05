@@ -9,7 +9,6 @@ var sendgrid = require('../sendgrid/sendgrid.js')
 
 /* GET users listing. */
 router.get('/', ensureIsNotAuthenticated, function(req, res) {
-  console.log("IN USERS")
   res.render('register',{form_values: form_values,country_values:country_values})
 });
 
@@ -35,7 +34,6 @@ router.get('/edit_profile', function(req, res){
 
 //Register User
 router.post('/register', function(req, res) {
-  console.log(req.body);
   var firstname = req.body.firstname;
   var lastname = req.body.lastname;
   var email = req.body.email;
@@ -100,8 +98,6 @@ router.post('/register', function(req, res) {
         secret:secret,
         team:team
       };
-      console.log("FORM VALUES ")
-      console.log(failedPost)
       
     var form_values_with_errors = JSON.parse(JSON.stringify(form_values));
     // for(i in form_values){
@@ -138,9 +134,7 @@ router.post('/register', function(req, res) {
     errors.forEach(function(v) {
       error_messages[v.param] = v.msg
     });
-    console.log("ERRORS IN FORM")
     //console.log(errors)
-    console.log(form_values_with_errors)
 
 	  res.render("register", {errors: errors,
                             error_messages:error_messages,
@@ -196,15 +190,12 @@ passport.use('user-local', new LocalStrategy(
   {passReqToCallback : true},
   function(req, username, password, done) {
     req.models.users.getUserByEmail(username, function(user){
-      console.log("value from callback:");
-      console.log(user);
     	if(user === null){
     		return done(null,false,{message:"Invalid username"});
     	}
     	 req.models.users.comparePasswords(password, user.password, function(err,isMatch){
     		if(err) throw err;
     		if(isMatch){
-    			console.log('isMatch true');
     			return done(null, user);
     		} 
         else {

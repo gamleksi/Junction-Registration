@@ -4,7 +4,6 @@ var router = express.Router();
  country_values = require('../COUNTRIES_DATA.js')
 /* GET home page. */
 router.get('/', function(req, res, next) {
-	console.log(req.user);
 	if(req.user && req.user.admin){
 			res.redirect('/admin/')
 	} else {

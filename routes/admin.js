@@ -122,7 +122,6 @@ router.post('/hackers/reload-previous',ensureIsAuthenticatedAndAdmin, function(r
   console.log('/hackers/reload-previous')
   var updated = [];
   var previous = req.body.previous;
-  console.log(previous)
   if(previous) {
   var previousLength = Object.keys(previous).length;
     for(email in previous) {
