@@ -85,6 +85,7 @@ module.exports = {
 			bcrypt.genSalt(10, function(err, salt) {
 				bcrypt.hash(user.password, salt, function(err, hash) {
 					user["password"] = hash;
+					user["admin"] = false;
 					Users.create(user, function(err,items){
 						if(err){
 							console.error(err);
@@ -97,23 +98,6 @@ module.exports = {
 				});
 			});
 		};
-
-		Users.createAdmin = function(user, callback){
-			bcrypt.genSalt(10, function(err, salt) {
-				bcrypt.hash(user.password, salt, function(err, hash) {
-					user["admin"] = true;
-					Users.create(user, function(err,items){
-						if(err){
-							console.error(err);
-							callback(false)
-						} else {
-							console.log("User has been created succesfully.")
-							callback(true)
-						}
-					});					
-				});
-			});
-		};		
 
 		Users.getUserByEmail = function(addr, callback){
 			Users.one({"email":addr}, function(err,user){
@@ -291,7 +275,7 @@ module.exports = {
 		};
 
 		Users.getAcceptedUsers = function(callback){
-			Users.find({"admin": false, refused: true, "accepted": false}).omit('admin').run(function(err, results) {
+			Users.find({"admin": false, refused: true, "accepted":  false}).omit('admin').run(function(err, results) {
 				if(err) {
 					throw err;
 				}

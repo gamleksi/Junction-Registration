@@ -3500,7 +3500,7 @@ var hackers = [ { firstname: 'Witt',
 
 var dotenv = require('dotenv').config();
 var orm = require('orm');
-var Users = require('./models/user');
+var Users = require('../models/user');
 
 orm.express(process.evn.DATABASE_URL, {
     error: function(err){
