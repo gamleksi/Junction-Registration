@@ -38,12 +38,12 @@ router.get('/edit_profile', function(req, res){
 //Register User
 router.post('/register', function(req, res) {
 
-  console.log(req.body);
+  //console.log(req.body);
   var postBody = ["firstname","lastname","email","phone","age","countryFrom","city","countryHome","sex","shirtsize","dietary","track","team","portfolio","occupation","skills","experience","role","team","motivation","secret","comment","tc","operating","sublime"]
 
   var bodyObj = {}
   console.log("POSTBODY")
-  console.log(req.body.skills)
+  //console.log(req.body.skills)
   for(i in postBody) {
     bodyObj[postBody[i]] = req.body[postBody[i]]
   }
@@ -123,7 +123,6 @@ router.post('/register', function(req, res) {
   }});
 
   req.checkBody({'portfolio': {
-    notEmpty: true,
     isLength: {
       options: [{max: 200}],
       errorMessage: 'Too long comment' 
@@ -150,17 +149,17 @@ router.post('/register', function(req, res) {
 
   // req.checkBody('password', 'password is required').notEmpty();
   // req.checkBody('password2', 'Passwords have to match').equals(password);
-  req.checkBody('dietary', 'Dietary is required').notEmpty();
+  req.checkBody('dietary', 'Dietary choice is required.').notEmpty();
   req.checkBody('sex', 'Gender is required').notEmpty();  
-  req.checkBody('shirtsize', 'shirtsize is required').notEmpty();
-  req.checkBody('track', 'track choice is required').notEmpty();
+  req.checkBody('shirtsize', 'Shirtsize is required.').notEmpty();
+  req.checkBody('track', 'Track choice is required').notEmpty();
   req.checkBody('countryFrom', 'Country is required').notEmpty();
   req.checkBody('countryHome', 'Country is required').notEmpty();
   req.checkBody('occupation', 'Please answer the question.').notEmpty();
   req.checkBody('experience', 'Please answer the question.').notEmpty();
   req.checkBody('role', 'Choose a role please.').notEmpty();
   req.checkBody('sex', 'Gender is required').notEmpty();
-  req.checkBody('tc', 'Please agree terms.').notEmpty();
+  req.checkBody('tc', 'Please agree with the terms.').notEmpty();
 
   var errors = req.validationErrors();
 
@@ -174,17 +173,28 @@ router.post('/register', function(req, res) {
   }
     for(i in form_values_with_errors  ){
       if(failedPost[i]){
-               // console.log(failedPost[i])
-            form_values_with_errors[i].forEach(function(obj){
-              
-              if(failedPost[i] === obj.value){
-  
-                obj.checked = "checked"
-              }
-            });
-          }
-        }
+        
+        if(i === "skills" &&  failedPost[i] !== ""){
+          for(e in failedPost[i]){
 
+                  form_values_with_errors[i].forEach(function(obj){ 
+                    if(failedPost[i][e] === obj.value){
+                      obj.checked = "checked"
+                    }
+                });
+                }
+              }
+               // console.log(failureRedirectdPost[i])
+          form_values_with_errors[i].forEach(function(obj){
+            
+            if(failedPost[i] === obj.value){
+              obj.checked = "checked"
+            }
+          });
+        }
+      }
+
+     
     var country_home_with_errors = JSON.parse(JSON.stringify(country_values));
     var country_from_with_errors = JSON.parse(JSON.stringify(country_values));
   
@@ -205,16 +215,12 @@ router.post('/register', function(req, res) {
             });
           }
 
-        
-
-
   if(errors) {
      var error_messages = {}
     errors.forEach(function(v) {
       error_messages[v.param] = v.msg
     });
-    console.log(errors)
-
+    //console.log(errors)
 	  res.render("register", {errors: errors,
                             error_messages:error_messages,
                             failedPost:failedPost,
@@ -226,11 +232,11 @@ router.post('/register', function(req, res) {
       var time =  new Date().getTime();
       var refuseHash = time + Math.random().toString(36).substring(7).toUpperCase();
       var invitationHash = Math.random().toString(36).substring(7).toUpperCase() + time;
-      console.log("BODY OBJ SKILLS")
-      console.log(bodyObj.skills)
+      // console.log("BODY OBJ SKILLS")
+      // console.log(bodyObj.skills)
       var newUser = bodyObj;
-      console.log("newUser.skills")
-      console.log(newUser.skills)
+      // console.log("newUser.skills")
+      // console.log(newUser.skills)
       newUser["refuseHash"] = refuseHash;
       newUser["invitationHash"] = invitationHash;
       req.models.users.createUser(newUser, function(cb) {
@@ -238,7 +244,7 @@ router.post('/register', function(req, res) {
           if(cb.error){
             if(cb.error.code === "23505"){
 
-               res.render('register',{
+               res.redirect('register',{
                   errors:{'error': 'Something went wrong.'},
                   failedPost:failedPost,
                   form_values: form_values_with_errors,country_home_values:country_home_with_errors,country_from_values:country_from_with_errors,

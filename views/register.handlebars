@@ -175,7 +175,7 @@
 	<!-- portfolio:String -->
 	<div class="form-group">
       <div class="label-container">
-         <label>Portfolio - (GitHub, GitLab URL etc)</label>
+         <label>Portfolio - e.g. GitHub, GitLab, Itch.io etc</label>
 			{{#if error_messages.portfolio}}
 				<p class = "alert-text"> {{error_messages.portfolio}}</p>
 			{{/if}}
@@ -289,11 +289,9 @@
 			 {{/each}}
 		</div>
 	</div>
-
-
 	<!-- dietary:  -->
 	<div class="control-group" id="diet">
-		<p>Dietary restrictions</p>
+		<p>Dietary restrictions*</p>
 		{{#if error_messages.dietary}}
 			<p class = "alert-text"> {{error_messages.dietary}}</p>
 		{{/if}}
@@ -314,12 +312,10 @@
 			<p class = "alert-text"> {{error_messages.tc}}</p>
 		{{/if}}
 		<div class="buttons">
-			{{#each form_values.tc}}
-					<label class="control control--radio">{{this.text}}
-			 			<input type="radio" name="tc" value="{{this.value}}" {{this.checked}}>
+					<label class="control control--checkbox">I have read and agree the MLH Code of Conduct
+			 			<input type="checkbox" name="tc" value="agree" >
 						<div class="control__indicator"></div>
 					 </label>
-			{{/each}}
 		</div>
 	</div>
 
