@@ -19,12 +19,16 @@ body {
    max-width: 700px;
    padding-left: 5px;
    padding-right: 5px;
-   background-image: url('../img/junction_logo.png');
    background-repeat: no-repeat;
    background-position: left top;
    background-size: 170px;
 }
 
+.juhis {
+  width: 170px;
+  height: auto;
+  margin-top: 43px;
+} 
 form {
    color: #FCF7FF;
    padding-top: 50px;
@@ -60,6 +64,12 @@ a:hover {
    border: 2px solid #dc5a26;
    padding: 2px;
 }
+
+alert-success {
+  position: relative;
+  margin-top: 100px;
+}
+
 
 .control-group .alert-text {
    position: relative;

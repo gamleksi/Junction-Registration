@@ -58,6 +58,16 @@
 		{{/if}}
 		<input type="number" class="form-control" value="{{failedPost.age}}" placeholder="99" name="age">
 	</div> -->
+	<div class="form-group">
+      <div class="label-container">
+         <label>Email*</label>
+			{{#if error_messages.email}}
+				<p class = "alert-text"> {{error_messages.email}}</p>
+			{{/if}}
+      </div>
+		<input type="email"  value="{{failedPost.email}}" placeholder="" name="email">
+	</div>
+
 
 	<div class="form-group">
       <div class="label-container">
@@ -82,23 +92,6 @@
 				 </label>
 			 {{/each}}
 		 </div>
-	</div>
-	<!-- email: {type:"text", key: true}, -->
-	<!-- <div class="form-group">
-		<label>Email</label>
-		{{#if error_messages.email}}
-			<p class = "alert-text"> {{error_messages.email}}</p>
-		{{/if}}
-		<input type="email" class="form-control"  value="{{failedPost.email}}" placeholder="hacker@hackjunction.com" name="email">
-	</div> -->
-	<div class="form-group">
-      <div class="label-container">
-         <label>Email*</label>
-			{{#if error_messages.email}}
-				<p class = "alert-text"> {{error_messages.email}}</p>
-			{{/if}}
-      </div>
-		<input type="email"  value="{{failedPost.email}}" placeholder="" name="email">
 	</div>
 
 	<div class="form-group">
@@ -152,42 +145,9 @@
 	</div>
 
 
-	<!-- shirtsize:  -->
-	<div class="control-group" id="shirt">
-		<p>Shirt size</p>
-		{{#if error_messages.shirtsize}}
-			<p class = "alert-text">{{error_messages.shirtsize}}</p>
-		{{/if}}
-		<div class="buttons">
-			 {{#each form_values.shirtsize}}
-				<label class="control control--radio">{{this.text}}
-		 			 <input type="radio" name="shirtsize" value="{{this.value}}" {{this.checked}}>
-					 <div class="control__indicator"></div>
-				 </label>
-			 {{/each}}
-		</div>
-	</div>
-
-
-	<!-- dietary:  -->
-	<div class="control-group" id="diet">
-		<p>Dietary restrictions</p>
-		{{#if error_messages.dietary}}
-			<p class = "alert-text"> {{error_messages.dietary}}</p>
-		{{/if}}
-		<div class="buttons">
-			{{#each form_values.dietary}}
-					<label class="control control--radio">{{this.text}}
-			 			<input type="radio" name="dietary" value="{{this.value}}" {{this.checked}}>
-						<div class="control__indicator"></div>
-					 </label>
-			{{/each}}
-		</div>
-	</div>
-
 	<!-- track: -->
 	<div class="control-group" id="track">
-		<p>Which track are you most interested in? This question isn't binding in any case. You can find more info about each track on our website!*</p>
+		<p>Which track are you most interested in? This question isn't binding in any case. You can find more info about each track on our <a href="https://hackjunction.com/#tracks" target="_blank">website</a>!*</p>
 		{{#if error_messages.track}}
 			<p class = "alert-text"> {{error_messages.track}}</p>
 		{{/if}}
@@ -314,9 +274,42 @@
 			<textarea type="textarea" class="form-control"  value="{{failedPost.comment}}" placeholder="" name="comment">{{failedPost.comment}}</textarea>
 	</div>
 
+	<!-- shirtsize:  -->
+	<div class="control-group" id="shirt">
+		<p>Shirt size*</p>
+		{{#if error_messages.shirtsize}}
+			<p class = "alert-text">{{error_messages.shirtsize}}</p>
+		{{/if}}
+		<div class="buttons">
+			 {{#each form_values.shirtsize}}
+				<label class="control control--radio">{{this.text}}
+		 			 <input type="radio" name="shirtsize" value="{{this.value}}" {{this.checked}}>
+					 <div class="control__indicator"></div>
+				 </label>
+			 {{/each}}
+		</div>
+	</div>
+
+
+	<!-- dietary:  -->
+	<div class="control-group" id="diet">
+		<p>Dietary restrictions</p>
+		{{#if error_messages.dietary}}
+			<p class = "alert-text"> {{error_messages.dietary}}</p>
+		{{/if}}
+		<div class="buttons">
+			{{#each form_values.dietary}}
+					<label class="control control--radio">{{this.text}}
+			 			<input type="radio" name="dietary" value="{{this.value}}" {{this.checked}}>
+						<div class="control__indicator"></div>
+					 </label>
+			{{/each}}
+		</div>
+	</div>
+
 	<!-- role:  -->
 	<div class="control-group" id="tc">
-		<p>I agree with MLH Code of Conduct, which can be found <a href="https://static.mlh.io/docs/mlh-code-of-conduct.pdf">here</a></p>
+		<p>I agree with MLH Code of Conduct, which can be found <a href="https://static.mlh.io/docs/mlh-code-of-conduct.pdf" target="_blank">here</a></p>
 		{{#if error_messages.tc}}
 			<p class = "alert-text"> {{error_messages.tc}}</p>
 		{{/if}}

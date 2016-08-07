@@ -255,7 +255,7 @@ router.post('/register', function(req, res) {
 
           else {
               sendgrid.sendRegisterConfirmation(newUser.email, newUser.firstname, refuseHash);
-              req.flash('success_msg', "You are registered succesfully, we sent you a email to your email address '"+newUser.email+"'. Please check your inbox and trash/spam folder. In case you didn't get it, please get in contact or register again.")
+              req.flash('success_msg', "Thanks for your application! We have sent you an email to your email address " +newUser.email+". Please check your inbox, spam and other folders. In case you don’t receive a confirmation in a short period of time, please get in contact with participants@hackjunction.com.")
               res.redirect('thanks');
       
           }

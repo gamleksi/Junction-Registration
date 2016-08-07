@@ -29,21 +29,18 @@
       });
 
       var emails = Object.keys(emailObjects);
-      console.log("emails")
-      console.log(emails)
+
       var to_email = new helper.Email(emails[0])
 
       mail = new helper.Mail(from_email, "You have been accepted to Junction", to_email, approvalMail.content);  
       mail.personalizations[0].addSubstitution({"%email%":emails[0]})
-      mail.personalizations[0].addSubstitution({"%first_name%": emailObjects[emails[0]].firsname}) 
+      mail.personalizations[0].addSubstitution({"%first_name%": emailObjects[emails[0]].firstname}) 
       mail.personalizations[0].addSubstitution({"%travel%":travelValues.message(emailObjects[emails[0]].travelReimbursement)})
-
-      mail.personalizations[0].addSubstitution({"%name%":emailObjects[emails[0]].firstname}) 
 
       var reverseInvitationHash = emailObjects[emails[0]].invitationHash.split("").reverse().join("");
       var reverseRefuseHash = emailObjects[emails[0]].refuseHash.split("").reverse().join("");      
       
-      var confirmLink= process.env.DOMAIN_ADDRESS + "/confirm/accpet/" + reverseInvitationHash;
+      var confirmLink= process.env.DOMAIN_ADDRESS + "/confirm/accept/" + reverseInvitationHash;
       var decideLink= process.env.DOMAIN_ADDRESS + "/confirm/decide/" + reverseInvitationHash;
       var refuseLink= process.env.DOMAIN_ADDRESS + "/refuse/" + reverseRefuseHash;
 
@@ -61,7 +58,7 @@
           var reverseInvitationHash = emailObjects[emails[i]].invitationHash.split("").reverse().join("");
           var reverseRefuseHash = emailObjects[emails[i]].refuseHash.split("").reverse().join("");
 
-          var confirmLink= process.env.DOMAIN_ADDRESS + "/confirm/accpet/" + reverseInvitationHash;
+          var confirmLink= process.env.DOMAIN_ADDRESS + "/confirm/accept/" + reverseInvitationHash;
           var decideLink= process.env.DOMAIN_ADDRESS + "/confirm/decide/" + reverseInvitationHash;
           var refuseLink= process.env.DOMAIN_ADDRESS + "/refuse/" + reverseRefuseHash;
 
