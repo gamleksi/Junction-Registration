@@ -16,13 +16,13 @@ body {
 }
 
 .row {
-   margin: auto;
-   max-width: 700px;
-   padding-left: 5px;
-   padding-right: 5px;
-   background-repeat: no-repeat;
-   background-position: left top;
-   background-size: 170px;
+  margin: auto;
+  max-width: 700px;
+  padding-left: 5px;
+  padding-right: 5px;
+  background-repeat: no-repeat;
+  background-position: left top;
+  background-size: 170px;
 }
 
 .juhis {
@@ -52,17 +52,12 @@ a:hover {
 }
 
 .alert-danger {
-   display:inline;
-   position: relative;
-   left: 200px;
    color: #dc5a26;
    border: 2px solid #dc5a26;
    padding: 2px;
 }
 
 .alert-text {
-   display: inline;
-   text-align: left;
    color: #dc5a26;
    border: 2px solid #dc5a26;
    padding: 2px;
@@ -73,12 +68,6 @@ alert-success {
   margin-top: 100px;
 }
 
-
-.control-group .alert-text {
-   position: relative;
-   top: 40px;
-   left: 200px;
-}
 
 /* Styling for the  text fields */
 .form-group {
@@ -342,6 +331,5 @@ select {
 }
 
 select:focus {
-
    border: 2px solid #5bc8d7;
 }
