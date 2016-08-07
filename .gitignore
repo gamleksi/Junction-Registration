@@ -23,8 +23,8 @@ sendgrid.env
 
 #Tools for inserting admin
 
-tools/admin-generator.js
-models/user-admin.js
+#tools/admin-generator.js
+#models/user-admin.js
 
 #Server
 

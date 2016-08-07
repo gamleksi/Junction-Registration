@@ -7,6 +7,7 @@ var UserDB = require('../models/user');
  country_values = require('../COUNTRIES_DATA.js')
 var sendgrid = require('../sendgrid/sendgrid.js')
 
+
 /* GET users listing. */
 router.get('/', ensureIsNotAuthenticated, function(req, res) {
   console.log("IN USERS")
@@ -36,72 +37,39 @@ router.get('/edit_profile', function(req, res){
 //Register User
 router.post('/register', function(req, res) {
   console.log(req.body);
-  var firstname = req.body.firstname;
-  var lastname = req.body.lastname;
-  var email = req.body.email;
-  var password =  req.body.password;
-  var password2 = req.body.password2;
-  var age = req.body.age
-  var country = req.body.country
-  var sex = req.body.sex
-  var shirtsize = req.body.shirtsize
-  var dietary = req.body.dietary
-  var track = req.body.track
-  var portfolio = req.body.portfolio
-  var q1 = req.body.q1
-  var q2 = req.body.q2
-  var comment = req.body.comment
-  var skills = req.body.skills
-  var role = req.body.role
-  var secret = req.body.secret
-  var team = req.body.team
+  var postBody = ["firstname","lastname","email","phone","age","countryFrom","city","countryHome","sex","shirtsize","dietary","track","team","portfolio","occupation","skill","experience","role","secret","team","motivation","secretCode","comment","tc","operating","sublime"]
 
-
+  var bodyObj = {}
+  for(i in postBody) {
+    bodyObj[postBody[i]] = req.body[postBody[i]]
+  }
 
   //Validator 
-  req.checkBody('firstname', 'Firstname is required.').notEmpty();
-  req.checkBody('lastname', 'Lastname is required.').notEmpty();
-  req.checkBody('email', 'Email is required.').notEmpty();
-  req.checkBody('email', 'Email is not valid.').isEmail();
+  req.checkBody('bodyObj.firstname', 'Firstname is required.').notEmpty();
+  req.checkBody('bodyObj.lastname', 'Lastname is required.').notEmpty();
+  req.checkBody('bodyObj.email', 'Email is required.').notEmpty();
+  req.checkBody('bodyObj.email', 'Email is not valid.').isEmail();
+
   // req.checkBody('password', 'password is required').notEmpty();
   // req.checkBody('password2', 'Passwords have to match').equals(password);
-  req.checkBody('age', 'age is required').notEmpty();
-  req.checkBody('dietary', 'dietary is required').notEmpty();
-  req.checkBody('shirtsize', 'shirtsize is required').notEmpty();
-  req.checkBody('track', 'track choice is required').notEmpty();
-  req.checkBody('country', 'Country is required').notEmpty();
-  req.checkBody('q1', 'Please answer the question.').notEmpty();
-  req.checkBody('q2', 'Please answer the question.').notEmpty();
-  req.checkBody('skills', 'Please answer the question.').notEmpty();
-  req.checkBody('role', 'Choose a role please.').notEmpty();
-
-  req.checkBody('sex', 'Gender is required').notEmpty();
-
+  req.checkBody('bodyObj.age', 'age is required').notEmpty();
+  req.checkBody('bodyObj.dietary', 'dietary is required').notEmpty();
+  req.checkBody('bodyObj.shirtsize', 'shirtsize is required').notEmpty();
+  req.checkBody('bodyObj.track', 'track choice is required').notEmpty();
+  req.checkBody('bodyObj.country', 'Country is required').notEmpty();
+  req.checkBody('bodyObj.occupation', 'Please answer the question.').notEmpty();
+  req.checkBody('bodyObj.Experience', 'Please answer the question.').notEmpty();
+  req.checkBody('bodyObj.skill', 'Please answer the question.').notEmpty();
+  req.checkBody('bodyObj.role', 'Choose a role please.').notEmpty();
+  req.checkBody('bodyObj.motivation', 'Please answer the question.').notEmpty();
+  req.checkBody('bodyObj.sex', 'Gender is required').notEmpty();
+  req.checkBody('bodyObj.tc', 'Please agree terms.').notEmpty();
   var errors = req.validationErrors();
- 
 
 
-  var failedPost = {
-        firstname: firstname,
-        lastname: lastname,
-        age: age,
-        email: email,
-        country: country,
-        sex: sex,
-        shirtsize: shirtsize,
-        dietary: dietary,
-        track:track,
-        portfolio:portfolio,
-        q1:q1,
-        q2:q2,
-        comment:comment,
-        role:role,
-        skills:skills,
-        secret:secret,
-        team:team
-      };
-      console.log("FORM VALUES ")
-      console.log(failedPost)
+  var failedPost = bodyObj;
+  console.log("FORM VALUES ")
+  console.log(failedPost)
       
     var form_values_with_errors = JSON.parse(JSON.stringify(form_values));
     // for(i in form_values){
