@@ -38,8 +38,9 @@ router.get('/edit_profile', function(req, res){
 //Register User
 router.post('/register', function(req, res) {
 
-  //console.log(req.body);
-  var postBody = ["firstname","lastname","email","phone","age","countryFrom","city","countryHome","sex","shirtsize","dietary","track","team","portfolio","occupation","skills","experience","role","team","motivation","secret","comment","tc","operating","sublime"]
+
+  console.log(req.body);
+  var postBody = ["firstname","lastname","email","phone","age","countryFrom","city","countryHome","sex","shirtsize","dietary","track","team","portfolio","occupation","skills","experience","school","role","team","motivation","secret","comment","tc","operating","sublime"]
 
   var bodyObj = {}
   console.log("POSTBODY")
@@ -67,6 +68,14 @@ router.post('/register', function(req, res) {
     },
     errorMessage: 'Lastname is required'
   }});
+
+  req.checkBody({'school': {
+    isLength: {
+      options: [{max: 100}],
+      errorMessage: 'Too long string' 
+    },
+    errorMessage: 'School is required'
+  }});  
 
   req.checkBody({'email': {
     isEmail: {
