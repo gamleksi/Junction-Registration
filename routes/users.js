@@ -165,10 +165,12 @@ router.post('/register', function(req, res) {
   var errors = req.validationErrors();
 
   var failedPost = JSON.parse(JSON.stringify(bodyObj));
-      
-  var form_values_with_errors = JSON.parse(JSON.stringify(form_values));
-  for(i in form_values){
-      form_values_with_errors[i] = form_values[i]
+  
+  var copied_init_values = JSON.parse(JSON.stringify(form_values));
+
+  var form_values_with_errors = JSON.parse(JSON.stringify(copied_init_values));
+  for(i in copied_init_values){
+      form_values_with_errors[i] = copied_init_values[i]
   }
     for(i in form_values_with_errors  ){
       if(failedPost[i]){
