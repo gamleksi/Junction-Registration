@@ -79,10 +79,10 @@
 		<input type="number" class="form-control" value="{{failedPost.age}}" placeholder="" name="age">
 	</div>
 
-	<div class="control-group" id="gender">
+	<div class="control-group">
 		<p>Gender*<p>
 		{{#if error_messages.sex}}
-			<p class = "alert-text"> {{error_messages.sex}}</p>
+			<p class = "alert-text">{{error_messages.sex}}</p>
 		{{/if}}
 		<div class="buttons">
 			 {{#each form_values.sex}}
@@ -108,15 +108,15 @@
 	<!-- country_from: String, -->
 	<div class="form-group" id="country-section">
 		<label>What country are you traveling from?*</label>
+		{{#if error_messages.countryFrom}}
+			<p class = "alert-text"> {{error_messages.countryFrom}}</p>
+		{{/if}} 		
  		<select name="countryFrom" id="country" class="country">
 		 <option value="" >Select your option</option>
 		 {{#each country_from_values}}
 			<option value="{{this.code}}" {{this.selected}}>{{this.name}}</option>
 		 {{/each}}
 		</select>
-		{{#if error_messages.countryFrom}}
-			<p class = "alert-text"> {{error_messages.countryFrom}}</p>
-		{{/if}}
 	</div>
 
 	<!-- city_from: String, -->
@@ -133,15 +133,15 @@
 	<!-- home_country: String -->
 	<div class="form-group" id="country-section">
 		<label>What is your home country?*</label>
+		{{#if error_messages.countryHome}}
+			<p class = "alert-text"> {{error_messages.countryHome}}</p>
+		{{/if}}
  		<select name="countryHome" id="country" class="country">
  		<option value="" >Select your option</option>
 		 {{#each country_home_values}}
 			<option value="{{this.code}}" {{this.selected}}>{{this.name}}</option>
 		 {{/each}}
 		</select>
-		{{#if error_messages.countryHome}}
-			<p class = "alert-text"> {{error_messages.countryHome}}</p>
-		{{/if}}
 	</div>
 
 
@@ -165,9 +165,9 @@
 	<div class="form-group">
       <div class="label-container">
          <label>Team - If you have a team already, please come up with somewhat unique string to name it. It is completely fine not to have a team at this point.</label>
-			{{#if error_messages.team}}
-				<p class = "alert-text"> {{error_messages.team}}</p>
-			{{/if}}
+		{{#if error_messages.team}}
+			<p class = "alert-text"> {{error_messages.team}}</p>
+		{{/if}}
       </div>
 		<input type="text"  value="{{failedPost.team}}" placeholder="" name="team">
 	</div>
@@ -186,10 +186,10 @@
 
   <div class="form-group">
      <div class="label-container">
-        <label>Which school do you go to? If you are not student leave it empty.</label>
-			{{#if error_messages.school}}
-				<p class = "alert-text"> {{error_messages.school}}</p>
-			{{/if}}
+        <label>Which school do you go to? If you are not a student leave this empty.</label>
+		{{#if error_messages.school}}
+			<p class = "alert-text"> {{error_messages.school}}</p>
+		{{/if}}
      </div>
      <input type="text" value="{{failedPost.school}}" placeholder="" name="school">
   </div>
