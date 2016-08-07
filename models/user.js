@@ -68,6 +68,7 @@ var validate = function(strng) {
 				password: {type: "text", defaultValue: "participant"},
 				skills: String,
 				role:String,
+				school:{type: "text", defaultValue: undefined},
 				occupation:String,
 				secret:String,
 				team:String,

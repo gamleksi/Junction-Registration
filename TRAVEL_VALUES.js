@@ -5,8 +5,8 @@
 				"No":0,
 				"Fin":20, 
 				"Nord":50,
-				"Eu": 100, 
-				"Out": 200
+				"Eu": 75, 
+				"Out": 150
 				}
 		var amount = values[value]
 		if(amount === 0){
