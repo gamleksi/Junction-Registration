@@ -37,25 +37,6 @@ router.get('/edit_profile', function(req, res){
 
 //Register User
 router.post('/register', function(req, res) {
-  var firstname = req.body.firstname;
-  var lastname = req.body.lastname;
-  var email = req.body.email;
-  var password =  req.body.password;
-  var password2 = req.body.password2;
-  var age = req.body.age
-  var country = req.body.country
-  var sex = req.body.sex
-  var shirtsize = req.body.shirtsize
-  var dietary = req.body.dietary
-  var track = req.body.track
-  var portfolio = req.body.portfolio
-  var q1 = req.body.q1
-  var q2 = req.body.q2
-  var comment = req.body.comment
-  var skills = req.body.skills
-  var role = req.body.role
-  var secret = req.body.secret
-  var team = req.body.team
 
   console.log(req.body);
   var postBody = ["firstname","lastname","email","phone","age","countryFrom","city","countryHome","sex","shirtsize","dietary","track","team","portfolio","occupation","skill","experience","role","secret","team","motivation","secretCode","comment","tc","operating","sublime"]
@@ -70,49 +51,118 @@ router.post('/register', function(req, res) {
   console.log("LANGUAGES")
   console.log(postBody.languages)
   //Validator 
-  req.checkBody('firstname', 'Firstname is required.').notEmpty();
-  req.checkBody('lastname', 'Lastname is required.').notEmpty();
-  req.checkBody('email', 'Email is required.').notEmpty();
-  req.checkBody('email', 'Email is not valid.').isEmail();
+  req.checkBody({'firstname': {
+    notEmpty: true,
+    isLength: {
+      options: [{min: 1, max: 25}],
+      errorMessage: 'Must be between 1 and 15 chars long' 
+    },
+    errorMessage: 'Firstname is required'
+  }});
+
+  req.checkBody({'lastname': {
+    notEmpty: true,
+    isLength: {
+      options: [{max: 30}],
+      errorMessage: 'Too long string' 
+    },
+    errorMessage: 'Lastname is required'
+  }});
+
+  req.checkBody({'email': {
+    isEmail: {
+      errorMessage: 'Invalid Email'
+    },
+    notEmpty: true,
+    isLength: {
+      options: [{max: 30}],
+      errorMessage: 'Too long email' 
+    },
+    errorMessage: 'Lastname is required'
+  }});
+
+  req.checkBody({'age': {
+    isInt: {
+      errorMessage: 'Invalid value'
+    },
+    notEmpty: true,
+    isLength: {
+      options: [{max: 3}],
+      errorMessage: 'Too long email' 
+    },
+    errorMessage: 'Age is required'
+  }});
+  
+  req.checkBody({'city': {
+    isInt: {
+      errorMessage: 'Invalid value'
+    },
+    notEmpty: true,
+    isLength: {
+      options: [{max: 50}],
+      errorMessage: 'Too long city' 
+    },
+    errorMessage: 'City is required'
+  }});  
+
+  req.checkBody({'city': {
+    isInt: {
+      errorMessage: 'Invalid value'
+    },
+    notEmpty: true,
+    isLength: {
+      options: [{max: 50}],
+      errorMessage: 'Too long city' 
+    },
+    errorMessage: 'City is required'
+  }});  
+
+  req.checkBody({'phone': {
+    isLength: {
+      options: [{max: 50}],
+      errorMessage: 'Too long phone number' 
+    }
+  }});  
+
+  req.checkBody({'secretCode': {
+    isLength: {
+      options: [{max: 50}],
+      errorMessage: 'Too long city' 
+    }
+  }});
+
+  req.checkBody({'comment': {
+    isLength: {
+      options: [{max: 400}],
+      errorMessage: 'Too long comment' 
+    }
+  }});
+
+  req.checkBody({'motivation': {
+    notEmpty: true,
+    isLength: {
+      options: [{max: 400}],
+      errorMessage: 'Max char 400' 
+    },
+    errorMessage: 'Fill this text area'
+  }});
+
 
   // req.checkBody('password', 'password is required').notEmpty();
   // req.checkBody('password2', 'Passwords have to match').equals(password);
-  req.checkBody('age', 'age is required').notEmpty();
-  req.checkBody('dietary', 'dietary is required').notEmpty();
+  req.checkBody('dietary', 'Dietary is required').notEmpty();
+  req.checkBody('sex', 'Gender is required').notEmpty();  
   req.checkBody('shirtsize', 'shirtsize is required').notEmpty();
   req.checkBody('track', 'track choice is required').notEmpty();
   req.checkBody('countryFrom', 'Country is required').notEmpty();
-
   req.checkBody('countryHome', 'Country is required').notEmpty();
   req.checkBody('occupation', 'Please answer the question.').notEmpty();
-  req.checkBody('Experience', 'Please answer the question.').notEmpty();
+  req.checkBody('experience', 'Please answer the question.').notEmpty();
   req.checkBody('skill', 'Please answer the question.').notEmpty();
   req.checkBody('role', 'Choose a role please.').notEmpty();
-  req.checkBody('motivation', 'Please answer the question.').notEmpty();
   req.checkBody('sex', 'Gender is required').notEmpty();
   req.checkBody('tc', 'Please agree terms.').notEmpty();
   var errors = req.validationErrors();
-
-
-  // var failedPost = {
-  //       firstname: firstname,
-  //       lastname: lastname,
-  //       age: age,
-  //       email: email,
-  //       country: country,
-  //       sex: sex,
-  //       shirtsize: shirtsize,
-  //       dietary: dietary,
-  //       track:track,
-  //       portfolio:portfolio,
-  //       q1:q1,
-  //       q2:q2,
-  //       comment:comment,
-  //       role:role,
-  //       skills:skills,
-  //       secret:secret,
-  //       team:team
-  //     };
 
   var failedPost = bodyObj;
   console.log("FORM VALUES ")
