@@ -8,7 +8,7 @@ router.get('/:hash', function (req, res, next) {
 	req.models.users.refuseHashMatches(req.params.hash,function(email){
 		if(email){
 			req.models.users.refuseHacker(email);
-			res.render('message', {message:"Thanks for your interest in Junction. Maybe next year :(("});
+			res.render('message', {message:"That's unfortunate. Thanks for your interest."});
 		}else{
 			res.render('message',{error:"Invalid link. <3"})
 		}
