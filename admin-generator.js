@@ -1,6 +1,6 @@
 var dotenv = require('dotenv').config();
 var orm = require('orm');
-var Users = require('../models/user-admin');
+var Users = require('./models/user-admin.js');
 
 
 

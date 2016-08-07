@@ -3,6 +3,7 @@ var orm = require('orm');
 var dateFormat = require('dateformat');
 var EventEmitter = require('events');
 var event = new EventEmitter();
+var formValues = require('../FORM_VALUES.js')
 
 module.exports = {
 	createModel: function(db) {
@@ -26,18 +27,37 @@ module.exports = {
 		// - question 2: String
 		// - comments for organizers
 
-		var shirtsizes = ["xs","s","m","l","xl","xxl"];
-		var	dietarys = ["no","veg","pork","glut"];
-		var tracks = ["junction","other"];
-		var sexes =["male", "female","other"];
-		var travels = ["Fin", "No", "Nord", "Eu", "Out"]
+var validate = function(strng) {
+		console.log(formValues);
+			var valueArray = formValues[strng];
+			var result = [];
+			for(var i in valueArray) {
+				result.push(valueArray[i].value);
+			}
+			return result;
+		}
+
+		var tracks = validate("track");
+		var shirtsizes = validate("shirtsize");
+		var occupation = validate("occupation");
+		var	dietarys = validate("dietary");
+		var sexes =validate("sex");
+		var role = validate('role');
+		var skills = validate('skills');
+		var operating = validate('operating');
+		var experiences = validate('experience');
+		var sublime = validate('sublime');
+
+		var travels = ["Fin", "No", "Nord", "Eu", "Out"];
 		var statuses = ["accept","reject","pending"];
 		var Users = db.define("users", {
 				firstname: String,
 				lastname: String,
 				age: {type: 'integer'},
 				email: {type:"text", key: true},
-				country: String,
+				countryFrom: String,
+				city: String,
+				countryHome: String,
 				sex: String,
 				shirtsize: String,
 				dietary: String,
@@ -47,10 +67,13 @@ module.exports = {
 				question2:String,
 				comment:String,
 				password: {type: "text", defaultValue: "participant"},
-				skills:String,
+				skills: String,
 				role:String,
+				occupation:String,
 				secret:String,
 				team:String,
+				operating: String,
+				sublime: String,
 				admin: {type: "boolean", defaultValue: false},
 				accepted:  {type: "boolean", defaultValue: false},
 				refused:  {type: "boolean", defaultValue: false},
@@ -71,7 +94,12 @@ module.exports = {
 				    track: orm.validators.insideList(tracks, "Invalid track"),
 				    dietary: orm.validators.insideList(dietarys, "Invalid dietary"),
 				    status: orm.validators.insideList(statuses, "Invalid status"),
-
+				    role: orm.validators.insideList(role, "Invalid role"),
+				    occupation: orm.validators.insideList(occupation, "Invalid occupation"),
+				    skills: orm.validators.insideList(skills, "Invalid skill"),
+				    operating: orm.validators.insideList(operating, "Invalid operating"),
+				    experience: orm.validators.insideList(experiences, "Invalid experiences"),
+				    sublime: orm.validators.insideList(sublime, "Invalid sublime answer"),
 				},
 				methods:{
 					getPassword:function(){
@@ -80,7 +108,6 @@ module.exports = {
 				}
 			}
 		);
-
 		Users.createAdmin = function(user, callback){
 			bcrypt.genSalt(10, function(err, salt) {
 				bcrypt.hash(user.password, salt, function(err, hash) {

@@ -30,6 +30,7 @@ var validate = function(strng) {
 			var valueArray = formValues[strng];
 			var result = [];
 			for(var i in valueArray) {
+			
 				result.push(valueArray[i].value);
 			}
 			return result;
@@ -37,17 +38,17 @@ var validate = function(strng) {
 
 		var tracks = validate("track");
 		var shirtsizes = validate("shirtsize");
-		var occupation = validate("occupation");
+		var occupationArr = validate("occupation");
 		var	dietarys = validate("dietary");
 		var sexes =validate("sex");
-		var role = validate('role');
-		var skills = validate('skills');
-		var operating = validate('operating');
+		var roleArr = validate('role');
+		var skillsArr = validate('skills');
+		var operatingArr = validate('operating');
 		var experiences = validate('experience');
-		var sublime = validate('sublime');
-
+		var sublimeArr = validate('sublime');
 		var travels = ["Fin", "No", "Nord", "Eu", "Out"];
 		var statuses = ["accept","reject","pending"];
+
 		var Users = db.define("users", {
 				firstname: String,
 				lastname: String,
@@ -92,12 +93,12 @@ var validate = function(strng) {
 				    track: orm.validators.insideList(tracks, "Invalid track"),
 				    dietary: orm.validators.insideList(dietarys, "Invalid dietary"),
 				    status: orm.validators.insideList(statuses, "Invalid status"),
-				    role: orm.validators.insideList(role, "Invalid role"),
-				    occupation: orm.validators.insideList(occupation, "Invalid occupation"),
-				    skills: orm.validators.insideList(skills, "Invalid skill"),
-				    operating: orm.validators.insideList(operating, "Invalid operating"),
+				    role: orm.validators.insideList(roleArr, "Invalid role"),
+				    occupation: orm.validators.insideList(occupationArr, "Invalid occupation"),
+					//skills: orm.validators.insideList(skillsArr, "Invalid skill"),
+				    operating: orm.validators.insideList(operatingArr, "Invalid operating"),
 				    experience: orm.validators.insideList(experiences, "Invalid experiences"),
-				    sublime: orm.validators.insideList(sublime, "Invalid sublime answer"),
+				    sublime: orm.validators.insideList(sublimeArr, "Invalid sublime answer"),
 				},
 				methods:{
 					getPassword:function(){
@@ -113,14 +114,15 @@ var validate = function(strng) {
 					user["password"] = hash;
 					user["admin"] = false;
 					Users.create(user, function(err,items){
-						if(err){
-							console.error(err);
-							callback(false);
-						} else {
-							console.log("User has been created succesfully.")
-							callback(true);
-						}
-					});					
+				      if(err){
+				      	console.log("ERROR IN USER CREATE")
+				       console.error(err);
+				       callback({"error":err})
+				      } else {
+				       console.log("User has been created succesfully.")
+				       callback({success:true})
+				      }
+				     });		
 				});
 			});
 		};

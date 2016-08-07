@@ -5,6 +5,11 @@
 
 {{/if}}
 
+{{#if error_messages.common}}
+   <p class = "alert alert-danger">{{error_messages.common}}</p>
+{{/if}}
+
+
 <form method="post" action="/register">
 	<!-- firstname: String, -->
 
@@ -236,13 +241,13 @@
 
 	<div class="control-group" id="occupation">
 		<p>Which programming, scripting and markup languages are you most confortable with?</p>
-		{{#if error_messages.languages}}
-			<p class = "alert-text"> {{error_messages.languages}}</p>
+		{{#if error_messages.skills}}
+			<p class = "alert-text"> {{error_messages.skills}}</p>
 		{{/if}}
 		<div class="buttons">
 			{{#each form_values.skills}}
 					<label class="control control--checkbox">{{this.text}}
-			 			<input type="checkbox" name="skill" value="{{this.value}}" {{this.checked}}>
+			 			<input type="checkbox" name="skills" value="{{this.value}}" {{this.checked}}>
 						<div class="control__indicator"></div>
 					 </label>
 			{{/each}}
@@ -297,7 +302,7 @@
       <div class="label-container">
          <label>If you are provided with a secret code, please remember to put it here.</label>
       </div>
-      <input type="text" value="{{failedPost.secretCode}}" placeholder="" name="secretCode">
+      <input type="text" value="{{failedPost.secret}}" placeholder="" name="secret">
    </div>
 
 	<!-- Skills (e.x.:String, -->

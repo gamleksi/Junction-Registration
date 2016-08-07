@@ -39,12 +39,12 @@ router.get('/edit_profile', function(req, res){
 router.post('/register', function(req, res) {
 
   console.log(req.body);
-  var postBody = ["firstname","lastname","email","phone","age","countryFrom","city","countryHome","sex","shirtsize","dietary","track","team","portfolio","occupation","skill","experience","role","secret","team","motivation","secretCode","comment","tc","operating","sublime"]
+  var postBody = ["firstname","lastname","email","phone","age","countryFrom","city","countryHome","sex","shirtsize","dietary","track","team","portfolio","occupation","skills","experience","role","team","motivation","secret","comment","tc","operating","sublime"]
 
   var bodyObj = {}
   console.log("POSTBODY")
+  console.log(req.body.skills)
   for(i in postBody) {
-    console.log(postBody[i])
     bodyObj[postBody[i]] = req.body[postBody[i]]
   }
 
@@ -53,8 +53,8 @@ router.post('/register', function(req, res) {
   req.checkBody({'firstname': {
     notEmpty: true,
     isLength: {
-      options: [{min: 1, max: 25}],
-      errorMessage: 'Must be between 1 and 15 chars long' 
+      options: [{max: 50}],
+      errorMessage: 'Too long string' 
     },
     errorMessage: 'Firstname is required'
   }});
@@ -62,7 +62,7 @@ router.post('/register', function(req, res) {
   req.checkBody({'lastname': {
     notEmpty: true,
     isLength: {
-      options: [{max: 30}],
+      options: [{max: 50}],
       errorMessage: 'Too long string' 
     },
     errorMessage: 'Lastname is required'
@@ -74,10 +74,10 @@ router.post('/register', function(req, res) {
     },
     notEmpty: true,
     isLength: {
-      options: [{max: 30}],
+      options: [{max: 60}],
       errorMessage: 'Too long email' 
     },
-    errorMessage: 'Lastname is required'
+    errorMessage: 'Email is required.'
   }});
 
   req.checkBody({'age': {
@@ -93,21 +93,6 @@ router.post('/register', function(req, res) {
   }});
   
   req.checkBody({'city': {
-    isInt: {
-      errorMessage: 'Invalid value'
-    },
-    notEmpty: true,
-    isLength: {
-      options: [{max: 50}],
-      errorMessage: 'Too long city' 
-    },
-    errorMessage: 'City is required'
-  }});  
-
-  req.checkBody({'city': {
-    isInt: {
-      errorMessage: 'Invalid value'
-    },
     notEmpty: true,
     isLength: {
       options: [{max: 50}],
@@ -123,16 +108,24 @@ router.post('/register', function(req, res) {
     }
   }});  
 
-  req.checkBody({'secretCode': {
+  req.checkBody({'secret': {
     isLength: {
-      options: [{max: 50}],
-      errorMessage: 'Too long city' 
+      options: [{max: 100}],
+      errorMessage: 'Too long secret code' 
     }
   }});
 
   req.checkBody({'comment': {
     isLength: {
       options: [{max: 400}],
+      errorMessage: 'Too long comment' 
+    }
+  }});
+
+  req.checkBody({'portfolio': {
+    notEmpty: true,
+    isLength: {
+      options: [{max: 200}],
       errorMessage: 'Too long comment' 
     }
   }});
@@ -146,6 +139,14 @@ router.post('/register', function(req, res) {
     errorMessage: 'Fill this text area'
   }});
 
+  req.checkBody({'skills': {
+    notEmpty: true,
+    isLength: {
+      options: [{max: 400}],
+      errorMessage: 'Max char 400' 
+    },
+    errorMessage: 'At least one skill is required.'
+  }});  
 
   // req.checkBody('password', 'password is required').notEmpty();
   // req.checkBody('password2', 'Passwords have to match').equals(password);
@@ -157,8 +158,6 @@ router.post('/register', function(req, res) {
   req.checkBody('countryHome', 'Country is required').notEmpty();
   req.checkBody('occupation', 'Please answer the question.').notEmpty();
   req.checkBody('experience', 'Please answer the question.').notEmpty();
-  req.checkBody('operating', 'Please answer the question.').notEmpty();
-  req.checkBody('skill', 'Please answer the question.').notEmpty();
   req.checkBody('role', 'Choose a role please.').notEmpty();
   req.checkBody('sex', 'Gender is required').notEmpty();
   req.checkBody('tc', 'Please agree terms.').notEmpty();
@@ -166,21 +165,18 @@ router.post('/register', function(req, res) {
   var errors = req.validationErrors();
 
   var failedPost = JSON.parse(JSON.stringify(bodyObj));
-  console.log("FORM VALUES ")
-  console.log(failedPost)
       
-    var form_values_with_errors = JSON.parse(JSON.stringify(form_values));
-    for(i in form_values){
+  var form_values_with_errors = JSON.parse(JSON.stringify(form_values));
+  for(i in form_values){
       form_values_with_errors[i] = form_values[i]
-    }
+  }
     for(i in form_values_with_errors  ){
       if(failedPost[i]){
                // console.log(failedPost[i])
             form_values_with_errors[i].forEach(function(obj){
               
               if(failedPost[i] === obj.value){
-                 console.log("OBJECT")
-                console.log(obj)
+  
                 obj.checked = "checked"
               }
             });
@@ -225,47 +221,46 @@ router.post('/register', function(req, res) {
                              country_home_values:country_home_with_errors})
   } else {
   	 
-      var time =  new Date().getTime() 
+      var time =  new Date().getTime();
       var refuseHash = time + Math.random().toString(36).substring(7).toUpperCase();
       var invitationHash = Math.random().toString(36).substring(7).toUpperCase() + time;
-      var newUser = {
-        firstname: firstname,
-        lastname: lastname,
-        age: age,
-        email: email,
-        country: country,
-        track:track,
-        sex: sex,
-        shirtsize: shirtsize,
-        dietary: dietary,
-        portfolio:portfolio,
-        question1:q1,
-        question2:q2,
-        comment:comment,
-        role:role,
-        team:team,
-        secret:secret,
-        skills:skills,
-        invitationHash: invitationHash,
-        refuseHash: refuseHash,
-        password:"junction2016"
-    };
-  	req.models.users.createUser(newUser, function(success) {
-      if(success){ 
-        sendgrid.sendRegisterConfirmation(email, firstname, refuseHash);
-        req.flash('success_msg', "You are registered succesfully, we sent you a email to your email address '"+email+"'. Please check your inbox and trash/spam folder. In case you didn't get it, please get in contact or register again.")
-        res.redirect('thanks');
-      }
-      else {
-         //req.flash('error', 'Already registered with the given email.');
-          res.render('register',{
-              errors:{'error': 'Already registered with the given email.'},
-              failedPost:failedPost,
-              form_values: form_values_with_errors,country_values:country_values_with_errors,
-              error_messages: {"email":"Email already in use." }
-            });
-      }
-  	});
+      console.log("BODY OBJ SKILLS")
+      console.log(bodyObj.skills)
+      var newUser = bodyObj;
+      console.log("newUser.skills")
+      console.log(newUser.skills)
+      newUser["refuseHash"] = refuseHash;
+      newUser["invitationHash"] = invitationHash;
+      req.models.users.createUser(newUser, function(cb) {
+
+          if(cb.error){
+            if(cb.error.code === "23505"){
+
+               res.render('register',{
+                  errors:{'error': 'Something went wrong.'},
+                  failedPost:failedPost,
+                  form_values: form_values_with_errors,country_home_values:country_home_with_errors,country_from_values:country_from_with_errors,
+                  error_messages: {"email":"Email already in use." }
+                });
+             }
+             else{
+                  res.render('register',{
+                  errors:{'error': 'Already registered with the given email.'},
+                  failedPost:failedPost,
+                  form_values: form_values_with_errors,country_home_values:country_home_with_errors,country_from_values:country_from_with_errors,
+                  error_messages: {"common":"Something went wrong." }
+                });
+             }
+          }
+
+          else {
+              sendgrid.sendRegisterConfirmation(newUser.email, newUser.firstname, refuseHash);
+              req.flash('success_msg', "You are registered succesfully, we sent you a email to your email address '"+newUser.email+"'. Please check your inbox and trash/spam folder. In case you didn't get it, please get in contact or register again.")
+              res.redirect('thanks');
+      
+          }
+  
+   });
   }
 });
 
@@ -295,7 +290,7 @@ passport.use('user-local', new LocalStrategy(
 ));
 
 router.post('/login',
-  passport.authenticate('user-local', {successRedirect: '/', failureRedirect:'/login',failureFlash: true}));
+  passport.authenticate('user-local', {successRedirect: '/admin', failureRedirect:'/login',failureFlash: true}));
 
 router.get('/logout', function(req, res){
 	req.logout();
