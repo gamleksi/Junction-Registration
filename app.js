@@ -65,7 +65,7 @@ var admin = require('./routes/admin');
 var refuse = require('./routes/refuse');
 
 // uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(favicon(__dirname + '/public/img/favicon.ico'));
 
 
 app.use(session({
