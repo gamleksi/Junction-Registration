@@ -133,7 +133,9 @@ label {
    /*text-transform: uppercase;*/
 }
 
-
+.boss-container{
+  width:70%;
+}
 /* Styling for the radio buttons */
 .control-group p {
    /*text-transform: uppercase;*/
@@ -147,13 +149,24 @@ label {
     margin-top:70px;
 
    padding: 0px 20px 50px 0px;
-   text-align: left;
-   vertical-align: top;
+/*   text-align: left;
+   vertical-align: top;*/
    background: #1b1b1b;
    margin-bottom: 10px;
 }
+.row{
+      padding-left:0px;
+      max-width: 100%
 
-
+}
+.container-div{
+  padding-top:30px;
+    padding-bottom:30px;
+    padding-left:0px;
+     border-top: 2px solid #FCF7FF;
+   border-bottom: 2px solid #FCF7FF;
+   width:100%;
+}
 .buttons {
     display: inline
     margin-bottom:100px;
