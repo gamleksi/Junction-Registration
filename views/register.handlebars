@@ -111,6 +111,7 @@
 	<div class="form-group" id="country-section">
 		<label>What country are you traveling from?*</label>
  		<select name="country" id="country" class="country">
+		 <option value="" disabled selected>Select your option</option>
 		 {{#each country_values}}
 			<option value="{{this.code}}" {{this.selected}}>{{this.name}}</option>
 		 {{/each}}
@@ -135,6 +136,7 @@
 	<div class="form-group" id="country-section">
 		<label>What is your home country?*</label>
  		<select name="country" id="country" class="country">
+ 		<option value="" disabled selected>Select your option</option>
 		 {{#each country_values}}
 			<option value="{{this.code}}" {{this.selected}}>{{this.name}}</option>
 		 {{/each}}

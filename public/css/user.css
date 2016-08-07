@@ -127,7 +127,6 @@ label {
    display: block;
    /*width: 200px;*/
    width: 100%;
-   height: 210px;
    margin: auto;
    padding: 0px 20px 50px 0px;
    text-align: center;
@@ -142,26 +141,6 @@ label {
    padding: 15px 15px 0 15px;
 }
 
-
-#gender {
-   height: 200px;
-}
-
-#shirt {
-   height: 350px;
-}
-
-#diet {
-   height: 250px;
-}
-
-#role {
-   height: 350px;
-}
-
-#track {
-   height: 150px;
-}
 
 .control {
 

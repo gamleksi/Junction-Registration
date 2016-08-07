@@ -3,6 +3,7 @@ var orm = require('orm');
 var dateFormat = require('dateformat');
 var EventEmitter = require('events');
 var event = new EventEmitter();
+var formValues = require('../FORM_VALUES.js');
 
 module.exports = {
 	createModel: function(db) {
@@ -26,10 +27,20 @@ module.exports = {
 		// - question 2: String
 		// - comments for organizers
 
-		var shirtsizes = ["xs","s","m","l","xl","xxl"];
-		var	dietarys = ["no","veg","pork","glut"];
-		var tracks = ["junction","other"];
-		var sexes =["male", "female","other"];
+		var validate = function(strng) {
+			var valueArray = formValues[strng];
+			var result = [];
+			for(var i in valueArray) {
+				result.push(valueArray[i].value);
+			}
+			return result;
+		}
+
+		var tracks = validate("track");
+		var shirtsizes = validate("shirtsize");
+		var occupation = validate("occupation");
+		var	dietarys = validate("dietary");
+		var sexes =validate("sex");
 		var travels = ["Fin", "No", "Nord", "Eu", "Out"]
 		var statuses = ["accept","reject","pending"];
 		var Users = db.define("users", {
