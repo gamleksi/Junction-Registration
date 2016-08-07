@@ -15,6 +15,12 @@ router.get('/', ensureIsNotAuthenticated, function(req, res) {
                         country_from_values:country_values})
 });
 
+router.get('/register', ensureIsNotAuthenticated, function(req, res) {
+  res.render('register',{form_values: form_values,
+                        country_home_values:country_values,
+                        country_from_values:country_values})
+});
+
 
 router.get('/thanks', ensureIsNotAuthenticated, function(req, res) {
   res.render('thanks')

@@ -1,26 +1,26 @@
 <h2 class="page-header"></h2>
 {{#if errors}}
 
-	<div class = "alert alert-danger"> {{errors.length}} error(s). See below.</div>
+	<div class = "alert-text"> {{errors.length}} error(s). See below.</div>
 
 {{/if}}
 
 {{#if error_messages.common}}
-   <p class = "alert alert-danger">{{error_messages.common}}</p>
+   <p class = "alert-textr">{{error_messages.common}}</p>
 {{/if}}
 
 
 <form method="post" action="/register">
 	<!-- firstname: String, -->
 
-	<!-- <div class="form-group">
+	<!-- <div class="form-group-div">
 		<label>First Name</label>
 		{{#if error_messages.firstname}}
 			<p class = "alert-text"> {{error_messages.firstname}}</p>
 		{{/if}}
 		<input type="text" class="form-control" value="{{failedPost.firstname}}" placeholder="firstname" name="firstname">
 	</div> -->
-      <div class="form-group">
+      <div class="form-group-div">
          <div class="label-container">
             <label>First name* (* = required)</label>
 				{{#if error_messages.firstname}}
@@ -33,14 +33,14 @@
 
 	<!-- lastname: String, -->
 
-	<!-- <div class="form-group">
+	<!-- <div class="form-group-div">
 		<label>Lastname</label>
 		{{#if error_messages.lastname}}
 			<p class = "alert-text">{{error_messages.lastname}}</p>
 		{{/if}}
 		<input type="text" class="form-control" value="{{failedPost.lastname}}" placeholder="lastname" name="lastname">
 	</div> -->
-	<div class="form-group">
+	<div class="form-group-div">
       <div class="label-container">
          <label>Last name*</label>
 		{{#if error_messages.lastname}}
@@ -51,14 +51,14 @@
 	</div>
 
 	<!-- age: {type: 'integer'}, -->
-	<!-- <div class="form-group">
+	<!-- <div class="form-group-div">
 		<label>Age</label>
 		{{#if error_messages.age}}
 			<p class = "alert-text">{{error_messages.age}}</p>
 		{{/if}}
 		<input type="number" class="form-control" value="{{failedPost.age}}" placeholder="99" name="age">
 	</div> -->
-	<div class="form-group">
+	<div class="form-group-div">
       <div class="label-container">
          <label>Email*</label>
 			{{#if error_messages.email}}
@@ -69,7 +69,7 @@
 	</div>
 
 
-	<div class="form-group">
+	<div class="form-group-div">
       <div class="label-container">
          <label>Age*</label>
 			{{#if error_messages.age}}
@@ -94,7 +94,7 @@
 		 </div>
 	</div>
 
-	<div class="form-group">
+	<div class="form-group-div">
       <div class="label-container">
          <label>Phone</label>
 			{{#if error_messages.phone}}
@@ -106,7 +106,7 @@
 
 
 	<!-- country_from: String, -->
-	<div class="form-group" id="country-section">
+	<div class="form-group-div" id="country-section">
 		<label>What country are you traveling from?*</label>
 		{{#if error_messages.countryFrom}}
 			<p class = "alert-text"> {{error_messages.countryFrom}}</p>
@@ -120,7 +120,7 @@
 	</div>
 
 	<!-- city_from: String, -->
-	<div class="form-group">
+	<div class="form-group-div">
       <div class="label-container">
          <label>What city are you traveling from?*</label>
 			{{#if error_messages.city}}
@@ -131,7 +131,7 @@
 	</div>
 
 	<!-- home_country: String -->
-	<div class="form-group" id="country-section">
+	<div class="form-group-div" id="country-section">
 		<label>What is your home country?*</label>
 		{{#if error_messages.countryHome}}
 			<p class = "alert-text"> {{error_messages.countryHome}}</p>
@@ -162,7 +162,7 @@
 	</div>
 
 	<!-- team: String, -->
-	<div class="form-group">
+	<div class="form-group-div">
       <div class="label-container">
          <label>Team - If you have a team already, please come up with somewhat unique string to name it. It is completely fine not to have a team at this point.</label>
 		{{#if error_messages.team}}
@@ -173,7 +173,7 @@
 	</div>
 
 	<!-- portfolio:String -->
-	<div class="form-group">
+	<div class="form-group-div">
       <div class="label-container">
 
          <label>Portfolio - E.g. GitHub, GitLab or itch.io</label>
@@ -184,7 +184,7 @@
 		<input type="text"  value="{{failedPost.portfolio}}" placeholder="" name="portfolio">
 	</div>
 
-  <div class="form-group">
+  <div class="form-group-div">
      <div class="label-container">
         <label>Which school do you go to? If you are not a student leave this empty.</label>
 		{{#if error_messages.school}}
@@ -257,18 +257,18 @@
 	</div>
 
 	<!-- Skills (e.x.:String, -->
-	<div class="text-area">
+	<div class="text-area textarea">
 		<label>Why do you want to come to Junction 2016 and why should we choose you?*</label>
 		{{#if error_messages.motivation}}
 			<p class = "alert-text"> {{error_messages.motivation}}</p>
 		{{/if}}
-			<textarea type="textarea" class="form-control"  value="{{failedPost.motivation}}" placeholder="" name="motivation">{{failedPost.motivation}}</textarea>
+			<textarea type="textarea" class="textarea"  value="{{failedPost.motivation}}" placeholder="" name="motivation">{{failedPost.motivation}}</textarea>
 	</div>
 
 
 
 	<!-- secret_code:string -->
-   <div class="form-group">
+   <div class="form-group-div">
       <div class="label-container">
          <label>If you are provided with a <b>secret code</b>, please remember to put it here.</label>
       </div>
@@ -281,7 +281,7 @@
 		{{#if error_messages.comment}}
 			<p class = "alert-text"> {{error_messages.comment}}</p>
 		{{/if}}
-			<textarea type="textarea" class="form-control"  value="{{failedPost.comment}}" placeholder="" name="comment">{{failedPost.comment}}</textarea>
+			<textarea type="textarea" class="textarea"  value="{{failedPost.comment}}" placeholder="" name="comment">{{failedPost.comment}}</textarea>
 	</div>
 
 	<!-- shirtsize:  -->
