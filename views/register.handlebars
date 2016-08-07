@@ -183,6 +183,15 @@
 		<input type="text"  value="{{failedPost.portfolio}}" placeholder="" name="portfolio">
 	</div>
 
+  <div class="form-group">
+     <div class="label-container">
+        <label>Which school do you go to? If you are not student leave it empty.</label>
+			{{#if error_messages.school}}
+				<p class = "alert-text"> {{error_messages.school}}</p>
+			{{/if}}
+     </div>
+     <input type="text" value="{{failedPost.school}}" placeholder="" name="school">
+  </div>
 	<!-- occupation:  -->
 	<div class="control-group" id="occupation">
 		<p>Which of the following choices describes your occupational status the best?</p>
