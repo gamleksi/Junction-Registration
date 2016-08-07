@@ -76,7 +76,7 @@
 				<p class = "alert-text">{{error_messages.age}}</p>
 			{{/if}}
       </div>
-		<input type="number" class="form-control" value="{{failedPost.age}}" placeholder="" name="age">
+		<input type="number"  value="{{failedPost.age}}" placeholder="" name="age">
 	</div>
 
 	<div class="control-group" id="gender">
@@ -84,9 +84,9 @@
 		{{#if error_messages.sex}}
 			<p class = "alert-text"> {{error_messages.sex}}</p>
 		{{/if}}
-		<div class="buttons">
+		<div class="container-div row ">
 			 {{#each form_values.sex}}
-			 	 <label class="control control--radio">{{this.text}}
+			 	 <label class="control col-sm-4 control--radio">{{this.text}}
 		 			 <input type="radio" name="sex" value="{{this.value}}" {{this.checked}}>
 					 <div class="control__indicator"></div>
 				 </label>
@@ -151,9 +151,9 @@
 		{{#if error_messages.track}}
 			<p class = "alert-text"> {{error_messages.track}}</p>
 		{{/if}}
-		<div class="buttons">
+		<div class="container-div row ">
 		 {{#each form_values.track}}
-				<label class="control control--radio">{{this.text}}
+				<label class="control col-sm-4 control--radio">{{this.text}}
 				 <input type="radio" name="track" value="{{this.value}}" {{this.checked}}>
 				 <div class="control__indicator"></div>
 				</label>
@@ -199,9 +199,9 @@
 		{{#if error_messages.occupation}}
 			<p class = "alert-text"> {{error_messages.occupation}}</p>
 		{{/if}}
-		<div class="buttons">
+		<div class="container-div row ">
 			{{#each form_values.occupation}}
-					<label class="control control--radio">{{this.text}}
+					<label class="control col-sm-4 control--radio">{{this.text}}
 			 			<input type="radio" name="occupation" value="{{this.value}}" {{this.checked}}>
 						<div class="control__indicator"></div>
 					 </label>
@@ -209,14 +209,14 @@
 		</div>
 	</div>
 
-	<div class="control-group" id="occupation">
+	<div class="control-group container" id="occupation">
 		<p>Which programming, scripting and markup languages or game engines are you most confortable with?</p>
 		{{#if error_messages.skills}}
 			<p class = "alert-text"> {{error_messages.skills}}</p>
 		{{/if}}
-		<div class="buttons">
+		<div class="container-div row  row">
 			{{#each form_values.skills}}
-					<label class="control control--checkbox">{{this.text}}
+					<label class="control col-sm-4 control--checkbox col-sm-4">{{this.text}}
 			 			<input type="checkbox" name="skills" value="{{this.value}}" {{this.checked}}>
 						<div class="control__indicator"></div>
 					 </label>
@@ -230,9 +230,9 @@
 		{{#if error_messages.experience}}
 			<p class = "alert-text"> {{error_messages.experience}}</p>
 		{{/if}}
-		<div class="buttons">
+		<div class="container-div row ">
 			{{#each form_values.experience}}
-					<label class="control control--radio">{{this.text}}
+					<label class="control col-sm-4 control--radio">{{this.text}}
 			 			<input type="radio" name="experience" value="{{this.value}}" {{this.checked}}>
 						<div class="control__indicator"></div>
 					 </label>
@@ -246,9 +246,9 @@
 		{{#if error_messages.role}}
 			<p class = "alert-text"> {{error_messages.role}}</p>
 		{{/if}}
-		<div class="buttons">
+		<div class="container-div row ">
 			{{#each form_values.role}}
-					<label class="control control--radio">{{this.text}}
+					<label class="control col-sm-4 control--radio">{{this.text}}
 			 			<input type="radio" name="role" value="{{this.value}}" {{this.checked}}>
 						<div class="control__indicator"></div>
 					 </label>
@@ -290,9 +290,9 @@
 		{{#if error_messages.shirtsize}}
 			<p class = "alert-text">{{error_messages.shirtsize}}</p>
 		{{/if}}
-		<div class="buttons">
+		<div class="container-div row ">
 			 {{#each form_values.shirtsize}}
-				<label class="control control--radio">{{this.text}}
+				<label class="control col-sm-4 control--radio">{{this.text}}
 		 			 <input type="radio" name="shirtsize" value="{{this.value}}" {{this.checked}}>
 					 <div class="control__indicator"></div>
 				 </label>
@@ -305,9 +305,9 @@
 		{{#if error_messages.dietary}}
 			<p class = "alert-text"> {{error_messages.dietary}}</p>
 		{{/if}}
-		<div class="buttons">
+		<div class="container-div row ">
 			{{#each form_values.dietary}}
-					<label class="control control--radio">{{this.text}}
+					<label class="control col-sm-4 control--radio">{{this.text}}
 			 			<input type="radio" name="dietary" value="{{this.value}}" {{this.checked}}>
 						<div class="control__indicator"></div>
 					 </label>
@@ -321,11 +321,11 @@
 		{{#if error_messages.tc}}
 			<p class = "alert-text"> {{error_messages.tc}}</p>
 		{{/if}}
-		<div class="buttons">
-					<label class="control control--checkbox">I have read and agree the MLH Code of Conduct
+		<div class="container-div row ">
+					<label class="control  control--checkbox">I have read and agree the MLH Code of Conduct
 			 			<input type="checkbox" name="tc" value="agree" >
 						<div class="control__indicator"></div>
-					 </label>
+					 </p>
 		</div>
 	</div>
 
@@ -353,9 +353,9 @@
 		{{#if error_messages.operating}}
 			<p class = "alert-text"> {{error_messages.operating}}</p>
 		{{/if}}
-		<div class="buttons">
+		<div class="container-div row ">
 			{{#each form_values.operating}}
-					<label class="control control--radio">{{this.text}}
+					<label class="control col-sm-4 control--radio">{{this.text}}
 			 			<input type="radio" name="operating" value="{{this.value}}" {{this.checked}}>
 						<div class="control__indicator"></div>
 					 </label>
@@ -369,9 +369,9 @@
 		{{#if error_messages.sublime}}
 			<p class = "alert-text"> {{error_messages.sublime}}</p>
 		{{/if}}
-		<div class="buttons">
+		<div class="container-div row ">
 			{{#each form_values.sublime}}
-					<label class="control control--radio">{{this.text}}
+					<label class="control col-sm-4 control--radio">{{this.text}}
 			 			<input type="radio" name="sublime" value="{{this.value}}" {{this.checked}}>
 						<div class="control__indicator"></div>
 					 </label>
