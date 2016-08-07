@@ -7,9 +7,12 @@ var UserDB = require('../models/user');
  country_values = require('../COUNTRIES_DATA.js')
 var sendgrid = require('../sendgrid/sendgrid.js')
 
+
 /* GET users listing. */
 router.get('/', ensureIsNotAuthenticated, function(req, res) {
-  res.render('register',{form_values: form_values,country_values:country_values})
+  res.render('register',{form_values: form_values,
+                        country_home_values:country_values,
+                        country_from_values:country_values})
 });
 
 
@@ -54,55 +57,71 @@ router.post('/register', function(req, res) {
   var secret = req.body.secret
   var team = req.body.team
 
+  console.log(req.body);
+  var postBody = ["firstname","lastname","email","phone","age","countryFrom","city","countryHome","sex","shirtsize","dietary","track","team","portfolio","occupation","skill","experience","role","secret","team","motivation","secretCode","comment","tc","operating","sublime"]
 
+  var bodyObj = {}
+  console.log("POSTBODY")
+  for(i in postBody) {
+    console.log(postBody[i])
+    bodyObj[postBody[i]] = req.body[postBody[i]]
+  }
 
+  console.log("LANGUAGES")
+  console.log(postBody.languages)
   //Validator 
   req.checkBody('firstname', 'Firstname is required.').notEmpty();
   req.checkBody('lastname', 'Lastname is required.').notEmpty();
   req.checkBody('email', 'Email is required.').notEmpty();
   req.checkBody('email', 'Email is not valid.').isEmail();
+
   // req.checkBody('password', 'password is required').notEmpty();
   // req.checkBody('password2', 'Passwords have to match').equals(password);
   req.checkBody('age', 'age is required').notEmpty();
   req.checkBody('dietary', 'dietary is required').notEmpty();
   req.checkBody('shirtsize', 'shirtsize is required').notEmpty();
   req.checkBody('track', 'track choice is required').notEmpty();
-  req.checkBody('country', 'Country is required').notEmpty();
-  req.checkBody('q1', 'Please answer the question.').notEmpty();
-  req.checkBody('q2', 'Please answer the question.').notEmpty();
-  req.checkBody('skills', 'Please answer the question.').notEmpty();
+  req.checkBody('countryFrom', 'Country is required').notEmpty();
+
+  req.checkBody('countryHome', 'Country is required').notEmpty();
+  req.checkBody('occupation', 'Please answer the question.').notEmpty();
+  req.checkBody('Experience', 'Please answer the question.').notEmpty();
+  req.checkBody('skill', 'Please answer the question.').notEmpty();
   req.checkBody('role', 'Choose a role please.').notEmpty();
-
+  req.checkBody('motivation', 'Please answer the question.').notEmpty();
   req.checkBody('sex', 'Gender is required').notEmpty();
-
+  req.checkBody('tc', 'Please agree terms.').notEmpty();
   var errors = req.validationErrors();
- 
 
 
-  var failedPost = {
-        firstname: firstname,
-        lastname: lastname,
-        age: age,
-        email: email,
-        country: country,
-        sex: sex,
-        shirtsize: shirtsize,
-        dietary: dietary,
-        track:track,
-        portfolio:portfolio,
-        q1:q1,
-        q2:q2,
-        comment:comment,
-        role:role,
-        skills:skills,
-        secret:secret,
-        team:team
-      };
+  // var failedPost = {
+  //       firstname: firstname,
+  //       lastname: lastname,
+  //       age: age,
+  //       email: email,
+  //       country: country,
+  //       sex: sex,
+  //       shirtsize: shirtsize,
+  //       dietary: dietary,
+  //       track:track,
+  //       portfolio:portfolio,
+  //       q1:q1,
+  //       q2:q2,
+  //       comment:comment,
+  //       role:role,
+  //       skills:skills,
+  //       secret:secret,
+  //       team:team
+  //     };
+
+  var failedPost = bodyObj;
+  console.log("FORM VALUES ")
+  console.log(failedPost)
       
     var form_values_with_errors = JSON.parse(JSON.stringify(form_values));
-    // for(i in form_values){
-    //   form_values_with_errors[i] = form_values[i]
-    // }
+    for(i in form_values){
+      form_values_with_errors[i] = form_values[i]
+    }
     for(i in form_values_with_errors  ){
       if(failedPost[i]){
                // console.log(failedPost[i])
@@ -116,16 +135,26 @@ router.post('/register', function(req, res) {
           }
         }
 
-    var country_values_with_errors = JSON.parse(JSON.stringify(country_values));
+    var country_home_with_errors = JSON.parse(JSON.stringify(country_values));
+    var country_from_with_errors = JSON.parse(JSON.stringify(country_values));
   
-      if(failedPost["country"]){
-            country_values_with_errors.forEach(function(obj){
+      if(failedPost["countryHome"]){
+            country_home_with_errors.forEach(function(obj){
           
-              if(failedPost["country"] === obj.code){
+              if(failedPost["countryHome"] === obj.code){
+                obj.selected = "selected"
+              }
+            });
+        }
+          if(failedPost["countryFrom"]){
+            country_from_with_errors.forEach(function(obj){
+          
+              if(failedPost["countryFrom"] === obj.code){
                 obj.selected = "selected"
               }
             });
           }
+
         
 
 
@@ -134,13 +163,14 @@ router.post('/register', function(req, res) {
     errors.forEach(function(v) {
       error_messages[v.param] = v.msg
     });
-    //console.log(errors)
+    console.log(errors)
 
 	  res.render("register", {errors: errors,
                             error_messages:error_messages,
                             failedPost:failedPost,
                             form_values: form_values_with_errors,
-                            country_values:country_values_with_errors})
+                            country_from_values:country_from_with_errors,
+                             country_home_values:country_home_with_errors})
   } else {
   	 
       var time =  new Date().getTime() 

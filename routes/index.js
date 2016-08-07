@@ -7,7 +7,8 @@ router.get('/', function(req, res, next) {
 	if(req.user && req.user.admin){
 			res.redirect('/admin/')
 	} else {
-  		res.render('register',{form_values: form_values,country_values:country_values})
+  		res.render('register',{form_values: form_values,
+  					country_values:country_values})
 	}
   	
 });
