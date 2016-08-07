@@ -1,0 +1,309 @@
+/*
+   junction black: #333;
+   junction white: #FCF7FF;
+   junction cyan: #5bc8d7;
+   junction orange: #dc5a26;
+*/
+
+body {
+    background-color: #1b1b1b;
+    font-family: 'Source Sans Pro', sans-serif;
+    color: #FCF7FF;
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 1.3;
+}
+
+.row {
+   margin: auto;
+   max-width: 700px;
+   padding-left: 5px;
+   padding-right: 5px;
+   background-image: url('../img/junction_logo.png');
+   background-repeat: no-repeat;
+   background-position: left top;
+   background-size: 170px;
+}
+
+form {
+   color: #FCF7FF;
+   padding-top: 50px;
+}
+
+h2 {
+   font-size: 50px;
+   font-weight: 300;
+   text-transform: uppercase;
+}
+
+a {
+   color: #5bc8d7;
+}
+
+a:hover {
+   opacity: 0.7;
+}
+
+.alert-danger {
+   display:inline;
+   position: relative;
+   left: 200px;
+   color: #dc5a26;
+   border: 2px solid #dc5a26;
+   padding: 2px;
+}
+
+.alert-text {
+   display: inline;
+   text-align: left;
+   color: #dc5a26;
+   border: 2px solid #dc5a26;
+   padding: 2px;
+}
+
+.control-group .alert-text {
+   position: relative;
+   top: 40px;
+   left: 200px;
+}
+
+/* Styling for the  text fields */
+.form-group {
+   padding-bottom: 20px;
+   margin-top:70px;
+   /*opacity: 0.5;*/
+}
+
+.form-group:hover {
+   /*opacity: 0.9;*/
+   color: #5bc8d7;
+}
+
+.form-group:focus {
+   /*opacity: 0.9;*/
+   color: #5bc8d7;
+}
+
+input {
+  font-size: 16px;
+  color: #FCF7FF;
+  height: 25px;
+  width: 100%;
+  padding: 10px 10px 10px 5px;
+  outline: none;
+  border: none;
+  border-bottom: 2px solid #FCF7FF;
+  background: rgba(0,0,0,0);
+  /*opacity: 0.5;*/
+  /*width: 70%;*/
+   transition: all 0.15s linear;
+}
+
+input:hover {
+  border-bottom: 2px solid #5bc8d7;
+  color: #5bc8d7;
+}
+
+/*input:focus {
+  border-bottom: 2px solid #5bc8d7;
+  color: #5bc8d7;
+}*/
+
+.label-container {
+   width: 100%;
+}
+
+label {
+   /*text-transform: uppercase;*/
+}
+
+
+/* Styling for the radio buttons */
+.control-group p {
+   /*text-transform: uppercase;*/
+   text-align: left;
+   margin-bottom: 10px;
+}
+.control-group {
+   display: block;
+   /*width: 200px;*/
+   width: 100%;
+    margin-top:70px;
+
+   padding: 0px 20px 50px 0px;
+   text-align: center;
+   vertical-align: top;
+   background: #1b1b1b;
+   margin-bottom: 10px;
+}
+
+.buttons {
+   border-top: 2px solid #FCF7FF;
+   border-bottom: 2px solid #FCF7FF;
+   padding: 15px 15px 0 15px;
+}
+
+
+.control {
+
+   position: relative;
+   display: block;
+   margin-bottom: 0px;
+   padding-left: 10px;
+   cursor: pointer;
+}
+
+.control input {
+   position: abolute;
+   z-index: -1;
+   opacity: 0;
+}
+
+.control:hover {
+   color: #5bc8d7;
+}
+
+
+.control__indicator {
+   position: absolute;
+   top: 2px;
+   left: 0;
+   width: 30px;
+   height: 30px;
+   background: #e6e6e6;
+}
+
+.control--radio .control__indicator {
+   border-radius: 50%;
+}
+
+.control:hover input ~ .control__indicator,
+.control input:focus ~ .control__indicator {
+   background: #5bc8d7;
+}
+
+.control input:checked ~ .control__indicator {
+   background: #2aa1c0;
+}
+
+/* Hover state whilst checked */
+.control:hover input:not([disabled]):checked ~ .control__indicator,
+.control input:checked:focus ~ .control__indicator {
+  background: #0e647d;
+}
+
+/* Check mark */
+.control__indicator:after {
+  position: absolute;
+  display: none;
+  content: '';
+}
+
+/* Show check mark */
+.control input:checked ~ .control__indicator:after {
+  display: block;
+}
+
+/* Checkbox tick */
+.control--checkbox .control__indicator:after {
+  top: 4px;
+  left: 8px;
+  width: 3px;
+  height: 8px;
+  transform: rotate(45deg);
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+}
+
+.control__indicator:after {
+   position: absolute;
+   display: none;
+   content: '';
+}
+
+.control input:checked ~ .control__indicator:after {
+   display:block;
+}
+
+.control--radio .control__indicator:after {
+   top: 7px;
+   left: 8px;
+   width: 15px;
+   height: 15px;
+   border-radius: 50%;
+   background: #fff;
+}
+
+
+/* Styling for text-area */
+.text-area {
+   padding-top: 20px;
+   padding-bottom: 20px;
+}
+
+.text-area label {
+   width: 100%;
+   margin-bottom: 10px;
+}
+
+
+textarea {
+   margin-top: 10px;
+   background-color: #1b1b1b;
+   font-size: 16px;
+   border: 2px solid #FCF7FF;
+   color: #FCF7FF;
+   display: block;
+   width: 100%;
+   height: 100px;
+   margin: auto;
+   resize: none;
+}
+
+
+/* Stylign for hte submit button */
+
+.btn {
+   border: 2px solid #5bc8d7;
+   background-color: #1b1b1b;
+   color: #5bc8d7;
+   margin-top: 50px;
+   padding: 15px 30px 15px 30px;
+   font-size: 18px;
+   transition: all 0.15s linear;
+   width: 100%;
+}
+
+.btn:hover {
+   color: #333;
+   background-color: #5bc8d7;
+}
+
+/* styling for dropdown */
+
+select {
+   -webkit-appearance: none;
+   -moz-appearance: none;
+   appearance: none;
+   background: #1b1b1b url('../img/ic_keyboard_arrow_down_white_24dp_1x.png') no-repeat;
+   background-size: 20px;
+   background-position: right 10px center;
+   padding: 5px 5px 5px 5px;
+   border-bottom: 2px solid #FCF7FF;
+   border-top: 0px;
+   border-left: 0px;
+   border-right: 0px;
+   margin-top: 20px;
+   width: 100%;
+   color: #FCF7FF;
+   -webkit-border-radius: 0px;
+   -moz-border-radius: 0px;
+   border-radius: 0px;
+   font-size: 18px;
+   /*text-transform: uppercase;*/
+}
+
+select:focus {
+
+   border: 2px solid #5bc8d7;
+}

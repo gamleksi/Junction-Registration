@@ -118,7 +118,7 @@ app.use(function (req, res, next){
   next();
 });
 
-app.use('/', routes);
+//app.use('/', routes);
 app.use('/', users);
 app.use('/refuse', refuse);
 app.use('/confirm', confirm);

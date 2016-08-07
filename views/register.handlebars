@@ -1,192 +1,382 @@
 <h2 class="page-header"></h2>
 {{#if errors}}
-	
+
 	<div class = "alert alert-danger"> {{errors.length}} error(s). See below.</div>
-	
+
 {{/if}}
+
+{{#if error_messages.common}}
+   <p class = "alert alert-danger">{{error_messages.common}}</p>
+{{/if}}
+
 
 <form method="post" action="/register">
 	<!-- firstname: String, -->
 
-	<div class="form-group">
+	<!-- <div class="form-group">
 		<label>First Name</label>
 		{{#if error_messages.firstname}}
 			<p class = "alert-text"> {{error_messages.firstname}}</p>
 		{{/if}}
 		<input type="text" class="form-control" value="{{failedPost.firstname}}" placeholder="firstname" name="firstname">
-	</div>
+	</div> -->
+      <div class="form-group">
+         <div class="label-container">
+            <label>First name* (* = required)</label>
+				{{#if error_messages.firstname}}
+					<p class = "alert-text"> {{error_messages.firstname}}</p>
+				{{/if}}
+         </div>
+         <input type="text" value="{{failedPost.firstname}}" placeholder="" name="firstname">
+      </div>
 
 
 	<!-- lastname: String, -->
 
-	<div class="form-group">
+	<!-- <div class="form-group">
 		<label>Lastname</label>
 		{{#if error_messages.lastname}}
 			<p class = "alert-text">{{error_messages.lastname}}</p>
 		{{/if}}
 		<input type="text" class="form-control" value="{{failedPost.lastname}}" placeholder="lastname" name="lastname">
+	</div> -->
+	<div class="form-group">
+      <div class="label-container">
+         <label>Last name*</label>
+		{{#if error_messages.lastname}}
+			<p class = "alert-text">{{error_messages.lastname}}</p>
+		{{/if}}
+      </div>
+		<input type="text" value="{{failedPost.lastname}}" placeholder="" name="lastname">
 	</div>
-	
 
 	<!-- age: {type: 'integer'}, -->
-	<div class="form-group">
+	<!-- <div class="form-group">
 		<label>Age</label>
 		{{#if error_messages.age}}
 			<p class = "alert-text">{{error_messages.age}}</p>
 		{{/if}}
 		<input type="number" class="form-control" value="{{failedPost.age}}" placeholder="99" name="age">
-	</div>	
-	
-	<!-- email: {type:"text", key: true}, -->
+	</div> -->
+
 	<div class="form-group">
+      <div class="label-container">
+         <label>Age*</label>
+			{{#if error_messages.age}}
+				<p class = "alert-text">{{error_messages.age}}</p>
+			{{/if}}
+      </div>
+		<input type="number" class="form-control" value="{{failedPost.age}}" placeholder="" name="age">
+	</div>
+
+	<div class="control-group" id="gender">
+		<p>Gender*<p>
+		{{#if error_messages.sex}}
+			<p class = "alert-text"> {{error_messages.sex}}</p>
+		{{/if}}
+		<div class="buttons">
+			 {{#each form_values.sex}}
+			 	 <label class="control control--radio">{{this.text}}
+		 			 <input type="radio" name="sex" value="{{this.value}}" {{this.checked}}>
+					 <div class="control__indicator"></div>
+				 </label>
+			 {{/each}}
+		 </div>
+	</div>
+	<!-- email: {type:"text", key: true}, -->
+	<!-- <div class="form-group">
 		<label>Email</label>
 		{{#if error_messages.email}}
 			<p class = "alert-text"> {{error_messages.email}}</p>
 		{{/if}}
 		<input type="email" class="form-control"  value="{{failedPost.email}}" placeholder="hacker@hackjunction.com" name="email">
-	</div>	
-	
-
-	<!-- country: String, -->
+	</div> -->
 	<div class="form-group">
-		<label>Home Country</label>
+      <div class="label-container">
+         <label>Email*</label>
+			{{#if error_messages.email}}
+				<p class = "alert-text"> {{error_messages.email}}</p>
+			{{/if}}
+      </div>
+		<input type="email"  value="{{failedPost.email}}" placeholder="" name="email">
+	</div>
 
-<!-- 		<input type="text" class="form-control"  value="{{failedPost.country}}" placeholder="Country" name="country" list="country">
- -->		<select name="country" id="country" class="country">
-		 {{#each country_values}}
+	<div class="form-group">
+      <div class="label-container">
+         <label>Phone</label>
+			{{#if error_messages.phone}}
+				<p class = "alert-text"> {{error_messages.phone}}</p>
+			{{/if}}
+      </div>
+		<input type="text"  value="{{failedPost.phone}}" placeholder="" name="phone">
+	</div>
+
+
+	<!-- country_from: String, -->
+	<div class="form-group" id="country-section">
+		<label>What country are you traveling from?*</label>
+ 		<select name="countryFrom" id="country" class="country">
+		 <option value="" >Select your option</option>
+		 {{#each country_from_values}}
 			<option value="{{this.code}}" {{this.selected}}>{{this.name}}</option>
 		 {{/each}}
 		</select>
-
-		{{#if error_messages.country}}
-			<p class = "alert-text"> {{error_messages.country}}</p>
+		{{#if error_messages.countryFrom}}
+			<p class = "alert-text"> {{error_messages.countryFrom}}</p>
 		{{/if}}
-		
-	</div>	
-	
-
-	<!-- gender:  -->
-	<div class="form-group">
-		<label>Gender</label><br>
-		{{#if error_messages.sex}}
-			<p class = "alert-text"> {{error_messages.sex}}</p>
-		{{/if}}
-		 {{#each form_values.sex}}
- 			 <input type="radio" name="sex" value="{{this.value}}" {{this.checked}}>{{this.text}}<br>
-		 {{/each}}
 	</div>
 
+	<!-- city_from: String, -->
+	<div class="form-group">
+      <div class="label-container">
+         <label>What city are you traveling from?*</label>
+			{{#if error_messages.city}}
+				<p class = "alert-text"> {{error_messages.city}}</p>
+			{{/if}}
+      </div>
+		<input type="text"  value="{{failedPost.city}}" placeholder="" name="city">
+	</div>
+
+	<!-- home_country: String -->
+	<div class="form-group" id="country-section">
+		<label>What is your home country?*</label>
+ 		<select name="countryHome" id="country" class="country">
+ 		<option value="" >Select your option</option>
+		 {{#each country_home_values}}
+			<option value="{{this.code}}" {{this.selected}}>{{this.name}}</option>
+		 {{/each}}
+		</select>
+		{{#if error_messages.countryHome}}
+			<p class = "alert-text"> {{error_messages.countryHome}}</p>
+		{{/if}}
+	</div>
 
 
 	<!-- shirtsize:  -->
-	<div class="form-group">
-		<label>Shirt size</label><br>
+	<div class="control-group" id="shirt">
+		<p>Shirt size</p>
 		{{#if error_messages.shirtsize}}
 			<p class = "alert-text">{{error_messages.shirtsize}}</p>
 		{{/if}}
-		 {{#each form_values.shirtsize}}
- 			 <input type="radio" name="shirtsize" value="{{this.value}}" {{this.checked}}>{{this.text}}<br>
-		 {{/each}}
-	</div>	
+		<div class="buttons">
+			 {{#each form_values.shirtsize}}
+				<label class="control control--radio">{{this.text}}
+		 			 <input type="radio" name="shirtsize" value="{{this.value}}" {{this.checked}}>
+					 <div class="control__indicator"></div>
+				 </label>
+			 {{/each}}
+		</div>
+	</div>
 
 
 	<!-- dietary:  -->
-	<div class="form-group">
-		<label>Dietary restrictions</label><br>
+	<div class="control-group" id="diet">
+		<p>Dietary restrictions</p>
 		{{#if error_messages.dietary}}
 			<p class = "alert-text"> {{error_messages.dietary}}</p>
 		{{/if}}
-		{{#each form_values.dietary}}
- 			<input type="radio" name="dietary" value="{{this.value}}" {{this.checked}}>{{this.text}}<br>
-		{{/each}}
-	</div>	
-
-	<!-- role: -->
-	<div class="form-group">
-		<label>What's your role in a hackathon team?</label><br>
-		{{#if error_messages.role}}
-			<p class = "alert-text"> {{error_messages.role}}</p>
-		{{/if}}
-		 {{#each form_values.role}}
-				 <input type="radio" name="role" value="{{this.value}}" {{this.checked}}>{{this.text}}<br>
-		 {{/each}}
-	</div>	
-
-	<!-- Skills (e.x.:String, -->
-	<div class="form-group">
-		<label>Describe your skills briefly (e.x "Frontend, Backend, React.js, UX, Concept design, etc.")</label>
-		{{#if error_messages.skills}}
-			<p class = "alert-text"> {{error_messages.skills}}</p>
-		{{/if}}
-			<textarea type="textarea" class="form-control"  value="{{failedPost.skills}}" placeholder="" name="skills">{{failedPost.skills}}</textarea>
+		<div class="buttons">
+			{{#each form_values.dietary}}
+					<label class="control control--radio">{{this.text}}
+			 			<input type="radio" name="dietary" value="{{this.value}}" {{this.checked}}>
+						<div class="control__indicator"></div>
+					 </label>
+			{{/each}}
+		</div>
 	</div>
 
-
-
-
-
 	<!-- track: -->
-	<div class="form-group">
-		<label>First track choice</label><br>
+	<div class="control-group" id="track">
+		<p>Which track are you most interested in? This question isn't binding in any case. You can find more info about each track on our website!*</p>
 		{{#if error_messages.track}}
 			<p class = "alert-text"> {{error_messages.track}}</p>
 		{{/if}}
+		<div class="buttons">
 		 {{#each form_values.track}}
-				 <input type="radio" name="track" value="{{this.value}}" {{this.checked}}>{{this.text}}<br>
+				<label class="control control--radio">{{this.text}}
+				 <input type="radio" name="track" value="{{this.value}}" {{this.checked}}>
+				 <div class="control__indicator"></div>
+				</label>
 		 {{/each}}
-	</div>	
+		</div>
+	</div>
 
-	<!-- portfolio:String, -->
+	<!-- team: String, -->
 	<div class="form-group">
-		<label>Portfolio (Github, Gitlab etc.)</label>
-		{{#if error_messages.portfolio}}
-			<p class = "alert-text"> {{error_messages.portfolio}}</p>
+      <div class="label-container">
+         <label>Team - If you have a team already, please come up with somewhat unique string to name it. It is completely fine not to have a team at this point.</label>
+			{{#if error_messages.team}}
+				<p class = "alert-text"> {{error_messages.team}}</p>
+			{{/if}}
+      </div>
+		<input type="text"  value="{{failedPost.team}}" placeholder="" name="team">
+	</div>
+
+	<!-- portfolio:String -->
+	<div class="form-group">
+      <div class="label-container">
+         <label>Portfolio - (GitHub, GitLab URL etc)</label>
+			{{#if error_messages.portfolio}}
+				<p class = "alert-text"> {{error_messages.portfolio}}</p>
+			{{/if}}
+      </div>
+		<input type="text"  value="{{failedPost.portfolio}}" placeholder="" name="portfolio">
+	</div>
+
+	<!-- occupation:  -->
+	<div class="control-group" id="occupation">
+		<p>Which of the following choices describes your occupational status the best?</p>
+		{{#if error_messages.occupation}}
+			<p class = "alert-text"> {{error_messages.occupation}}</p>
 		{{/if}}
-		<input type="text" class="form-control" value="{{failedPost.portfolio}}"  placeholder="github.com/junction_hcker" name="portfolio">
+		<div class="buttons">
+			{{#each form_values.occupation}}
+					<label class="control control--radio">{{this.text}}
+			 			<input type="radio" name="occupation" value="{{this.value}}" {{this.checked}}>
+						<div class="control__indicator"></div>
+					 </label>
+			{{/each}}
+		</div>
+	</div>
+
+	<div class="control-group" id="occupation">
+		<p>Which programming, scripting and markup languages are you most confortable with?</p>
+		{{#if error_messages.skills}}
+			<p class = "alert-text"> {{error_messages.skills}}</p>
+		{{/if}}
+		<div class="buttons">
+			{{#each form_values.skills}}
+					<label class="control control--checkbox">{{this.text}}
+			 			<input type="checkbox" name="skills" value="{{this.value}}" {{this.checked}}>
+						<div class="control__indicator"></div>
+					 </label>
+			{{/each}}
+		</div>
+	</div>
+
+	<!-- experience:  -->
+	<div class="control-group" id="experience">
+		<p>How many years do you have hackathon and/or coding experience?</p>
+		{{#if error_messages.experience}}
+			<p class = "alert-text"> {{error_messages.experience}}</p>
+		{{/if}}
+		<div class="buttons">
+			{{#each form_values.experience}}
+					<label class="control control--radio">{{this.text}}
+			 			<input type="radio" name="experience" value="{{this.value}}" {{this.checked}}>
+						<div class="control__indicator"></div>
+					 </label>
+			{{/each}}
+		</div>
+	</div>
+
+	<!-- role:  -->
+	<div class="control-group" id="role">
+		<p>Which of the following describes your role in a hackathon team the best?</p>
+		{{#if error_messages.role}}
+			<p class = "alert-text"> {{error_messages.role}}</p>
+		{{/if}}
+		<div class="buttons">
+			{{#each form_values.role}}
+					<label class="control control--radio">{{this.text}}
+			 			<input type="radio" name="role" value="{{this.value}}" {{this.checked}}>
+						<div class="control__indicator"></div>
+					 </label>
+			{{/each}}
+		</div>
+	</div>
+
+	<!-- Skills (e.x.:String, -->
+	<div class="text-area">
+		<label>Why do you want to come to Junction 2016 and why should we choose you?*</label>
+		{{#if error_messages.motivation}}
+			<p class = "alert-text"> {{error_messages.motivation}}</p>
+		{{/if}}
+			<textarea type="textarea" class="form-control"  value="{{failedPost.motivation}}" placeholder="" name="motivation">{{failedPost.motivation}}</textarea>
 	</div>
 
 
-	<!-- question1:String, -->
-	<div class="form-group">
-		<label>Question 1 </label>
-		{{#if error_messages.q1}}
-			<p class = "alert-text"> {{error_messages.q1}}</p>
+
+	<!-- secret_code:string -->
+   <div class="form-group">
+      <div class="label-container">
+         <label>If you are provided with a secret code, please remember to put it here.</label>
+      </div>
+      <input type="text" value="{{failedPost.secret}}" placeholder="" name="secret">
+   </div>
+
+	<!-- Skills (e.x.:String, -->
+	<div class="text-area">
+		<label>Free comment - If there's anything else you would like to say, this is the place to do it.</label>
+		{{#if error_messages.comment}}
+			<p class = "alert-text"> {{error_messages.comment}}</p>
 		{{/if}}
-		<textarea type="textarea" class="form-control"  placeholder="" name="q1">{{failedPost.q1}}</textarea>
-	</div>	
-
-
-
-	<!-- question2:String, -->
-	<div class="form-group">
-		<label>Question 2</label>
-		{{#if error_messages.q2}}
-			<p class = "alert-text"> {{error_messages.q2}}</p>
-		{{/if}}
-		<textarea type="textarea" class="form-control"   placeholder="" name="q2">{{failedPost.q2}}</textarea>
-	</div>
-
-
-	<!-- comment:String, -->
-
-	<div class="form-group">
-		<label>Free comment</label>
 			<textarea type="textarea" class="form-control"  value="{{failedPost.comment}}" placeholder="" name="comment">{{failedPost.comment}}</textarea>
 	</div>
 
-
-	<div class="form-group">
-		<label>Team Code  (Please come up with somewhat unique string)</label>
-		<input type="text" class="form-control" value="{{failedPost.team}}" placeholder="" name="team">
+	<!-- role:  -->
+	<div class="control-group" id="tc">
+		<p>I agree with MLH Code of Conduct, which can be found <a href="https://static.mlh.io/docs/mlh-code-of-conduct.pdf">here</a></p>
+		{{#if error_messages.tc}}
+			<p class = "alert-text"> {{error_messages.tc}}</p>
+		{{/if}}
+		<div class="buttons">
+			{{#each form_values.tc}}
+					<label class="control control--radio">{{this.text}}
+			 			<input type="radio" name="tc" value="{{this.value}}" {{this.checked}}>
+						<div class="control__indicator"></div>
+					 </label>
+			{{/each}}
+		</div>
 	</div>
 
-	<div class="form-group">
-		<label>SECRET CODE</label>
-		<input type="text" class="form-control" value="{{failedPost.secret}}" placeholder="" name="secret">
+	<h4>Junction 2016 Terms and Conditions</h4>
+	<p>
+	Junction 2016 is organized by Aalto Entrepreneurship Society, which is a student driven entrepreneurship organization.<br /><br />
+
+	By submitting your application you consent to giving your contact details and any information you provide to Aalto Entrepreneurship Society. Aalto Entrepreneurship Society retains the right to share these with official partners and affiliates. We will never release your personal details to any unassociated 3rd party entities, nor will we sell your personal details for profit to any 3rd party entity. Any information you provide will be used for the purpose of processing your application to enter Junction 2016. This may include sharing content submitted by you to our official partners and affiliates.<br /><br />
+
+	By submitting your application you consent to receiving marketing material and updates regarding Junction 2016. You have the option to opt-out at any given time.<br /><br />
+
+	By submitting you consent to being filmed and/or photographed at the actual event. Furthermore, you consent to any pictures which include you to be shared on official Aalto Entrepreneurship Society media channels. Aalto Entrepreneurship Society will never sell the content created by Aalto Entrepreneurship Society or official partners to 3rd party entities.<br /><br />
+
+	By submitting you confirm that your project during Junction 2016 is programmed only during the event. Pre-written projects aren’t qualified to compete for the prizes.<br /><br />
+
+	</p>
+
+	<h4>PSST ... Two more questions!</h4>
+	<!-- operating system:  -->
+	<div class="control-group" id="opeating_system">
+		<p>Which one of the following would you bring to Junction 2016 as your laptop’s operating system?</p>
+		{{#if error_messages.operating}}
+			<p class = "alert-text"> {{error_messages.operating}}</p>
+		{{/if}}
+		<div class="buttons">
+			{{#each form_values.operating}}
+					<label class="control control--radio">{{this.text}}
+			 			<input type="radio" name="operating" value="{{this.value}}" {{this.checked}}>
+						<div class="control__indicator"></div>
+					 </label>
+			{{/each}}
+		</div>
+	</div>
+
+	<!-- sublime-text -->
+	<div class="control-group" id="sublime">
+		<p>Which one of the following would you bring to Junction 2016 as your laptop’s operating system?</p>
+		{{#if error_messages.sublime}}
+			<p class = "alert-text"> {{error_messages.sublime}}</p>
+		{{/if}}
+		<div class="buttons">
+			{{#each form_values.sublime}}
+					<label class="control control--radio">{{this.text}}
+			 			<input type="radio" name="sublime" value="{{this.value}}" {{this.checked}}>
+						<div class="control__indicator"></div>
+					 </label>
+			{{/each}}
+		</div>
 	</div>
 
 
-
-
-	<button type="submit" class="btn btn-default">LOGIN</button>
+	<button type="submit" class="btn btn-default">REGISTER</button>
 </form>
