@@ -48,8 +48,7 @@ router.post('/register', function(req, res) {
     bodyObj[postBody[i]] = req.body[postBody[i]]
   }
 
-  console.log("LANGUAGES")
-  console.log(postBody.languages)
+ 
   //Validator 
   req.checkBody({'firstname': {
     notEmpty: true,
@@ -158,13 +157,15 @@ router.post('/register', function(req, res) {
   req.checkBody('countryHome', 'Country is required').notEmpty();
   req.checkBody('occupation', 'Please answer the question.').notEmpty();
   req.checkBody('experience', 'Please answer the question.').notEmpty();
+  req.checkBody('operating', 'Please answer the question.').notEmpty();
   req.checkBody('skill', 'Please answer the question.').notEmpty();
   req.checkBody('role', 'Choose a role please.').notEmpty();
   req.checkBody('sex', 'Gender is required').notEmpty();
   req.checkBody('tc', 'Please agree terms.').notEmpty();
+
   var errors = req.validationErrors();
 
-  var failedPost = bodyObj;
+  var failedPost = JSON.parse(JSON.stringify(bodyObj));
   console.log("FORM VALUES ")
   console.log(failedPost)
       
@@ -176,9 +177,10 @@ router.post('/register', function(req, res) {
       if(failedPost[i]){
                // console.log(failedPost[i])
             form_values_with_errors[i].forEach(function(obj){
-              // console.log("OBJECT")
-              // console.log(obj)
+              
               if(failedPost[i] === obj.value){
+                 console.log("OBJECT")
+                console.log(obj)
                 obj.checked = "checked"
               }
             });
