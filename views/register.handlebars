@@ -1,4 +1,4 @@
-<p class="page-header">This is the application form for Junction 2016. We would like to know your contact information, skills, experience and motivation. Filling in the form takes about 5 minutes. Attributes marked with * symbol are required to fill in. </p><p>People will be selected to Junction 2016 based both on motivation and experience. Before anything we value diversity - no matter whether you’re a beginner or a pro, if you have the passion and a will to create something, we want you to be a part of Junction!</p>
+<p class="page-header">This is the application form for Junction 2016. We would like to know your contact information, skills, experience and motivation. Filling in the form takes about 5 minutes. Attributes marked with * symbol are required to fill in. </p><p>People will be selected to Junction 2016 based both on motivation and experience. Before anything we value diversity and passion - no matter whether you’re a beginner or a pro, if you have the passion and a will to create something, we want you to be a part of Junction!</p>
 {{#if errors}}
 
 	<div class = "alert-text-errors"> {{errors.length}} error(s). See below.</div>
@@ -50,12 +50,12 @@
 
 	<div class="form-group-div">
       <div class="label-container">
-         <label>Age*</label>
+         <label>How old are you? (Your answer needs to be integer)*</label>
 			{{#if error_messages.age}}
 				<p class = "alert-text">{{error_messages.age}}</p>
 			{{/if}}
       </div>
-		<input type="number"  value="{{failedPost.age}}" placeholder="" name="age">
+		<input type="text"  value="{{failedPost.age}}" placeholder="" name="age">
 	</div>
 
 	<div class="control-group">
@@ -81,7 +81,7 @@
 				<p class = "alert-text"> {{error_messages.phone}}</p>
 			{{/if}}
       </div>
-		<input type="text"  value="{{failedPost.phone}}" placeholder="" name="phone">
+		<input type="tel"  value="{{failedPost.phone}}" placeholder="" name="phone">
 	</div>
 
 
@@ -207,7 +207,7 @@
 
 	<!-- occupation:  -->
 	<div class="control-group" id="occupation">
-		<p>Which of the following choices describes your occupational status the best?*</p>
+		<p>Which of the following choices describes your occupational status or skills the best?*</p>
 		{{#if error_messages.occupation}}
 			<p class = "alert-text"> {{error_messages.occupation}}</p>
 		{{/if}}
@@ -222,7 +222,7 @@
 	</div>
 
 	<div class="control-group container" id="occupation">
-		<p>Which programming, scripting and markup languages or game engines are you most confortable with?*</p>
+		<p>Which programming, scripting and markup languages or game engines are you most comfortable with?*</p>
 		{{#if error_messages.skills}}
 			<p class = "alert-text"> {{error_messages.skills}}</p>
 		{{/if}}
