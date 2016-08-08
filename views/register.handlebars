@@ -50,12 +50,12 @@
 
 	<div class="form-group-div">
       <div class="label-container">
-         <label>Age*</label>
+         <label>How old are you? Your answer needs to be integer.*</label>
 			{{#if error_messages.age}}
 				<p class = "alert-text">{{error_messages.age}}</p>
 			{{/if}}
       </div>
-		<input type="number"  value="{{failedPost.age}}" placeholder="" name="age">
+		<input type="text"  value="{{failedPost.age}}" placeholder="" name="age">
 	</div>
 
 	<div class="control-group">
