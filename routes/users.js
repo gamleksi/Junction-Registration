@@ -45,14 +45,11 @@ router.get('/edit_profile', function(req, res){
 router.post('/register', function(req, res) {
 
 
-  console.log(req.body);
   var postBody = ["firstname","lastname","email","phone","age","countryFrom","city","countryHome","sex","shirtsize","dietary","track","team","portfolio","occupation","skills","experience","school","role","team","motivation","secret","comment","tc","operating","sublime"]
 
-  var bodyObj = {}
-  console.log("POSTBODY")
-  //console.log(req.body.skills)
+  var bodyObj = {};
   for(i in postBody) {
-    bodyObj[postBody[i]] = req.body[postBody[i]]
+    bodyObj[postBody[i]] = req.body[postBody[i]];
   }
 
  
@@ -79,8 +76,7 @@ router.post('/register', function(req, res) {
     isLength: {
       options: [{max: 100}],
       errorMessage: 'Too long string' 
-    },
-    errorMessage: 'School is required'
+    }
   }});  
 
   req.checkBody({'email': {
@@ -97,12 +93,12 @@ router.post('/register', function(req, res) {
 
   req.checkBody({'age': {
     isInt: {
-      errorMessage: 'Invalid value'
+      errorMessage: 'Please use integer.'
     },
     notEmpty: true,
     isLength: {
       options: [{max: 3}],
-      errorMessage: 'Too long email' 
+      errorMessage: 'Please use integer.' 
     },
     errorMessage: 'Age is required'
   }});
@@ -162,8 +158,7 @@ router.post('/register', function(req, res) {
     errorMessage: 'At least one skill is required.'
   }});  
 
-  // req.checkBody('password', 'password is required').notEmpty();
-  // req.checkBody('password2', 'Passwords have to match').equals(password);
+
   req.checkBody('dietary', 'Dietary choice is required.').notEmpty();
   req.checkBody('sex', 'Gender is required').notEmpty();  
   req.checkBody('shirtsize', 'Shirtsize is required.').notEmpty();
@@ -199,7 +194,6 @@ router.post('/register', function(req, res) {
                 });
                 }
               }
-               // console.log(failureRedirectdPost[i])
           form_values_with_errors[i].forEach(function(obj){
             
             if(failedPost[i] === obj.value){
@@ -235,7 +229,6 @@ router.post('/register', function(req, res) {
     errors.forEach(function(v) {
       error_messages[v.param] = v.msg
     });
-    //console.log(errors)
 	  res.render("register", {errors: errors,
                             error_messages:error_messages,
                             failedPost:failedPost,
@@ -320,7 +313,6 @@ router.get('/logout', function(req, res){
 
 
 passport.serializeUser(function(user, done) {
-  console.log("serializeUser");
   done(null, user);
 });
 

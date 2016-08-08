@@ -41,6 +41,7 @@ module.exports = {
 		],
 		
 		occupation: [
+			{"value":"Student","text":" Student - full-time"},
 			{"value":"Full-Stack Web Developer","text":" Full-Stack Web Developer"},
 			{"value":"Backend Web Developer","text":" Backend Web Developer"},
 			{"value":"Frontend Web Developer","text":" Frontend Web Developer"},			
@@ -57,7 +58,7 @@ module.exports = {
 			{"value":"Other design related","text":" Other design related"},
 			{"value":"Server Specialist","text":" Server Specialist"},
 			{"value":"Hardware Technician","text":" Hardware Technician"},						
-			{"value":"Hardware Engineer","text":" Hardware Technician"},
+			{"value":"Hardware Engineer","text":" Hardware Engineer"},
 			{"value": 'Game Designer', text: ' Game Designer' },
 			{"value": 'Audio Design', text: ' Audio Design' },
 			{"value": 'Artist', text: ' Artist' },

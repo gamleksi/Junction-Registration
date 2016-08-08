@@ -94,7 +94,6 @@ var validate = function(strng) {
 				    status: orm.validators.insideList(statuses, "Invalid status"),
 				    role: orm.validators.insideList(roleArr, "Invalid role"),
 				    occupation: orm.validators.insideList(occupationArr, "Invalid occupation"),
-					//skills: orm.validators.insideList(skillsArr, "Invalid skill"),
 				    operating: orm.validators.insideList(operatingArr, "Invalid operating"),
 				    experience: orm.validators.insideList(experiences, "Invalid experiences"),
 				    sublime: orm.validators.insideList(sublimeArr, "Invalid sublime answer"),
@@ -115,7 +114,7 @@ var validate = function(strng) {
 					Users.create(user, function(err,items){
 				      if(err){
 				      	console.log("ERROR IN USER CREATE")
-				       console.error(err);
+				       	console.error(err);
 				       callback({"error":err})
 				      } else {
 				       console.log("User has been created succesfully.")
@@ -157,14 +156,9 @@ var validate = function(strng) {
 					} 
 					if(user) {
 						var date = dateFormat(new Date(), "isoDate").split("T")[0];
-						console.log("DATE");
-						console.log(date);
 						user.accepted = true;
 						user.batch = date;
 						user.travelReimbursement = hacker.travelReimbursement;
-						console.log("acceptHackers");
-
-						console.log(user.travelReimbursement);
 						user.save(function(err) {
 							if(err) {
 								errors++;
@@ -172,9 +166,7 @@ var validate = function(strng) {
 							} else {
 								savedUsers.push(user);
 							}
-							console.log("errors + savedUsers.length")
 							var length = errors + savedUsers.length
-							console.log(length)
 							if(Object.keys(hackers).length === (length)) {
 								event.emit('event');
 							}
@@ -234,7 +226,6 @@ var validate = function(strng) {
 		};
 
 		Users.refuseHashMatches = function(hashString,callback) {
-			console.log("HASH" + hashString)
       		var reverseHash = hashString.split("").reverse().join("");
 			Users.one({"refuseHash": reverseHash}, function(err,user){
 				if(err){
@@ -266,7 +257,6 @@ var validate = function(strng) {
 
 		Users.invitationHashMatches = function(hashString,callback){
 
-			console.log("HASH" + hashString)
       		var reverseHash = hashString.split("").reverse().join("");
 			Users.exists({"invitationHash":reverseHash}, function(err,exists){
 				if(err){
