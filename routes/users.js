@@ -76,8 +76,7 @@ router.post('/register', function(req, res) {
     isLength: {
       options: [{max: 100}],
       errorMessage: 'Too long string' 
-    },
-    errorMessage: 'School is required'
+    }
   }});  
 
   req.checkBody({'email': {
@@ -94,12 +93,12 @@ router.post('/register', function(req, res) {
 
   req.checkBody({'age': {
     isInt: {
-      errorMessage: 'Invalid value'
+      errorMessage: 'Please use integer.'
     },
     notEmpty: true,
     isLength: {
       options: [{max: 3}],
-      errorMessage: 'Too long email' 
+      errorMessage: 'Please use integer.' 
     },
     errorMessage: 'Age is required'
   }});

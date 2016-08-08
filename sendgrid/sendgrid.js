@@ -2,7 +2,7 @@
   var event = new EventEmitter();
   var helper = require('sendgrid').mail;
   var travelValues= require("../TRAVEL_VALUES.js")
-  var from_email = new helper.Email(process.env.EMAIL_FROM)  
+  var from_email = new helper.Email(process.env.EMAIL_FROM,"Junction 2016")  
   
   var approvalMail = {
     content: new helper.Content("text/html", "<div></div>")  
