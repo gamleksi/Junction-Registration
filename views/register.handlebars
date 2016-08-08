@@ -328,41 +328,7 @@
 
 	<button type="submit" class="btn btn-default">SUBMIT</button>
 
-	<h4>PSST ... Two more questions!</h4>
-	<!-- operating system:  -->
-
-	<div class="control-group" id="opeating_system">
-		<p>Which one of the following would you bring to Junction 2016 as your laptop’s operating system?</p>
-		{{#if error_messages.operating}}
-			<p class = "alert-text"> {{error_messages.operating}}</p>
-		{{/if}}
-		<div class="container-div row ">
-			{{#each form_values.operating}}
-					<label class="control col-sm-4 control--radio">{{this.text}}
-			 			<input type="radio" name="operating" value="{{this.value}}" {{this.checked}}>
-						<div class="control__indicator"></div>
-					 </label>
-			{{/each}}
-		</div>
-	</div>
-
-	<!-- sublime-text -->
-	<div class="control-group" id="sublime">
-		<p>And finally… Do you have a Sublime Text license?</p>
-		{{#if error_messages.sublime}}
-			<p class = "alert-text"> {{error_messages.sublime}}</p>
-		{{/if}}
-		<div class="container-div row ">
-			{{#each form_values.sublime}}
-					<label class="control col-sm-4 control--radio">{{this.text}}
-			 			<input type="radio" name="sublime" value="{{this.value}}" {{this.checked}}>
-						<div class="control__indicator"></div>
-					 </label>
-			{{/each}}
-		</div>
-	</div>
-
-		<button type="submit" class="btn btn-default">SUBMIT</button>
+	
 
 
 </form>
