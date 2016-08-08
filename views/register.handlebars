@@ -1,4 +1,4 @@
-<h2 class="page-header"></h2>
+<p class="page-header">This is the application form for Junction 2016. We would like to know your contact information, skills, experience and motivation. Filling in the form takes about 5 minutes. Attributes marked with * symbol are required to fill in. </p><p>People will be selected to Junction 2016 based both on motivation and experience. Before anything we value diversity - no matter whether you’re a beginner or a pro, if you have the passion and a will to create something, we want you to be a part of Junction!</p>
 {{#if errors}}
 
 	<div class = "alert-text"> {{errors.length}} error(s). See below.</div>
@@ -11,18 +11,12 @@
 
 
 <form method="post" action="/register">
-	<!-- firstname: String, -->
 
-	<!-- <div class="form-group-div">
-		<label>First Name</label>
-		{{#if error_messages.firstname}}
-			<p class = "alert-text"> {{error_messages.firstname}}</p>
-		{{/if}}
-		<input type="text" class="form-control" value="{{failedPost.firstname}}" placeholder="firstname" name="firstname">
-	</div> -->
+
       <div class="form-group-div">
+
          <div class="label-container">
-            <label>First name* (* = required)</label>
+            <label>First name*</label>
 				{{#if error_messages.firstname}}
 					<p class = "alert-text"> {{error_messages.firstname}}</p>
 				{{/if}}
@@ -31,16 +25,8 @@
       </div>
 
 
-	<!-- lastname: String, -->
-
-	<!-- <div class="form-group-div">
-		<label>Lastname</label>
-		{{#if error_messages.lastname}}
-			<p class = "alert-text">{{error_messages.lastname}}</p>
-		{{/if}}
-		<input type="text" class="form-control" value="{{failedPost.lastname}}" placeholder="lastname" name="lastname">
-	</div> -->
 	<div class="form-group-div">
+
       <div class="label-container">
          <label>Last name*</label>
 		{{#if error_messages.lastname}}
@@ -50,15 +36,9 @@
 		<input type="text" value="{{failedPost.lastname}}" placeholder="" name="lastname">
 	</div>
 
-	<!-- age: {type: 'integer'}, -->
-	<!-- <div class="form-group-div">
-		<label>Age</label>
-		{{#if error_messages.age}}
-			<p class = "alert-text">{{error_messages.age}}</p>
-		{{/if}}
-		<input type="number" class="form-control" value="{{failedPost.age}}" placeholder="99" name="age">
-	</div> -->
+
 	<div class="form-group-div">
+
       <div class="label-container">
          <label>Email*</label>
 			{{#if error_messages.email}}
@@ -66,8 +46,7 @@
 			{{/if}}
       </div>
 		<input type="email"  value="{{failedPost.email}}" placeholder="" name="email">
-	</div>
-
+	</div>	
 
 	<div class="form-group-div">
       <div class="label-container">
@@ -95,6 +74,7 @@
 	</div>
 
 	<div class="form-group-div">
+
       <div class="label-container">
          <label>Phone</label>
 			{{#if error_messages.phone}}
@@ -144,6 +124,37 @@
 		</select>
 	</div>
 
+	<!-- shirtsize:  -->
+	<div class="control-group" id="shirt">
+		<p>Shirt size*</p>
+		{{#if error_messages.shirtsize}}
+			<p class = "alert-text">{{error_messages.shirtsize}}</p>
+		{{/if}}
+		<div class="container-div row ">
+			 {{#each form_values.shirtsize}}
+				<label class="control col-sm-4 control--radio">{{this.text}}
+		 			 <input type="radio" name="shirtsize" value="{{this.value}}" {{this.checked}}>
+					 <div class="control__indicator"></div>
+				 </label>
+			 {{/each}}
+		</div>
+	</div>
+
+	<!-- dietary:  -->
+	<div class="control-group" id="diet">
+		<p>Dietary restrictions*</p>
+		{{#if error_messages.dietary}}
+			<p class = "alert-text"> {{error_messages.dietary}}</p>
+		{{/if}}
+		<div class="container-div row ">
+			{{#each form_values.dietary}}
+					<label class="control col-sm-4 control--radio">{{this.text}}
+			 			<input type="radio" name="dietary" value="{{this.value}}" {{this.checked}}>
+						<div class="control__indicator"></div>
+					 </label>
+			{{/each}}
+		</div>
+	</div>
 
 	<!-- track: -->
 	<div class="control-group" id="track">
@@ -193,6 +204,7 @@
      </div>
      <input type="text" value="{{failedPost.school}}" placeholder="" name="school">
   </div>
+
 	<!-- occupation:  -->
 	<div class="control-group" id="occupation">
 		<p>Which of the following choices describes your occupational status the best?</p>
@@ -257,8 +269,13 @@
 	</div>
 
 	<!-- Skills (e.x.:String, -->
+<<<<<<< HEAD
 	<div class="text-area textarea">
 		<label>Why do you want to come to Junction 2016 and why should we choose you?*</label>
+=======
+	<div class="text-area">
+		<label>Why do you want to come to Junction 2016 and why should we choose you? (Max 5000 char)*</label>
+>>>>>>> 8a942a5cd3e59770e95e272b18aadf57b1579b2f
 		{{#if error_messages.motivation}}
 			<p class = "alert-text"> {{error_messages.motivation}}</p>
 		{{/if}}
@@ -277,43 +294,13 @@
 
 	<!-- Skills (e.x.:String, -->
 	<div class="text-area">
-		<label>Free comment - If there's anything else you would like to say, this is the place to do it.</label>
+		<label>Free comment - If there's anything else you would like to say, this is the place to do it. (Max 5000 char)</label>
 		{{#if error_messages.comment}}
 			<p class = "alert-text"> {{error_messages.comment}}</p>
 		{{/if}}
 			<textarea type="textarea" class="textarea"  value="{{failedPost.comment}}" placeholder="" name="comment">{{failedPost.comment}}</textarea>
 	</div>
 
-	<!-- shirtsize:  -->
-	<div class="control-group" id="shirt">
-		<p>Shirt size*</p>
-		{{#if error_messages.shirtsize}}
-			<p class = "alert-text">{{error_messages.shirtsize}}</p>
-		{{/if}}
-		<div class="container-div row ">
-			 {{#each form_values.shirtsize}}
-				<label class="control col-sm-4 control--radio">{{this.text}}
-		 			 <input type="radio" name="shirtsize" value="{{this.value}}" {{this.checked}}>
-					 <div class="control__indicator"></div>
-				 </label>
-			 {{/each}}
-		</div>
-	</div>
-	<!-- dietary:  -->
-	<div class="control-group" id="diet">
-		<p>Dietary restrictions*</p>
-		{{#if error_messages.dietary}}
-			<p class = "alert-text"> {{error_messages.dietary}}</p>
-		{{/if}}
-		<div class="container-div row ">
-			{{#each form_values.dietary}}
-					<label class="control col-sm-4 control--radio">{{this.text}}
-			 			<input type="radio" name="dietary" value="{{this.value}}" {{this.checked}}>
-						<div class="control__indicator"></div>
-					 </label>
-			{{/each}}
-		</div>
-	</div>
 
 	<!-- role:  -->
 	<div class="control-group" id="tc">

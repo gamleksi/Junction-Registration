@@ -132,23 +132,23 @@ router.post('/register', function(req, res) {
 
   req.checkBody({'comment': {
     isLength: {
-      options: [{max: 400}],
-      errorMessage: 'Too long comment' 
+      options: [{max: 5000}],
+      errorMessage: 'Char limit 5000' 
     }
   }});
 
   req.checkBody({'portfolio': {
     isLength: {
-      options: [{max: 200}],
-      errorMessage: 'Too long comment' 
+      options: [{max: 5000}],
+      errorMessage: 'Char limit 5000' 
     }
   }});
 
   req.checkBody({'motivation': {
     notEmpty: true,
     isLength: {
-      options: [{max: 400}],
-      errorMessage: 'Max char 400' 
+      options: [{max: 5000}],
+      errorMessage: 'Max char 5000' 
     },
     errorMessage: 'Fill this text area'
   }});
@@ -156,8 +156,8 @@ router.post('/register', function(req, res) {
   req.checkBody({'skills': {
     notEmpty: true,
     isLength: {
-      options: [{max: 400}],
-      errorMessage: 'Max char 400' 
+      options: [{max: 1000}],
+      errorMessage: 'Max char 1000' 
     },
     errorMessage: 'At least one skill is required.'
   }});  
@@ -247,11 +247,8 @@ router.post('/register', function(req, res) {
       var time =  new Date().getTime();
       var refuseHash = time + Math.random().toString(36).substring(7).toUpperCase();
       var invitationHash = Math.random().toString(36).substring(7).toUpperCase() + time;
-      // console.log("BODY OBJ SKILLS")
-      // console.log(bodyObj.skills)
       var newUser = bodyObj;
-      // console.log("newUser.skills")
-      // console.log(newUser.skills)
+
       newUser["refuseHash"] = refuseHash;
       newUser["invitationHash"] = invitationHash;
       req.models.users.createUser(newUser, function(cb) {
