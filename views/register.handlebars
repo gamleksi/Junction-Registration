@@ -1,12 +1,12 @@
 <p class="page-header">This is the application form for Junction 2016. We would like to know your contact information, skills, experience and motivation. Filling in the form takes about 5 minutes. Attributes marked with * symbol are required to fill in. </p><p>People will be selected to Junction 2016 based both on motivation and experience. Before anything we value diversity - no matter whether you’re a beginner or a pro, if you have the passion and a will to create something, we want you to be a part of Junction!</p>
 {{#if errors}}
 
-	<div class = "alert-text"> {{errors.length}} error(s). See below.</div>
+	<div class = "alert-text-errors"> {{errors.length}} error(s). See below.</div>
 
 {{/if}}
 
 {{#if error_messages.common}}
-   <p class = "alert-textr">{{error_messages.common}}</p>
+   <p class = "alert-text">{{error_messages.common}}</p>
 {{/if}}
 
 
@@ -312,7 +312,7 @@
 		</div>
 	</div>
 
-	<h4>Junction 2016 Terms and Conditions</h4>
+	<p class="conditions-text"><u> Junction 2016 Terms and Conditions</u></p>
 	<p>
 	Junction 2016 is organized by Aalto Entrepreneurship Society, which is a student driven entrepreneurship organization.<br /><br />
 

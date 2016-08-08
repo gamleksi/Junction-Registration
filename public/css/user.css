@@ -66,6 +66,15 @@ a:hover {
    padding: 2px;
 }
 
+.alert-text-errors{
+   color: #dc5a26;
+   text-align: left !important;;
+   
+  border: 2px solid #dc5a26;
+
+   padding: 2px;
+}
+
 .success-text {
   padding-top:10px;
    padding-bottom:10px;
@@ -89,6 +98,11 @@ a:hover {
 .form-group:focus {
    /*opacity: 0.9;*/
    color: #5bc8d7;
+}
+
+.conditions-text{
+  font-size:25px;
+  
 }
 
 input {
