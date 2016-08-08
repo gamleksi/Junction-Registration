@@ -59,18 +59,23 @@ a:hover {
 
 .alert-text {
    color: #dc5a26;
-   border: 2px solid #dc5a26;
+   text-align: right !important;;
+   border-right: 2px solid #dc5a26;
+  border-top: 2px solid #dc5a26;
+
    padding: 2px;
 }
 
-alert-success {
+.success-text {
+  padding-top:10px;
+   padding-bottom:10px;
   position: relative;
   margin-top: 100px;
 }
 
 
 /* Styling for the  text fields */
-.form-group {
+.form-group-div {
    padding-bottom: 20px;
    margin-top:70px;
    /*opacity: 0.5;*/
@@ -95,6 +100,8 @@ input {
   outline: none;
   border: none;
   border-bottom: 2px solid #FCF7FF;
+  border-left: 2px solid #FCF7FF;
+
   background: rgba(0,0,0,0);
   /*opacity: 0.5;*/
   /*width: 70%;*/
@@ -103,6 +110,8 @@ input {
 
 input:hover {
   border-bottom: 2px solid #5bc8d7;
+  border-left: 2px solid #5bc8d7;
+
   color: #5bc8d7;
 }
 
@@ -150,10 +159,12 @@ label {
 }
 .container-div{
   padding-top:30px;
-    padding-bottom:30px;
-    padding-left:0px;
+    padding-bottom:5px;
+    padding-left:5%;
      border-top: 2px solid #FCF7FF;
    border-bottom: 2px solid #FCF7FF;
+    border-left: 2px solid #FCF7FF;
+   border-right: 2px solid #FCF7FF;
    width:100%;
 }
 .buttons {

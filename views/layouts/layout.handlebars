@@ -13,15 +13,15 @@
 
       <a href="https://hackjunction.com"><img class="juhis" src="/img/junction_logo.png"/></a>
         {{#if success_msg}}
-          <div class="alert alert-success"> {{{success_msg}}} </div>
+          <div class="success-text"> {{{success_msg}}} </div>
         {{/if}}
 
         {{#if error_msg}}
-            <div class="alert alert-danger"> {{{error_msg}}}</div>
+            <div class="alert-text"> {{{error_msg}}}</div>
         {{/if}}
 
         {{#if error}}
-          <div class="alert alert-danger"> {{{error}}}</div>
+          <div class="alert-text"> {{{error}}}</div>
         {{/if}}
         {{{body}}}
       </div>
