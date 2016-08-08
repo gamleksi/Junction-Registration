@@ -21,6 +21,10 @@ npm-debug.log
 sendgrid.env
 .env
 
+#Tools for inserting admin
+
+tools/admin-generator.js
+models/user-admin.js
 
 #Server
 

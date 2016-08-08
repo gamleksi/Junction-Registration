@@ -3,7 +3,7 @@ var orm = require('orm');
 var dateFormat = require('dateformat');
 var EventEmitter = require('events');
 var event = new EventEmitter();
-
+var formValues = require('../FORM_VALUES.js')
 module.exports = {
 	createModel: function(db) {
 		// Form attributes:
@@ -26,35 +26,58 @@ module.exports = {
 		// - question 2: String
 		// - comments for organizers
 
-		var shirtsizes = ["xs","s","m","l","xl","xxl"];
-		var	dietarys = ["no","veg","pork","glut"];
-		var tracks = ["junction","other"];
-		var sexes =["male", "female","other"];
-		var travels = ["Fin", "No", "Nord", "Eu", "Out"]
+var validate = function(strng) {
+			var valueArray = formValues[strng];
+			var result = [];
+			for(var i in valueArray) {
+			
+				result.push(valueArray[i].value);
+			}
+			return result;
+		}
+
+		var tracks = validate("track");
+		var shirtsizes = validate("shirtsize");
+		var occupationArr = validate("occupation");
+		var	dietarys = validate("dietary");
+		var sexes =validate("sex");
+		var roleArr = validate('role');
+		var skillsArr = validate('skills');
+		var operatingArr = validate('operating');
+		var experiences = validate('experience');
+		var sublimeArr = validate('sublime');
+		var travels = ["Fin", "No", "Nord", "Eu", "Out"];
 		var statuses = ["accept","reject","pending"];
+
 		var Users = db.define("users", {
 				firstname: String,
 				lastname: String,
 				age: {type: 'integer'},
 				email: {type:"text", key: true},
-				country: String,
+				countryFrom: String,
+				city: String,
+				countryHome: String,
 				sex: String,
 				shirtsize: String,
 				dietary: String,
 				track: String,
 				portfolio:String,
-				question1:String,
-				question2:String,
 				comment:String,
 				password: {type: "text", defaultValue: "participant"},
-				skills:String,
+				skills: String,
 				role:String,
+				school:{type: "text", defaultValue: undefined},
+				occupation:String,
 				secret:String,
 				team:String,
+				operating: String,
+				sublime: String,
 				admin: {type: "boolean", defaultValue: false},
 				accepted:  {type: "boolean", defaultValue: false},
+				refused:  {type: "boolean", defaultValue: false},
 				batch: Date,
-				hash: String,
+				invitationHash: String,
+				refuseHash: String,
 				status: {type: "text", defaultValue: "pending"},
 				travelReimbursement: {type: "text", defaultValue: undefined},				
 				invitationEmailStatus: {type: "text", defaultValue: "Not Send"},
@@ -69,7 +92,12 @@ module.exports = {
 				    track: orm.validators.insideList(tracks, "Invalid track"),
 				    dietary: orm.validators.insideList(dietarys, "Invalid dietary"),
 				    status: orm.validators.insideList(statuses, "Invalid status"),
-
+				    role: orm.validators.insideList(roleArr, "Invalid role"),
+				    occupation: orm.validators.insideList(occupationArr, "Invalid occupation"),
+					//skills: orm.validators.insideList(skillsArr, "Invalid skill"),
+				    operating: orm.validators.insideList(operatingArr, "Invalid operating"),
+				    experience: orm.validators.insideList(experiences, "Invalid experiences"),
+				    sublime: orm.validators.insideList(sublimeArr, "Invalid sublime answer"),
 				},
 				methods:{
 					getPassword:function(){
@@ -83,35 +111,20 @@ module.exports = {
 			bcrypt.genSalt(10, function(err, salt) {
 				bcrypt.hash(user.password, salt, function(err, hash) {
 					user["password"] = hash;
+					user["admin"] = false;
 					Users.create(user, function(err,items){
-						if(err){
-							console.error(err);
-							callback(false)
-						} else {
-							console.log("User has been created succesfully.")
-							callback(true)
-						}
-					});					
+				      if(err){
+				      	console.log("ERROR IN USER CREATE")
+				       console.error(err);
+				       callback({"error":err})
+				      } else {
+				       console.log("User has been created succesfully.")
+				       callback({success:true})
+				      }
+				     });		
 				});
 			});
 		};
-
-		Users.createAdmin = function(user, callback){
-			bcrypt.genSalt(10, function(err, salt) {
-				bcrypt.hash(user.password, salt, function(err, hash) {
-					user["admin"] = true;
-					Users.create(user, function(err,items){
-						if(err){
-							console.error(err);
-							callback(false)
-						} else {
-							console.log("User has been created succesfully.")
-							callback(true)
-						}
-					});					
-				});
-			});
-		};		
 
 		Users.getUserByEmail = function(addr, callback){
 			Users.one({"email":addr}, function(err,user){
@@ -204,7 +217,7 @@ module.exports = {
 		Users.changeStatusWithHash = function(status,hash,callback){
       		var reverseHash = hash.split("").reverse().join("");
 
-			Users.one({"hash":reverseHash}, function(err,user){
+			Users.one({"invitationHash":reverseHash}, function(err,user){
 				if(err){
 					callback("status not changed")
 					throw err;
@@ -219,11 +232,43 @@ module.exports = {
 				}
 			});
 		};
-		Users.hashMatches = function(hashString,callback){
+
+		Users.refuseHashMatches = function(hashString,callback) {
+			console.log("HASH" + hashString)
+      		var reverseHash = hashString.split("").reverse().join("");
+			Users.one({"refuseHash": reverseHash}, function(err,user){
+				if(err){
+					callback("status not changed")
+					throw err;
+				} 
+				if(user) {
+					callback(user.email);
+				}else {
+					callback(undefined);
+				}
+			});
+		};
+
+		Users.refuseHacker = function(email) {
+
+			Users.one({"email": email}, function(err,user) {
+				if(err) {
+					throw err;
+				}
+
+				if(user) {
+					user.refused = true;
+					user.save();
+				}
+			});
+		};
+			
+
+		Users.invitationHashMatches = function(hashString,callback){
 
 			console.log("HASH" + hashString)
       		var reverseHash = hashString.split("").reverse().join("");
-			Users.exists({"hash":reverseHash}, function(err,exists){
+			Users.exists({"invitationHash":reverseHash}, function(err,exists){
 				if(err){
 					callback("status not changed")
 					throw err;
@@ -234,10 +279,10 @@ module.exports = {
 					callback(false);
 				}
 			});
-		}
+		};
 
 		Users.getUsers = function(callback){
-			Users.find({admin: false}).omit('admin').omit('password').run(function(err, results) {
+			Users.find({admin: false, refused: false}).omit('admin').omit('password').run(function(err, results) {
 				if(err) {
 					throw err;
 				}
@@ -246,7 +291,8 @@ module.exports = {
 		};
 
 		Users.getUsersWithParameters = function(params,callback){
-			params.admin = false
+			params.admin = false;
+			params.refused = false;
 			Users.find(params).omit('admin').omit('password').run(function(err, results) {
 				if(err) {
 					throw err;
@@ -256,7 +302,7 @@ module.exports = {
 		};
 
 		Users.getAcceptedUsers = function(callback){
-			Users.find({"admin": false,"accepted":true}).omit('admin').run(function(err, results) {
+			Users.find({"admin": false, refused: true, "accepted":  false}).omit('admin').run(function(err, results) {
 				if(err) {
 					throw err;
 				}

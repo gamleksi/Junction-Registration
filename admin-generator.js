@@ -1,8 +1,6 @@
 var dotenv = require('dotenv').config();
 var orm = require('orm');
-var Users = require('./models/user');
-
-
+var Users = require('./models/user-admin.js');
 
 
 
@@ -23,7 +21,7 @@ orm.express(process.env.DATABASE_URL, {
             admin: true
           };
             
-          models.users.createUser(admin, function(err, user) {
+          models.users.createAdmin(admin, function(err, user) {
   		      console.log("what")
             if(err) {
   		      	console.error(err);   	
