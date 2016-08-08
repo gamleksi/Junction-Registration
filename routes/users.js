@@ -244,6 +244,9 @@ router.post('/register', function(req, res) {
 
       newUser["refuseHash"] = refuseHash;
       newUser["invitationHash"] = invitationHash;
+      console.log("newUser");
+      console.log(newUser);
+
       req.models.users.createUser(newUser, function(cb) {
 
           if(cb.error){
