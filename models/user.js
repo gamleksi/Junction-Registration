@@ -62,6 +62,7 @@ var validate = function(strng) {
 				dietary: String,
 				track: String,
 				portfolio:String,
+				motivation:String,
 				comment:String,
 				password: {type: "text", defaultValue: "participant"},
 				skills: String,
