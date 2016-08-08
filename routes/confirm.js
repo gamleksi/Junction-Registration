@@ -6,10 +6,8 @@ var UserDB = require('../models/user');
 
 
 router.get('/:value/:hash', function (req, res, next) {
-	console.log('%s %s', req.method, req.url);
 		if(req.params.value === "accept"){
 			req.models.users.changeStatusWithHash(req.params.value,req.params.hash, function(result){
-				console.log(result)
 				if(result){
 					res.render('accept')
 				}else{
@@ -19,7 +17,6 @@ router.get('/:value/:hash', function (req, res, next) {
 		} else if(req.params.value === "reject"){
 
 			req.models.users.changeStatusWithHash(req.params.value,req.params.hash, function(result){
-				console.log(result)
 				if(result){
 					res.render('message',{message:"Thanks for your interest in Junction."})
 				}else{

@@ -22,9 +22,7 @@
 
 
     sendApprovalMails: function(emailObjects, callback) {
-      console.log("SEND APPROVALMAILS")
       event.on('newMailSent', function(responseObject) {
-        console.log("EMITTED")
         callback(responseObject);
       });
 
@@ -74,9 +72,7 @@
       }
       var requestBody = mail.toJSON()
       requestBody.template_id = process.env.SENDGRID_INVITATION_FUCK_ID;
-      console.log("request body")
-      console.log(requestBody);
-          
+
       var request = createNewRequest(requestBody);
       
       sg.API(request, function (response) {
@@ -102,8 +98,7 @@
         mail.personalizations[0].addSubstitution({"%refuse_link%": refuseLink});
         
         sg.emptyRequest();
-        console.log("mail.personalizations[0]")
-        console.log(mail.personalizations[0])
+
 
         var requestBody = mail.toJSON();
         requestBody.template_id = process.env.SENDGRID_CONFIRMATION_FUCK_ID;  
