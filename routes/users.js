@@ -256,7 +256,7 @@ router.post('/register', function(req, res) {
           if(cb.error){
             if(cb.error.code === "23505"){
 
-               res.redirect('register',{
+               res.render('register',{
                   errors:{'error': 'Something went wrong.'},
                   failedPost:failedPost,
                   form_values: form_values_with_errors,country_home_values:country_home_with_errors,country_from_values:country_from_with_errors,
