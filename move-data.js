@@ -2,10 +2,14 @@ var dotenv = require('dotenv').config();
 var orm = require('orm');
 var EventEmitter = require('events');
 var event = new EventEmitter();
-var Users = require('../models/user');
+var Users = require('./models/user');
+
+console.log("process.env.DATABASE_URL_")
+console.log(process.env.DATABASE_URL_OLD)
+console.log(process.env.DATABASE_URL)
 
 event.once('event', function(hackers){
-	orm.express(process.evn.DATABASE_URL, {
+	orm.express(process.env.DATABASE_URL, {
 	    error: function(err){
 	      console.error(err);
 	    }, 
@@ -17,10 +21,16 @@ event.once('event', function(hackers){
 	          }
 	          else{
 	            console.log("synced");
+	            var arr = [];
+	            var l = hackers.length
 	            for(i in hackers) {
 	              models.users.createUser(hackers[i], function(err, user) {
 	                  if(err) {
 	                    console.error(err); 
+	                  }
+	                  arr.push(user);
+	                  if(arr.length - l) {
+	                  	console.log("data moved!!");
 	                  }
 	              });              
 	            }
@@ -32,7 +42,7 @@ event.once('event', function(hackers){
 });
 
 
-orm.express(process.evn.DATABASE_URL_OLD, {
+orm.express(process.env.DATABASE_URL_OLD, {
     error: function(err){
       console.error(err);
     }, 
@@ -44,13 +54,11 @@ orm.express(process.evn.DATABASE_URL_OLD, {
           }
           else{
             console.log("synced");
-            for(i in hackers) {
               models.users.getUsers(function(users) {
                   if(users) {
                     event.emit('event', users)     
                   }
               });              
-            }
             console.log('ready')
 
           }
