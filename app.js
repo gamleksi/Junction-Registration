@@ -56,8 +56,6 @@ app.use(orm.express(process.env.DATABASE_URL, {
 }));
 
 
-
-
 var routes = require('./routes/index');
 var confirm = require('./routes/confirm');
 var users = require('./routes/users');
