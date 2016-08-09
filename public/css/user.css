@@ -45,6 +45,28 @@ body {
   height: auto;
   margin-top: 43px;
 } 
+
+.videoWrapperOuter {
+  max-width:640px; 
+  margin-left:auto;
+  margin-right:auto;
+}
+.videoWrapperInner {
+  float: none;
+  clear: both;
+  width: 100%;
+  position: relative;
+  padding-bottom: 50%;
+  padding-top: 25px;
+  height: 0;
+}
+.videoWrapperInner iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
 form {
    color: #FCF7FF;
    padding-top: 50px;
