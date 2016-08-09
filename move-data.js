@@ -24,7 +24,7 @@ event.once('event', function(hackers){
 	            console.log("synced");
 	            for(i in hackers) {
 	            	hackers[i]["motivation"] = "first batch. no motivation recored";
-	            	hackers[i]["experience"] = "1-2 Years"
+	            	hackers[i]["experience"] = undefined;
 	            }
 	            var arr = [];
 	            var l = hackers.length
@@ -35,8 +35,9 @@ event.once('event', function(hackers){
 	                    console.error(err); 
 	                  }
 	                  arr.push(user);
-	                  if(arr.length - l) {
+	                  if(arr.length === l) {
 	                  	console.log("data moved!!");
+	                  	console.log(user);
 	                  }
 	              });              
 	            }
