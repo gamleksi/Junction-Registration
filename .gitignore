@@ -25,6 +25,9 @@ sendgrid.env
 
 tools/admin-generator.js
 models/user-admin.js
+tools/admin-generator.js
+tools/move-data.js
+models/user_old.js
 
 #Server
 
