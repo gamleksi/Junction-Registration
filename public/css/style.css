@@ -2,8 +2,15 @@ div {
 	position: relative;
 }
 
+
 table .hacker{
  height:700px; 
+}
+
+.admin-container {
+	width: 95%;
+	margin-left: auto;
+	margin-right: auto;
 }
 
 .hacker > thead{ 
@@ -24,8 +31,18 @@ tr {
 
 .row > p {
 	word-break: break-all;
+	font-size: x-small !important;
 }
 
+.row > button {
+	padding: 0 !important;
+	margin: 0 !important;
+	font-size: x-small !important;
+}
+
+td {
+	padding: 0;
+}
 .alert-text{
 	color: red;
 }
@@ -36,3 +53,4 @@ tr {
 select {
 	width: 100%;
 }
+

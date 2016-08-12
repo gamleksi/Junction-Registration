@@ -295,7 +295,7 @@ var validate = function(strng) {
 		};
 
 		Users.getAcceptedUsers = function(callback){
-			Users.find({"admin": false, refused: true, "accepted":  false}).omit('admin').run(function(err, results) {
+			Users.find({admin: false, refused: false, accepted:  true}).omit('admin').run(function(err, results) {
 				if(err) {
 					throw err;
 				}

@@ -25,12 +25,16 @@ router.get('/hackers', ensureIsAuthenticatedAndAdmin, function(req, res) {
 router.get('/hackers/all', ensureIsAuthenticatedAndAdmin, function(req, res) {
 
   req.models.users.getUsers(function(users) {    
+    for(i in users) {
+      console.log(users[i].accepted);
+    }
     res.send({hackers:users});
   });
 });
+
 router.get('/hackers/accepted', ensureIsAuthenticatedAndAdmin, function(req, res) {
 
-  req.models.users.getAcceptedUsers(function(users) {    
+  req.models.users.getAcceptedUsers(function(users) {
     res.send({hackers:users});
   });
 });
@@ -128,15 +132,16 @@ router.post('/hackers/reload-previous',ensureIsAuthenticatedAndAdmin, function(r
   
 
 function ensureIsAuthenticatedAndAdmin(req, res, next){
-  if(!req.isAuthenticated()) {
-    res.redirect('/');   
-  } else {
-    if(!req.user.admin) {
-      res.redirect('/'); 
-    } else {
-      next();
-    }
-  }
+  // if(!req.isAuthenticated()) {
+  //   res.redirect('/');   
+  // } else {
+  //   if(!req.user.admin) {
+  //     res.redirect('/'); 
+  //   } else {
+  //     next();
+  //   }
+  // }
+  next()
 }
 
 module.exports = router; 
