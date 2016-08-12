@@ -13,7 +13,7 @@ module.exports = {
 		        visible: false
 		    }
 		],
-		notBeShownInOpeningRow: ["email", "country"],
-		attrNotBeShownInRows: ["question1", "question2", "comment"],
-		attrNotBeShown: ["admin", "password"],
+		notBeShownInOpeningRow: ["shirtsize", "countryFrom", "dietary", "secret", "operating", "sublime", "accepted", "motivation", "comment"],
+		longComments: ["comment", "motivation"],
+		attrNotBeShown: ["admin", "password", "refuseHash", "invitationHash", ],
 };

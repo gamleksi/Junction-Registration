@@ -77,9 +77,9 @@ var ExpandedInfo = React.createClass({
             if(key === "travelReimbursement" && (!this.props.hackerInfo[key] || !this.props.hackerInfo["accepted"])) {
                 radioInputs = <ExpandedRadioInput inputSelected={this.props.inputSelected} travelReimbursement={this.props.hackerInfo.travelReimbursement} inputChanged={this.inputChanged} hackerId={this.props.hackerInfo.email}/>;
             } else {
-                if(this.props.visibleColumns[key]) {
+                if(!this.props.expandedInfo[key]) {
                     var value = hacker[key]
-                    column1.push(<p key={value}> <b> {key + ":"} </b> {value}</p>)
+                    column1.push(<p key={key+value}> <b> {key + ":"} </b> {value}</p>)
                 }
             }                
 
@@ -129,10 +129,10 @@ var RowInfo = React.createClass({
         for(var key in this.props.hackerInfo){
             if(this.props.visibleColumns[key]) {
                 if(key === "travelReimbursement" && (!this.props.hackerInfo[key] || !this.props.hackerInfo["accepted"])) {
-                    values.push(<td class="row"><RadioInputs inputSelected={this.props.inputSelected} travelReimbursement={this.props.hackerInfo["travelReimbursement"]} inputChanged={this.inputChanged} hackerId={this.props.hackerInfo.email}/></td>)
+                    values.push(<td class="row" style={this.props.tdRowStyle}><RadioInputs inputSelected={this.props.inputSelected} travelReimbursement={this.props.hackerInfo["travelReimbursement"]} inputChanged={this.inputChanged} hackerId={this.props.hackerInfo.email}/></td>)
                 } else {
                     var value = this.props.hackerInfo[key]
-                    values.push(<td class="row" style={this.props.tdRowStyle} key={value}><p>{value}</p></td>)
+                    values.push(<td class="row" style={this.props.tdRowStyle} key={key+value}><p>{value}</p></td>)
                 }
             }
         }
@@ -147,10 +147,8 @@ var RowInfo = React.createClass({
 
             <tr  class={classColor} >
                 {values}
-                <td class="row" style={buttonStyle}>
-                    <div>
+                <td class="row" style={this.props.tdRowStyle}>
                         <button onClick={this.props.expandClick}>EXPAND</button>                        
-                    </div>
                 </td>
             </tr>
             )        
