@@ -25,12 +25,16 @@ router.get('/hackers', ensureIsAuthenticatedAndAdmin, function(req, res) {
 router.get('/hackers/all', ensureIsAuthenticatedAndAdmin, function(req, res) {
 
   req.models.users.getUsers(function(users) {    
+    for(i in users) {
+      console.log(users[i].accepted);
+    }
     res.send({hackers:users});
   });
 });
+
 router.get('/hackers/accepted', ensureIsAuthenticatedAndAdmin, function(req, res) {
 
-  req.models.users.getAcceptedUsers(function(users) {    
+  req.models.users.getAcceptedUsers(function(users) {
     res.send({hackers:users});
   });
 });
