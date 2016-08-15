@@ -49,8 +49,7 @@ export default React.createClass ({
                 for(var i in hackers) {
                     hackerMap[hackers[i].email] = i;
                 }
-                console.log("rowAttributes")
-                console.log(rowAttributes)
+
                 this.setState({
                     rowAttributes: rowAttributes,
                     hackers: hackers,
@@ -108,7 +107,6 @@ export default React.createClass ({
                 }
                 var hackers = jsoned.hackers
 
-                console.log(hackers);
                 var hackerMap = {};
                 for(var i in hackers) {
                     hackerMap[hackers[i].email] = i;
@@ -184,9 +182,8 @@ export default React.createClass ({
     dropFromSelectedList: function(hacker) {
         var selected = this.state.selectedParticipants        
         if(selected[hacker.email]) {
-            console.log("dropped: " + "hacker.email")
             delete selected[hacker.email];
-            delete hacker["travelReimbursement"];
+            hacker["travelReimbursement"] = undefined;
             var hackers = this.updateHackerIntoList(hacker);
             this.setState({
                 rowAttributes: this.state.rowAttributes,
@@ -238,8 +235,7 @@ export default React.createClass ({
                 console.log("Something went wrong, error code: " + this.status);
             }
         }
-        console.log("previousObj")
-        console.log(previousObj);
+
         xhr.send(JSON.stringify({"previous": previousObj}));        
     },    
     updateHackersAfterInvitation: function(accepted) {
@@ -294,11 +290,11 @@ export default React.createClass ({
         var i = 1;
         for(var key in this.state.rowAttributes) {
             if(this.state.rowAttributes[key]) {
+
                 i++;
             }
         }
-        var tdRowStyle = {"width": 100/i + '% !important'};
-
+        var tdRowStyle = {"width": 100/i + '%'};
 
     return (        
     <div id="init">

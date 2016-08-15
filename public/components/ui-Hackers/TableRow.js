@@ -128,7 +128,8 @@ var RowInfo = React.createClass({
         var values = []
         for(var key in this.props.hackerInfo){
             if(this.props.visibleColumns[key]) {
-                if(key === "travelReimbursement" && (!this.props.hackerInfo[key] || !this.props.hackerInfo["accepted"])) {
+                if(key === "travelReimbursement" && (!this.props.hackerInfo[key] || this.props.hackerInfo[key] === "Select" || !this.props.hackerInfo["accepted"])) {
+                    console.log("tuleeks tää tänne")
                     values.push(<td class="row" style={this.props.tdRowStyle}><RadioInputs inputSelected={this.props.inputSelected} travelReimbursement={this.props.hackerInfo["travelReimbursement"]} inputChanged={this.inputChanged} hackerId={this.props.hackerInfo.email}/></td>)
                 } else {
                     var value = this.props.hackerInfo[key]
@@ -169,8 +170,7 @@ export default React.createClass({
         })
     },
     inputSelected: function(travelReimbursement) {
-        console.log("travelReimbursement");
-        console.log(travelReimbursement);
+
         if(travelReimbursement === "Select") {
             this.props.dropFromSelectedList(this.props.hackerInfo);          
         } else {
