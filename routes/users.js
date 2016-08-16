@@ -241,6 +241,7 @@ router.post('/register', function(req, res) {
       var refuseHash = time + Math.random().toString(36).substring(7).toUpperCase();
       var invitationHash = Math.random().toString(36).substring(7).toUpperCase() + time;
       var newUser = bodyObj;
+      newUser["registrationDate"] = new Date(); 
 
       newUser["refuseHash"] = refuseHash;
       newUser["invitationHash"] = invitationHash;

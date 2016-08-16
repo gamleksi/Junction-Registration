@@ -25,8 +25,7 @@ event.once('event', function(hackers){
 	            for(i in hackers) {
 	            	var hacker = hackers[i];
 	            	var ms = hacker.refuseHash.slice(0, 13);
-	            	var date = new Date(parseInt(ms)).toLocaleDateString();
-	            	hacker["registrationDate"] = date;
+	            	hacker["registrationDate"] = new Date(parseInt(ms));
 	            	hackers[i] = hacker;
 	            }
 	            var arr = [];
