@@ -78,7 +78,6 @@ var validate = function(strng) {
 				admin: {type: "boolean", defaultValue: false},
 				accepted:  {type: "boolean", defaultValue: false},
 				refused:  {type: "boolean", defaultValue: false},
-				registrationDate: Date,
 				batch: Date,
 				invitationHash: String,
 				refuseHash: String,
@@ -114,7 +113,6 @@ var validate = function(strng) {
 			bcrypt.genSalt(10, function(err, salt) {
 				bcrypt.hash(user.password, salt, function(err, hash) {
 					user["password"] = hash;
-					var date = new Date()
 					user["admin"] = false;
 					Users.create(user, function(err,items){
 				      if(err){
