@@ -29,22 +29,26 @@ event.once('event', function(hackers){
 	            	hackers[i] = hacker;
 	            }
 	            var arr = [];
-	            var l = hackers.length
-	            for(i in hackers) {
-
-	              models.users.createUser(hackers[i], function(err, user) {
-	                  if(err) {
-	                    console.error(err); 
-	                  }
-	                  arr.push(user);
-	                  if(arr.length === l) {
-	                  	console.log("data moved!!");
-	                  	console.log(user);
-	                  }
-	              });              
+	            var l = hackers.length;
+	            event.on('created', function(index){
+					models.users.createUser(hackers[index], function(err, user) {
+					  if(err) {
+					    console.error(err); 
+					  }
+					  arr.push(user);
+					  if(arr.length === l) {
+					  	console.log("data moved!!");
+					  	console.log(user);
+					  } else {
+					  	var n = index + 1;
+					  	console.log("n " + n);
+						event.emit('created', n);
+					  }
+					});
+	            });
+	              event.emit('created', 0);
 	            }
-	          }
-
+	          
 	        });
 	    }
 	});
