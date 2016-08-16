@@ -69,30 +69,47 @@ var ExpandedInfo = React.createClass({
     
     render: function(){
         var hacker = this.props.hackerInfo
-        var column1 = []
+        var columns = []
         var radioInputs = undefined
+
 
         for(var key in this.props.hackerInfo){
 
             if(key === "travelReimbursement" && (!this.props.hackerInfo[key] || !this.props.hackerInfo["accepted"])) {
                 radioInputs = <ExpandedRadioInput inputSelected={this.props.inputSelected} travelReimbursement={this.props.hackerInfo.travelReimbursement} inputChanged={this.inputChanged} hackerId={this.props.hackerInfo.email}/>;
             } else {
-                if(!this.props.expandedInfo[key]) {
+                var bool = true;
+                this.props.expandedInfo.forEach(function(value) {
+                    if(key === value) {
+                        bool = false;
+                    }
+                })
+                if(bool) {
                     var value = hacker[key]
-                    column1.push(<p key={key+value}> <b> {key + ":"} </b> {value}</p>)
+                    columns.push(<p key={key+value}> <b> {key + ":"} </b> {value}</p>)
                 }
             }                
 
 
         }
+        var sections = [[], [], []]
+        var third = columns.length/3;
+        for(var index in columns) {
+            if(index < third) {
+                sections[0].push(columns[index])
+            } else if(index < third*2) {
+                sections[1].push(columns[index])
+            } else {
+                sections[2].push(columns[index])
+            }
+        }
+        
 
         var textColums = []; //Motivation, skillDescription etc
     
         this.props.expandedInfo.forEach(function(key) {
                 textColums.push(
-                    <td>
-                        <b> {key + ":"} + </b> {hacker[key]}                    
-                    </td>
+                        <p key={key}><b> {key + ":"}</b> {hacker[key]}</p>                    
                     )                
         })
 
@@ -102,11 +119,19 @@ var ExpandedInfo = React.createClass({
         }
 
         return(
-            <tr  class={classColor}>
+            <tr  class={"expand-view " + classColor}>
                     <td>
-                        {column1}
+                        {sections[0]}
                     </td>
-                    {textColums}
+                    <td>
+                        {sections[1]}
+                    </td>
+                    <td>
+                        {sections[2]}
+                    </td>                                        
+                    <td>
+                        {textColums}
+                    </td>
                     <td>                            
                         <button class="expand" onClick={this.props.expandClick}>COLLAPSE</button>
 
