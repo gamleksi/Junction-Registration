@@ -78,7 +78,6 @@ var validate = function(strng) {
 				admin: {type: "boolean", defaultValue: false},
 				accepted:  {type: "boolean", defaultValue: false},
 				refused:  {type: "boolean", defaultValue: false},
-				registrationDate: Date,
 				batch: Date,
 				invitationHash: String,
 				refuseHash: String,

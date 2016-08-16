@@ -30,9 +30,9 @@ models/user-admin.js
 tools/admin-generator.js
 tools/move-data.js
 
-move-data.js
+#move-data.js
 
-models/user_old.js
+#models/user_old.js
 
 #Server
 
