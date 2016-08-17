@@ -15,7 +15,7 @@ export default React.createClass({
             </tbody>
 
             </table>
-            <div class="container">
+            <div class="checkbox-container row">
 
                         <CheckboxRow 
                             setAttributeValues={this.props.setAttributeValues}

@@ -48,6 +48,34 @@ tr {
 	font-size: small !important;	
 }
 
+
+.checkbox-container.row {
+    margin-top: 15px;
+    margin-bottom: 40px;
+    margin-left: 5px;
+    border-top: 2px solid #FCF7FF;
+    border-bottom: 2px solid #FCF7FF;
+    border-left: 2px solid #FCF7FF;
+    border-right: 2px solid black;
+    width: 100%;
+    right: 0 !important;
+    left: 0 !important;
+    padding-top: 10px;
+    padding-left: 10px;
+}
+
+.checkbox {
+    float: right;
+    padding-top: 4px;
+    padding-right: 0;
+    font-size: small;
+}
+
+.checkbox-inline {
+	font-size: small;
+}
+
+
 td {
 	padding: 0;
 }
