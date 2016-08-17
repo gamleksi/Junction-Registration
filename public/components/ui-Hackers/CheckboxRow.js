@@ -9,7 +9,7 @@ export default React.createClass({
         var checkboxes= [];
         for(var key in this.props.rowAttributes) {
             checkboxes.push(            
-                <label class="checkbox-inline"> 
+                <label class="checkbox col-sm-2"> 
                     <input
                         type="checkbox"
                         checked={this.props.rowAttributes[key]}
@@ -20,9 +20,9 @@ export default React.createClass({
                 </label> )
         }
         return(
-            <form role="form">
+            <div>
                 {checkboxes}
-            </form>
+            </div>
             )
     }
 });
