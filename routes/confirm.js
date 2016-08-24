@@ -18,7 +18,13 @@ router.get('/:value/:hash', function (req, res, next) {
 
 			req.models.users.changeStatusWithHash(req.params.value,req.params.hash, function(result){
 				if(result){
-					res.render('message',{message:"Thanks for your interest in Junction."})
+					res.render("bye")
+
+
+
+
+
+
 				}else{
 					res.render('message',{error:"Something went wrong. Check your link."})
 				}			
@@ -38,5 +44,9 @@ router.get('/decide/:hash', function (req, res, next) {
 		}
 	});
 });
+
+
+
+
 
 module.exports = router;
