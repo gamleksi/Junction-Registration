@@ -287,7 +287,9 @@ var validate = function(strng) {
 
 		Users.getUsersWithParameters = function(params,callback){
 			params.admin = false;
-			params.refused = false;
+			if(params.refused === undefined) {
+				params.refused = finalse;
+			}
 			Users.find(params).omit('admin').omit('password').run(function(err, results) {
 				if(err) {
 					throw err;
@@ -304,10 +306,30 @@ var validate = function(strng) {
 				callback(results);
 			});
 		};
-		return Users;
-	}
-
+		
+		Users.masterSearch = function(params, callback) {
+			var filterShow = {};
+			if(params.filterShow) {
+			 filterShow = params.filterShow;
+			 if(params.refused) {
+			 	 filterShow["refused"] = true;
+			 } else {
+			 	filterShow["refused"] = false;
+			 }
+			}
+			// for(var key in params.filterOff) {
+			// 	filterShow[key] = {"less than": params.filterOff[key]};
+			// }
+			var order = params.sortBy;
+			Users.find(filterShow, order).omit('admin').run(function(err, results) {
+				if(err) {
+					throw err;
+				}
+				console.log("jou")
+				callback(results);
+			});
+		};	
+			
+			return Users;
+		}
 };
-
-
-
