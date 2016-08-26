@@ -320,12 +320,13 @@ var validate = function(strng) {
 			// for(var key in params.filterOff) {
 			// 	filterShow[key] = {"less than": params.filterOff[key]};
 			// }
+			console.log(params)
 			var order = params.sortBy;
+			console.log("oder+++ " + order)
 			Users.find(filterShow, order).omit('admin').run(function(err, results) {
 				if(err) {
 					throw err;
 				}
-				console.log("jou")
 				callback(results);
 			});
 		};	

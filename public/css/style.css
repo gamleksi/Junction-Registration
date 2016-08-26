@@ -39,7 +39,6 @@ tr {
 }
 
 .row > button {
-	padding: 0 !important;
 	margin: 0 !important;
 	font-size: x-small !important;
 }

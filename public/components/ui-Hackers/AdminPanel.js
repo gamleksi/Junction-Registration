@@ -50,7 +50,13 @@ export default React.createClass ({
                 for(var i in hackers) {
                     hackerMap[hackers[i].email] = i;
                 }
-
+                for(var email in this.state.selectedParticipants) {
+                    var index = hackerMap[email];
+                    if(index && hackers[index].travelReimbursement === undefined) {
+                        var index = hackerMap[email]
+                        hackers[index].travelReimbursement = this.state.selectedParticipants.travelReimbursement
+                    }
+                }                
                 this.setState({
                     rowAttributes: rowAttributes,
                     hackers: hackers,
@@ -111,7 +117,14 @@ export default React.createClass ({
                 var hackerMap = {};
                 for(var i in hackers) {
                     hackerMap[hackers[i].email] = i;
-                }                     
+                } 
+                for(var email in this.state.selectedParticipants) {
+                    var index = hackerMap[email];
+                    if(index && hackers[index].travelReimbursement === undefined) {
+                        var index = hackerMap[email]
+                        hackers[index].travelReimbursement = this.state.selectedParticipants.travelReimbursement
+                    }
+                }                                    
                 this.setState({
                     rowAttributes: rowAttributes,
                     hackers: hackers,
@@ -170,6 +183,13 @@ export default React.createClass ({
                 var hackerMap = {};
                 for(var i in hackers) {
                     hackerMap[hackers[i].email] = i;
+                }
+                for(var email in this.state.selectedParticipants) {
+                    var index = hackerMap[email];
+                    if(index && hackers[index].travelReimbursement !== undefined) {
+                        var index = hackerMap[email]
+                        hackers[index].travelReimbursement = this.state.selectedParticipants.travelReimbursement
+                    }
                 }                     
                 this.setState({
                     rowAttributes: rowAttributes,
@@ -183,7 +203,6 @@ export default React.createClass ({
             }
           }
         };
-
         xhr.send(JSON.stringify({"query": query}));
     },
     

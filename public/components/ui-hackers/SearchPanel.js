@@ -2,35 +2,58 @@ import React from "react";
 
 
 var SortRow = React.createClass({
-    inputSelected: function(e) {
-        this.props.sortSelected(e.target.value, this.props.key);
+    getInitialState: function() {
+        return {
+            value: this.props.value
+        }
+    },    
+    inputChanged: function(e) {
+        this.props.sortSelected(e.target.value, this.props.index);
+        this.setState({
+            value: e.target.value
+        })
     },
     render() {
         return (
-            <select class="col-sm-12" onChange={this.inputChanged} value={this.props.value}>
+            <select class="col-sm-12" onChange={this.inputChanged} value={this.state.value}>
                 {this.props.options}
             </select>
             )
     }
 });
 
-
 var FilterRow  = React.createClass({
+    getInitialState: function() {
+        return {
+            param: this.props.obj.param,
+            text: this.props.obj.text
+        }
+    },    
     filterParamChanged: function(e) {
-        this.props.textInputChanged(this.props.key, e.target.value);
+        this.setState({
+            param: e.target.value,
+            text: this.state.text
+        })
+        this.props.filterParamChanged(this.props.index, e.target.value);
     },
     filterTextChanged: function(e) {
-        this.state.filterTextChanged(this.props.key, e.target.value);
+        this.setState({
+            text: e.target.value,
+            param: this.state.param
+        })
+        this.props.filterTextChanged(this.props.index, e.target.value);
     },
     render() {
+        console.log("render() { " + this.props)
+        console.log("render() { " + this.props.index)
         return (
             <div>
-                <select class="col-sm-4" onChange={this.filterParamChanged} value={this.props.value.param}>
+                <select class="col-sm-4" onChange={this.filterParamChanged} value={this.state.param}>
                     {this.props.options}
                 </select>
               <input class="col-sm-8"
                 type="text"
-                value={this.props.text}
+                value={this.state.text}
                 onChange={this.filterTextChanged}
               />
             </div>
@@ -39,18 +62,15 @@ var FilterRow  = React.createClass({
 });
 
 export default React.createClass({
+    sortStateValues: [],
+    filterStateValues: {},    
     getInitialState: function() {
         return {
-            filterParams: {0: {
-                text: "Please Write something here!",
-                param: "Select"
-            }},
-            sortBy: ["Select"]
+            filterParams: this.filterStateValues,
+            sortBy: this.sortStateValues
         }
     },
-    sortStateValues: [],
-    filterStateValues: {},
-    filterLastObjId: 0,
+    filterLastObjId: -1,
     searchWithSpecificParamas: function() {
         var filterParams = {}
         for(var key in this.filterStateValues) {
@@ -59,66 +79,84 @@ export default React.createClass({
                 filterParams[obj.param] = obj.text;
             }
         }
+        console.log("this.sortStateValues" + this.sortStateValues)
         if(this.sortStateValues[this.sortStateValues.length -1] === "Select") {
             this.sortStateValues.pop()
         }
-        var query = {filterShow: filterParams, order: this.filterStateValues}
+        var query = {filterShow: filterParams, sortBy: this.sortStateValues}
         this.props.searchSpecificHackers(query)
+    },
+    emptySearch: function() {
+        this.filterLastObjId = -1;
+        this.sortStateValues = [];
+        this.filterStateValues = {},
+        this.setState({
+            sortBy: this.sortStateValues,
+            filterParams: this.filterStateValues         
+        })
     },
     addSortRow: function() {
         this.sortStateValues.push("Select");
         this.setState({
-            filterParams: this.state.filterParams,
+            filterParams: this.filterStateValues,
             sortBy: this.sortStateValues
         })
     },
     addFilterRow: function() {
-        this.filterLastObjId = this.filterLastObjId + 1
+        this.filterLastObjId = this.filterLastObjId + 1;
         this.filterStateValues[this.filterLastObjId] = {
-            text: "Please Write something here!",
+            text: "",
             param: "Select"
         };
         this.setState({
-            filterParams: this.state.filterParams,
+            filterParams: this.filterStateValues,
             sortBy: this.sortStateValues
         })
     },
     sortSelected: function(param, key) {
-        this.sortStateValues[key] = param;
+        console.log(key);
+        if(this.sortStateValues[key] !== undefined) {
+         this.sortStateValues[key] = param;  
+        }
+        console.log("this.sortStateValues[key] " + this.sortStateValues)
     },
     filterTextChanged: function(key, text) {
+
         this.filterStateValues[key]["text"] = text; 
     },
     filterParamChanged: function(key, param) {
+
         this.filterStateValues[key]["param"] = param; 
     },
     render:function(){
-
-
-        var options = []
+        var options = [<option key={"Select"} value={"Select"}>Select</option>]
         for(var key in this.props.rowAttributes) {
-            options.push(<option value={key}>{key}</option>)
+            options.push(<option key={key} value={key}>{key}</option>)
         }
 
         var filterRows = []
-        for(var key in this.state.filterParams) {
+        var arr = Object.keys(this.state.filterParams);
+        for(var index in arr) {
+            console.log(this.state.filterParams)
+            console.log("index" + this.state.filterParams[index].param + " " + this.state.filterParams[index].text)
            filterRows.push(
             <FilterRow
                 filterTextChanged={this.filterTextChanged}
                 filterParamChanged={this.filterParamChanged}
-                value={this.state.filterParams[key]}
-                key={i}
+                obj={this.state.filterParams[index]}
+                index={index}
                 options={options}
             />)
         }        
 
         var sortRows = []
         for(var i in this.state.sortBy) {
+            console.log(" var sortRows = [] " + i)
            sortRows.push(
             <SortRow
               sortSelected={this.sortSelected}
               value={this.state.sortBy[i]}
-                key={i}
+                index={i}
                 options={options}
             />)
 
@@ -131,19 +169,20 @@ export default React.createClass({
                 <h2>Search Fucker</h2>
                         <div class="search-row row">
                             <label class="col-sm-4">
-                                Find By Params
+                                Search with specific parameters 
                             </label>
                             <button class="col-sm-8" onClick={this.addFilterRow}>Add Row</button>
                             {filterRows}
                         </div>
                         <div class="search-row row">
                             <label class="col-sm-4">
-                                Find By Params
+                                Sort data
                             </label>
                             <button class="col-sm-8" onClick={this.addSortRow}>Add Row</button>
                             {sortRows}
                         </div>
                 <button onClick={this.searchWithSpecificParamas}>Search Hackers</button>
+                <button onClick={this.emptySearch}>Empty Search</button>
             </div>
             )
     }
