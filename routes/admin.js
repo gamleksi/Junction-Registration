@@ -100,8 +100,11 @@ var fields = Object.keys(users[0]);
 router.post('/webhook/:key', function(req, res) {
 
   if(process.env.WEBHOOK_KEY === req.params.key) {
-    console.log(req.body[0].email + ": " + req.body[0].event);
-    req.models.users.addWebhookInformation(req.body[0].email, req.body[0].event)
+    console.log("webhook from Sendgrid")
+    console.log(req.body);  
+    for(i in req.body){
+        req.models.users.addWebhookInformation(req.body[i].email, req.body[i].event)
+    }
     res.send();
   } else {
     console.log("wrong key")
