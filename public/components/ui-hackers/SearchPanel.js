@@ -15,9 +15,11 @@ var SortRow = React.createClass({
     },
     render() {
         return (
-            <select class="col-sm-12" onChange={this.inputChanged} value={this.state.value}>
-                {this.props.options}
-            </select>
+            <div class="col-sm-2">
+                <select class="form-control" onChange={this.inputChanged} value={this.state.value}>
+                    {this.props.options}
+                </select>
+            </div>
             )
     }
 });
@@ -47,15 +49,19 @@ var FilterRow  = React.createClass({
         console.log("render() { " + this.props)
         console.log("render() { " + this.props.index)
         return (
-            <div>
-                <select class="col-sm-4" onChange={this.filterParamChanged} value={this.state.param}>
-                    {this.props.options}
-                </select>
-              <input class="col-sm-8"
-                type="text"
-                value={this.state.text}
-                onChange={this.filterTextChanged}
-              />
+            <div class="filter-row col-sm-4">
+                <div class="col-sm-5">
+                    <select class="col-sm-11 form-control" onChange={this.filterParamChanged} value={this.state.param}>
+                        {this.props.options}
+                    </select>
+                </div>
+                <div id="filter-input-wrapper" class="col-sm-7">
+                      <input class="col-sm-11"
+                        type="text"
+                        value={this.state.text}
+                        onChange={this.filterTextChanged}
+                      />
+                  </div>
             </div>
             )
     }
@@ -165,21 +171,25 @@ export default React.createClass({
 
         return(
 
-            <div class="container">
-                <h2>Search Fucker</h2>
+            <div class="search-panel">
+                <h2>Master Search</h2>
                         <div class="search-row row">
-                            <label class="col-sm-4">
-                                Search with specific parameters 
-                            </label>
-                            <button class="col-sm-8" onClick={this.addFilterRow}>Add Row</button>
-                            {filterRows}
+                                <label class="col-sm-2">
+                                    Filter params 
+                                </label>
+                            <button class="col-sm-2" onClick={this.addFilterRow}>Add Row</button>
+                            <div class="col-sm-8 search-values">    
+                                {filterRows}
+                            </div>
                         </div>
-                        <div class="search-row row">
-                            <label class="col-sm-4">
-                                Sort data
-                            </label>
-                            <button class="col-sm-8" onClick={this.addSortRow}>Add Row</button>
-                            {sortRows}
+                        <div class="search-row row">   
+                                <label class="col-sm-2">
+                                    Sort data
+                                </label>
+                                <button class="col-sm-2" onClick={this.addSortRow}>Add Row</button>
+                                <div class="col-sm-8 search-values">
+                                    {sortRows}
+                                </div>
                         </div>
                 <button onClick={this.searchWithSpecificParamas}>Search Hackers</button>
                 <button onClick={this.emptySearch}>Empty Search</button>
