@@ -1,53 +1,6 @@
-body {
-	font-size: x-small;
-}
-
 div {
 	position: relative;
 }
-
-
-table .hacker{
- height:700px; 
-}
-
-.admin-container {
-	width: 95%;
-	margin-left: auto;
-	margin-right: auto;
-}
-
-.hacker > thead{ 
-	min-width: 100%;	
-}
-.hacker > tbody{
-  min-width: 100%;	
-  overflow-y: scroll;
-  height: 600px;
-  width: 100%;
-  position: absolute;
-}
-
-tr {
-	width: 100%;
-	display: inline-table;
-}
-
-.row > p {
-	word-break: break-all;
-	font-size: x-small !important;
-}
-
-.row > button {
-	padding: 0 !important;
-	margin: 0 !important;
-	font-size: x-small !important;
-}
-
-.expand-view > p {
-	font-size: small !important;	
-}
-
 
 .checkbox-container.row {
     margin-top: 15px;
@@ -72,13 +25,95 @@ tr {
 }
 
 .checkbox-inline {
-	font-size: small;
+  font-size: small;
 }
 
+.admin-container {
+	width: 95%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+/*
+  Search table
+*/
+.search-panel > button {
+  margin-right: 10px;
+}
+
+#filter-input-wrapper {
+  padding-left: 0px;
+  padding-right: 0px;
+  margin-top: 5px;
+}
+
+#filter-input-wrapper > input {
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+
+.search-row {
+  margin-right: 0px;
+  margin-left: 0px;
+  margin-bottom: 20px;
+}
+
+.search-row > label {
+  margin-top: 5px;
+  padding-right: 20px;
+}
+
+.search-values > select {
+  padding-right: 10px;
+  padding-left: 10px;
+  text-align: center;
+  margin-top: 5px;
+}
+
+/*
+Hacker table
+*/
+
+table .hacker{
+ height:700px; 
+}
+
+.hacker > thead{ 
+	min-width: 100%;	
+}
+.hacker > tbody{
+  min-width: 100%;	
+  overflow-y: scroll;
+  height: 600px;
+  width: 100%;
+  position: absolute;
+}
+
+tr {
+	width: 100%;
+	display: inline-table;
+}
 
 td {
-	padding: 0;
+  padding: 0;
 }
+
+td > p {
+	word-break: break-all;
+	font-size: x-small !important;
+}
+
+td > button {
+	margin: 0 !important;
+	font-size: x-small !important;
+}
+
+.expand-view > p {
+	font-size: small !important;	
+}
+
+
 .alert-text{
 	color: red;
 }
@@ -89,4 +124,3 @@ td {
 select {
 	width: 100%;
 }
-

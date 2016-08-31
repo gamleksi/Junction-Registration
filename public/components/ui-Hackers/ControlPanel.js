@@ -6,15 +6,7 @@ export default React.createClass({
     render:function(){
         
         return(
-            <div>
-            <table class="table table-bordered">
-            <tbody>
-                        <SessionInfo
-                            selectedParticipants={this.props.selectedParticipants}
-                        />
-            </tbody>
 
-            </table>
             <div class="checkbox-container row">
 
                         <CheckboxRow 
@@ -22,7 +14,6 @@ export default React.createClass({
                             rowAttributes={this.props.rowAttributes} 
                         />  
                 
-            </div>
             </div>
             )
     }
