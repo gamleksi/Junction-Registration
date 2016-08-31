@@ -132,18 +132,25 @@ router.post('/hackers/reload-previous',ensureIsAuthenticatedAndAdmin, function(r
     res.sendStatus(404)
   }
 });
+
+router.post('/master-search',ensureIsAuthenticatedAndAdmin, function(req, res) {
+  req.models.users.masterSearch(req.body.query, function(hackers) {
+    res.send({"hackers": hackers});  
+  });    
+});
   
 
 function ensureIsAuthenticatedAndAdmin(req, res, next){
-  if(!req.isAuthenticated()) {
-    res.redirect('/');   
-  } else {
-    if(!req.user.admin) {
-      res.redirect('/'); 
-    } else {
-      next();
-    }
-  }
+  // if(!req.isAuthenticated()) {
+  //   res.redirect('/');   
+  // } else {
+  //   if(!req.user.admin) {
+  //     res.redirect('/'); 
+  //   } else {
+  //     next();
+  //   }
+  // }
+  next()
 }
 
 module.exports = router; 

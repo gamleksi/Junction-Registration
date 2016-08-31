@@ -5,12 +5,12 @@ export default React.createClass({
         var names = [];
         for(var key in this.props.rowAttributes){
           if(this.props.rowAttributes[key]) {
-            names.push(<td class="row" style={this.props.tdRowStyle} key={key}><p>{key}</p></td>)  
+            names.push(<td style={this.props.tdRowStyle} key={key}><p>{key}</p></td>)  
           }
         };
         console.log("this.props.tdRowStyle")
         console.log(this.props.tdRowStyle)
-        names.push(<td class="row" style={this.props.tdRowStyle} key="button"><p>Button</p></td>)                  
+        names.push(<td style={this.props.tdRowStyle} key="button"><p>Button</p></td>)                  
         return(
 
             <thead>
