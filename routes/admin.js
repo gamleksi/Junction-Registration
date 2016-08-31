@@ -25,9 +25,6 @@ router.get('/hackers', ensureIsAuthenticatedAndAdmin, function(req, res) {
 router.get('/hackers/all', ensureIsAuthenticatedAndAdmin, function(req, res) {
 
   req.models.users.getUsers(function(users) {    
-    for(i in users) {
-      console.log(users[i].accepted);
-    }
     res.send({hackers:users});
   });
 });
@@ -46,7 +43,6 @@ router.post('/hackers/accept-selected', ensureIsAuthenticatedAndAdmin, sendEmail
   if(req.body.statusCode === 202 || req.body.statusCode === 200) {
     
     req.models.users.acceptHackers(req.body.selected, function(accepted) {
-
       for(var i in accepted) {
         accepted[i].index = req.body.selected[accepted[i].email].index;
       }
@@ -63,12 +59,12 @@ function sendEmails(req, res, next) {
   var selected = req.body.selected;
   console.log(selected)
   sendgrid.sendApprovalMails(selected, function(statusCode) {
-    if(statusCode === 202 || statusCode === 200) {
-      console.log("Emails sent");
-    } else {
-      //Tähän errorit.
-      console.log("Sending failed. StatusCode: " + statusCode); 
-    }
+      if(statusCode === 202 || statusCode === 200) {
+        console.log("Emails sent");
+      } else {
+        //Tähän errorit.
+        console.log("Sending failed. StatusCode: " + statusCode); 
+      }
       console.log(selected);
       req.body.statusCode = statusCode;
       next();
@@ -134,6 +130,19 @@ router.post('/hackers/reload-previous',ensureIsAuthenticatedAndAdmin, function(r
 });
 
 router.post('/master-search',ensureIsAuthenticatedAndAdmin, function(req, res) {
+   var query = req.body.query;
+   for(key in query.filterShow) {
+    if(query.filterShow[key] === undefined) {
+      delete query.filterShow[key];
+    }
+   }
+   if(query.sortBy) {
+      query.sortBy = query.sortBy.filter(function(value) {
+        console.log(value);
+        return value !== undefined && value !== 'Select';
+      });
+      console.log(query.sortBy);
+   }  
   req.models.users.masterSearch(req.body.query, function(hackers) {
     res.send({"hackers": hackers});  
   });    
@@ -141,15 +150,16 @@ router.post('/master-search',ensureIsAuthenticatedAndAdmin, function(req, res) {
   
 
 function ensureIsAuthenticatedAndAdmin(req, res, next){
-  if(!req.isAuthenticated()) {
-    res.redirect('/');   
-  } else {
-    if(!req.user.admin) {
-      res.redirect('/'); 
-    } else {
-      next();
-    }
-  }
+  // if(!req.isAuthenticated()) {
+  //   res.redirect('/');   
+  // } else {
+  //   if(!req.user.admin) {
+  //     res.redirect('/'); 
+  //   } else {
+  //     next();
+  //   }
+  // }
+  next();
 }
 
 module.exports = router; 
