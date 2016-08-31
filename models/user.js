@@ -317,9 +317,6 @@ var validate = function(strng) {
 			 	filterShow["refused"] = false;
 			 }
 			}
-			// for(var key in params.filterOff) {
-			// 	filterShow[key] = {"less than": params.filterOff[key]};
-			// }
 			console.log(params)
 			var order = params.sortBy;
 			console.log("oder+++ " + order)
