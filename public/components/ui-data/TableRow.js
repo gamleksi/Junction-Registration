@@ -82,7 +82,7 @@ var ModificationInput = React.createClass({
 
         return(
             <div class="modified">
-                <p>{this.props.attributeKey}</p>
+                <p><b>{this.props.attributeKey}:</b></p>
                 <input
                     type={type}
                     value={this.state.attributeValue}
@@ -160,7 +160,11 @@ var ExpandedInfo = React.createClass({
                                 inputChanged={this.inputChanged}
                             />)
                     } else {
-                        columns.push(<p key={key+value}> <b> {key + ":"} </b> {value}</p>);
+                        columns.push(
+                            <div class="modified">
+                                <p key={key+value}> <b> {key + ":"} </b></p>
+                                <p class="content" key={key+value+"text"}>{value}</p>
+                            </div>);
                     }
                 }
             }             

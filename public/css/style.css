@@ -107,12 +107,32 @@ td > p {
 td > button {
 	margin: 0 !important;
 	font-size: x-small !important;
+  display: block;
+  width: 100%;
 }
 
 .expand-view > p {
 	font-size: small !important;	
 }
 
+.modified {
+  margin-bottom: 5px;
+}
+
+.modified > p {
+ font-size: x-small !important;
+ display: block;
+ width: 100;
+}
+
+.modified > .content {
+  background-color: white;
+}
+
+.modified > input {
+ font-size: x-small !important;
+ min-width: 100%;   
+}
 
 .alert-text{
 	color: red;
