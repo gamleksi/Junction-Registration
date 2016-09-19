@@ -25,7 +25,7 @@ module.exports = {
 		 			{"value":"iot","text":" IoT"},
 		 			{"value":"dataDriven", "text":" Data Driven Economy"},
 		 			{"value":"fintech", "text":" Fintech"},
-		 			{"value":"adtech", "text":" Adtech"},
+		 			{"value":"ai", "text":" Artificial Intelligence"},
 		 			{"value":"healthtech", "text":" Healthtech"},
 					{"value":"buildings", "text":" Intelligent Buildings"},
 					{"value":"ecommerce", "text":" E-Commerce"},
