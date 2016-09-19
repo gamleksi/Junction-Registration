@@ -122,6 +122,7 @@ var ExpandedInfo = React.createClass({
     saveModifications: function() {
         console.log(this.hacker);
         this.originalHacker = this.hacker;
+        this.props.hackerModificationSaved(this.hacker);
         this.setState({
             modified: false
         })
@@ -289,12 +290,14 @@ export default React.createClass({
     saveModifications: function(hacker) {
         console.log(hacker);
     },
-
-    
+ 
     render: function() {
+        console.log(this.props.hackerInfo);
+
         if(this.state.expand) {
             return (
                 <ExpandedInfo
+                    hackerModificationSaved={this.props.hackerModificationSaved}
                     hackerInfo={this.props.hackerInfo}
                     selectClick={this.selectClick}
                     expandClick={this.expandClick}
