@@ -107,6 +107,18 @@ router.post('/webhook/:key', function(req, res) {
   }
 });
 
+router.post('/hackers/save-modification', function(req, res){
+  var hacker = req.body.hacker;
+  console.log(hacker)
+  req.models.users.modifyUserInformation(hacker, function(result) {
+    if(result) {
+      res.send(200);
+    } else {
+      res.send(400);
+    }
+  })
+});
+
 
 router.post('/hackers/reload-previous',ensureIsAuthenticatedAndAdmin, function(req, res) {
   console.log('/hackers/reload-previous')

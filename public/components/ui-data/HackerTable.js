@@ -24,7 +24,7 @@ export default React.createClass({
         this.setState({
             tabObject: tabObj                      
         })
-    },    
+    },
     render: function(){
         var hackers = this.props.hackers;
         var tab = [

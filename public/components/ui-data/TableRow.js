@@ -113,16 +113,16 @@ var ExpandedInfo = React.createClass({
     modificationClicked: function() {
         console.log("wadap");
         if(this.modified) {
-            this.updateHackerObj;
+            this.updateHackerObj();
         }        
         this.setState({
             modified: !this.state.modified
         })
     },
     saveModifications: function() {
-        console.log(this.hacker);
-        this.originalHacker = this.hacker;
-        this.props.hackerModificationSaved(this.hacker);
+        var hacker = this.hacker;
+        this.props.saveModifications(hacker);
+        this.originalHacker = hacker;
         this.setState({
             modified: false
         })
@@ -288,16 +288,17 @@ export default React.createClass({
         }
     },
     saveModifications: function(hacker) {
-        console.log(hacker);
+        this.props.hackerModificationSaved(hacker)
     },
- 
+
+    
     render: function() {
         console.log(this.props.hackerInfo);
 
         if(this.state.expand) {
             return (
                 <ExpandedInfo
-                    hackerModificationSaved={this.props.hackerModificationSaved}
+                    saveModifications={this.saveModifications}
                     hackerInfo={this.props.hackerInfo}
                     selectClick={this.selectClick}
                     expandClick={this.expandClick}
