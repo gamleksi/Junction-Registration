@@ -24,7 +24,7 @@ export default React.createClass({
         this.setState({
             tabObject: tabObj                      
         })
-    },    
+    },
     render: function(){
         var hackers = this.props.hackers;
         var tab = [
@@ -60,6 +60,7 @@ export default React.createClass({
                         rowAttributes={this.props.rowAttributes}
                             />
                     <TableBody
+                        hackerModificationSaved={this.props.hackerModificationSaved} 
                         tdRowStyle={this.props.tdRowStyle}
                         hackers={hackers}
                         rowAttributes={this.props.rowAttributes}
@@ -67,7 +68,6 @@ export default React.createClass({
                         dropFromSelectedList={this.props.dropFromSelectedList}
                         expandedInfo={this.props.expandedInfo}
                          />
-                        
                 </table>
             </div>
         )

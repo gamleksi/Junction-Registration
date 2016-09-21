@@ -45,7 +45,7 @@ router.get('/edit_profile', function(req, res){
 router.post('/register', function(req, res) {
 
 
-  var postBody = ["firstname","lastname","email","phone","age","countryFrom","city","countryHome","sex","shirtsize","dietary","track","team","portfolio","occupation","skills","experience","school","role","team","motivation","secret","comment","tc","operating","sublime"]
+  var postBody = ["firstname","lastname","email","phone","age","countryFrom","city","countryHome","sex","shirtsize","dietary","track","team","portfolio","occupation","skills","experience","school","role","team","motivation","secret","comment","tc","operating","sublime"];
 
   var bodyObj = {};
   for(i in postBody) {
@@ -156,8 +156,7 @@ router.post('/register', function(req, res) {
       errorMessage: 'Max char 1000' 
     },
     errorMessage: 'At least one skill is required.'
-  }});  
-
+  }});
 
   req.checkBody('dietary', 'Dietary choice is required.').notEmpty();
   req.checkBody('sex', 'Gender is required').notEmpty();  

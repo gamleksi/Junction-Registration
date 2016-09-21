@@ -64,19 +64,94 @@ var ExpandedRadioInput = React.createClass({
     }
 });
 
-var ExpandedInfo = React.createClass({
-
-    
+var ModificationInput = React.createClass({
+    getInitialState: function() {
+        return {
+            attributeValue: this.props.attributeValue  
+        }
+    },
+    inputChanged: function(e) {
+        this.setState({
+            attributeValue: e.target.value,
+        })
+        this.props.inputChanged(this.props.attributeKey, e.target.value);
+    },    
     render: function(){
-        var hacker = this.props.hackerInfo
-        var columns = []
-        var radioInputs = undefined
+        
+        var type = typeof this.props.attributeValue;
 
+        return(
+            <div class="modified">
+                <p><b>{this.props.attributeKey}:</b></p>
+                <input
+                    type={type}
+                    value={this.state.attributeValue}
+                    onChange={this.inputChanged}/>
+            </div>        
+        )
+    }
+})
 
-        for(var key in this.props.hackerInfo){
+var ExpandedInfo = React.createClass({
+    
+    hacker: {},
+    originalHacker: {},
+    getInitialState: function(){
+        return {
+            modified: false,
+            alert: false
+        }   
+    },
+    inputChanged: function(key, input){
+        this.hacker[key] = input;             
+    },
+    updateHackerObj: function() {
+        for(var key in this.originalHacker) {
+            this.hacker[key] = this.originalHacker[key]
+        }
+    },
+    modificationClicked: function() {
+        if(this.modified) {
+            this.updateHackerObj();
+        }        
+        this.setState({
+            modified: !this.state.modified,
+            alert: false
+        })
+    },
+    saveModifications: function() {
+        var hacker = this.hacker;
+        console.log(hacker);
+        var self = this;
+        this.props.saveModifications(hacker, function(result) {
+            if(result) {
+                console.log(self.hacker);
+                console.log(self.originalHacker);
+                self.originalHacker = self.hacker;
+                self.updateHackerObj();
+            }
+            self.setState({
+                modified: false,
+                alert: !result,
+            })
+        });
+    },
+    render: function(){
+        var self = this;
+        console.log("render")
+        if(this.originalHacker.email === undefined) {
+            this.originalHacker = this.props.hackerInfo;     
+        }
 
-            if(key === "travelReimbursement" && (!this.props.hackerInfo[key] || !this.props.hackerInfo["accepted"])) {
-                radioInputs = <ExpandedRadioInput inputSelected={this.props.inputSelected} travelReimbursement={this.props.hackerInfo.travelReimbursement} inputChanged={this.inputChanged} hackerId={this.props.hackerInfo.email}/>;
+        this.updateHackerObj()
+
+        var columns = [];
+        var radioInputs = undefined;
+
+        for(var key in this.hacker){
+            var modificationClicked
+            if(key === "travelReimbursement" && (!this.hacker[key] || !this.hacker["accepted"])) {
+                radioInputs = <ExpandedRadioInput inputSelected={this.props.inputSelected} travelReimbursement={this.hacker.travelReimbursement} hackerId={this.hacker.email}/>;
             } else {
                 var bool = true;
                 this.props.expandedInfo.forEach(function(value) {
@@ -84,14 +159,42 @@ var ExpandedInfo = React.createClass({
                         bool = false;
                     }
                 })
-                if(bool) {
-                    var value = hacker[key]
-                    columns.push(<p key={key+value}> <b> {key + ":"} </b> {value}</p>)
+                if(key === "admin" || key === "password") {
+                    bool = false;
                 }
-            }                
+                if(bool) {
+                    var value = this.hacker[key];
+                    if(this.state.modified && key!=="email") {
+                        columns.push(<ModificationInput
+                                attributeKey={key}
+                                attributeValue={value}
+                                inputChanged={this.inputChanged}
+                            />)
+                    } else {
+                        columns.push(
+                            <div class="modified">
+                                <p key={key+value}> <b> {key + ":"} </b></p>
+                                <p class="content" key={key+value+"text"}>{value}</p>
+                            </div>);
+                    }
+                }
+            }             
 
+        }        
 
+        var divStyle = {};
+
+        if(this.state.alert) {
+            divStyle['color'] = 'red';
         }
+
+        var modText = "MODIFY"
+        var saveButton = "";
+        if(this.state.modified) {
+            modText = "CANCEL"
+            saveButton = <button class="expand" onClick={this.saveModifications}>SAVE</button>;            
+        }
+
         var sections = [[], [], []]
         var third = columns.length/3;
         for(var index in columns) {
@@ -102,24 +205,22 @@ var ExpandedInfo = React.createClass({
             } else {
                 sections[2].push(columns[index])
             }
-        }
-        
+        }        
 
-        var textColums = []; //Motivation, skillDescription etc
-    
+        var textColums = [];
         this.props.expandedInfo.forEach(function(key) {
-                textColums.push(
-                        <p key={key}><b> {key + ":"}</b> {hacker[key]}</p>                    
-                    )                
-        })
+                    textColums.push(
+                            <p key={key}><b> {key + ":"}</b> {self.hacker[key]}</p>                    
+                        )                
+        }) 
 
-        var classColor="active"
+        var classColor="active";
         if(this.props.hackerInfo.travelReimbursement) {
             classColor="success"
         }
 
         return(
-            <tr  class={"expand-view " + classColor}>
+            <tr  class={"expand-view " + classColor} style={divStyle}>
                     <td>
                         {sections[0]}
                     </td>
@@ -134,14 +235,14 @@ var ExpandedInfo = React.createClass({
                     </td>
                     <td>                            
                         <button class="expand" onClick={this.props.expandClick}>COLLAPSE</button>
-
+                        <button class="expand" onClick={this.modificationClicked}>{modText}</button>
+                        {saveButton}
                         <div>
                             {radioInputs}
                         </div>
                     </td>                      
             </tr>
         )            
-
     }
 })
 
@@ -186,11 +287,13 @@ export default React.createClass({
     getInitialState:function(){
         return {
             expand: false,
+            hackerInfo: this.props.hackerInfo,
         }
     },
     expandClick: function(){
         this.setState({
             expand: !(this.state.expand),
+            hackerInfo: this.state.hackerInfo
         })
     },
     inputSelected: function(travelReimbursement) {
@@ -204,10 +307,12 @@ export default React.createClass({
 
     
     render: function() {
+        console.log("table row render")
         if(this.state.expand) {
             return (
                 <ExpandedInfo
-                    hackerInfo={this.props.hackerInfo}
+                    saveModifications={this.props.hackerModificationSaved}
+                    hackerInfo={this.state.hackerInfo}
                     selectClick={this.selectClick}
                     expandClick={this.expandClick}
                     visibleColumns={this.props.visibleColumns}
@@ -220,7 +325,7 @@ export default React.createClass({
                 <RowInfo
                     tdRowStyle={this.props.tdRowStyle}
                     visibleColumns={this.props.visibleColumns}
-                    hackerInfo={this.props.hackerInfo}
+                    hackerInfo={this.state.hackerInfo}
                     selectClick={this.selectClick}
                     expandClick={this.expandClick}
                     inputSelected={this.inputSelected}
