@@ -102,7 +102,6 @@ var ExpandedInfo = React.createClass({
         }   
     },
     inputChanged: function(key, input){
-        console.log("tekstiä tulee")
         this.hacker[key] = input;             
     },
     updateHackerObj: function() {
@@ -111,7 +110,6 @@ var ExpandedInfo = React.createClass({
         }
     },
     modificationClicked: function() {
-        console.log("wadap");
         if(this.modified) {
             this.updateHackerObj();
         }        
@@ -293,7 +291,6 @@ export default React.createClass({
 
     
     render: function() {
-        console.log(this.props.hackerInfo);
 
         if(this.state.expand) {
             return (

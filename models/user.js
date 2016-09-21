@@ -207,7 +207,7 @@ var validate = function(strng) {
 
 			Users.one({"email": hacker.email}, function(err,user){
 				if(err) throw err;
-				var result = false
+				var result = false;
 				if(user) {
 					for(var key in hacker) {
 						if(key !== "email") {
@@ -216,12 +216,12 @@ var validate = function(strng) {
 					}
 					result = true;
 				}
-				console.log("modifyUserInformation")
-				console.log(user)
+				console.log("modifyUserInformation");
+				console.log(user);
 				user.save(function(err){
 					if(err) {
 						console.error(err);
-						callback(false);
+						result = false;						
 					}
 					callback(result);
 				});

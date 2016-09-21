@@ -49,7 +49,6 @@ router.post('/hackers/accept-selected', ensureIsAuthenticatedAndAdmin, sendEmail
       res.send({"accepted": accepted, "statusCode": req.body.statusCode});  
     });    
   } else {
-
     var result = {"statusCode": req.body.statusCode};
     res.send(result);
   }
@@ -62,7 +61,6 @@ function sendEmails(req, res, next) {
       if(statusCode === 202 || statusCode === 200) {
         console.log("Emails sent");
       } else {
-        //Tähän errorit.
         console.log("Sending failed. StatusCode: " + statusCode); 
       }
       console.log(selected);
@@ -108,14 +106,16 @@ router.post('/webhook/:key', function(req, res) {
 });
 
 router.post('/hackers/save-modification', function(req, res){
+
   var hacker = req.body.hacker;
   console.log(hacker)
   req.models.users.modifyUserInformation(hacker, function(result) {
-    if(result) {
-      res.send(200);
-    } else {
-      res.send(400);
+    var status = 200;
+    if(!result) {
+      status = 400;
     }
+
+    res.sendStatus(status); 
   })
 });
 
@@ -137,7 +137,7 @@ router.post('/hackers/reload-previous',ensureIsAuthenticatedAndAdmin, function(r
       });  
     }
   } else {
-    res.sendStatus(404)
+    res.sendStatus(404);
   }
 });
 

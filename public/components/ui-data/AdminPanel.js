@@ -167,6 +167,7 @@ export default React.createClass ({
           if (xhr.readyState === 4) {
 
             if (xhr.status === 200) {
+
                 this.setState({
                     rowAttributes: this.state.rowAttributes,
                     hackers: hackers,
@@ -176,6 +177,13 @@ export default React.createClass ({
                 })
             } else {
               console.error(xhr.statusText);
+                this.setState({
+                    rowAttributes: this.state.rowAttributes,
+                    hackers: this.state.hackers,
+                    hackerMap: this.state.hackerMap,
+                    selectedParticipants: this.state.selectedParticipants,
+                    previousAccepted: this.state.previousAccepted            
+                })            
             }
           }
         };
