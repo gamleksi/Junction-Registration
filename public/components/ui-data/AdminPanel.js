@@ -141,7 +141,8 @@ export default React.createClass ({
         xhr.open('GET', url);
         xhr.send();
     },
-    hackerModificationSaved: function(hacker){
+
+    hackerModificationSaved: function(hacker, callback){
         var hacker = hacker;
         var selected = this.state.selectedParticipants;
         var previous = this.state.previousAccepted;
@@ -167,23 +168,16 @@ export default React.createClass ({
           if (xhr.readyState === 4) {
 
             if (xhr.status === 200) {
-
-                this.setState({
+                self.setState({
                     rowAttributes: this.state.rowAttributes,
                     hackers: hackers,
                     hackerMap: this.state.hackerMap,
                     selectedParticipants: selected,
                     previousAccepted: previous            
                 })
+                callback(true)
             } else {
-              console.error(xhr.statusText);
-                this.setState({
-                    rowAttributes: this.state.rowAttributes,
-                    hackers: this.state.hackers,
-                    hackerMap: this.state.hackerMap,
-                    selectedParticipants: this.state.selectedParticipants,
-                    previousAccepted: this.state.previousAccepted            
-                })            
+                callback(false)
             }
           }
         };
@@ -398,6 +392,8 @@ export default React.createClass ({
         xhr.send(JSON.stringify({"selected": selectedObj}));
     },
     render: function() {
+
+        console.log("renderchr")
         
 
         if(Object.getOwnPropertyNames(this.state.hackers).length <= 0) {

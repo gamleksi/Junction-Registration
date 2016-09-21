@@ -99,6 +99,7 @@ var ExpandedInfo = React.createClass({
     getInitialState: function(){
         return {
             modified: false,
+            alert: false
         }   
     },
     inputChanged: function(key, input){
@@ -114,30 +115,41 @@ var ExpandedInfo = React.createClass({
             this.updateHackerObj();
         }        
         this.setState({
-            modified: !this.state.modified
+            modified: !this.state.modified,
+            alert: false
         })
     },
     saveModifications: function() {
         var hacker = this.hacker;
-        this.props.saveModifications(hacker);
-        this.originalHacker = hacker;
-        this.setState({
-            modified: false
-        })
+        console.log(hacker);
+        var self = this;
+        this.props.saveModifications(hacker, function(result) {
+            if(result) {
+                console.log(self.hacker);
+                console.log(self.originalHacker);
+                self.originalHacker = self.hacker;
+                self.updateHackerObj();
+            }
+            self.setState({
+                modified: false,
+                alert: !result,
+            })
+        });
     },
     render: function(){
         var self = this;
+        console.log("render")
         if(this.originalHacker.email === undefined) {
             this.originalHacker = this.props.hackerInfo;     
         }
-         
+
         this.updateHackerObj()
 
         var columns = [];
         var radioInputs = undefined;
 
         for(var key in this.hacker){
-
+            var modificationClicked
             if(key === "travelReimbursement" && (!this.hacker[key] || !this.hacker["accepted"])) {
                 radioInputs = <ExpandedRadioInput inputSelected={this.props.inputSelected} travelReimbursement={this.hacker.travelReimbursement} hackerId={this.hacker.email}/>;
             } else {
@@ -170,6 +182,11 @@ var ExpandedInfo = React.createClass({
 
         }        
 
+        var divStyle = {};
+
+        if(this.state.alert) {
+            divStyle['color'] = 'red';
+        }
 
         var modText = "MODIFY"
         var saveButton = "";
@@ -203,7 +220,7 @@ var ExpandedInfo = React.createClass({
         }
 
         return(
-            <tr  class={"expand-view " + classColor}>
+            <tr  class={"expand-view " + classColor} style={divStyle}>
                     <td>
                         {sections[0]}
                     </td>
@@ -270,11 +287,13 @@ export default React.createClass({
     getInitialState:function(){
         return {
             expand: false,
+            hackerInfo: this.props.hackerInfo,
         }
     },
     expandClick: function(){
         this.setState({
             expand: !(this.state.expand),
+            hackerInfo: this.state.hackerInfo
         })
     },
     inputSelected: function(travelReimbursement) {
@@ -285,18 +304,15 @@ export default React.createClass({
             this.props.addToSelectedList(this.props.hackerInfo, travelReimbursement);
         }
     },
-    saveModifications: function(hacker) {
-        this.props.hackerModificationSaved(hacker)
-    },
 
     
     render: function() {
-
+        console.log("table row render")
         if(this.state.expand) {
             return (
                 <ExpandedInfo
-                    saveModifications={this.saveModifications}
-                    hackerInfo={this.props.hackerInfo}
+                    saveModifications={this.props.hackerModificationSaved}
+                    hackerInfo={this.state.hackerInfo}
                     selectClick={this.selectClick}
                     expandClick={this.expandClick}
                     visibleColumns={this.props.visibleColumns}
@@ -309,7 +325,7 @@ export default React.createClass({
                 <RowInfo
                     tdRowStyle={this.props.tdRowStyle}
                     visibleColumns={this.props.visibleColumns}
-                    hackerInfo={this.props.hackerInfo}
+                    hackerInfo={this.state.hackerInfo}
                     selectClick={this.selectClick}
                     expandClick={this.expandClick}
                     inputSelected={this.inputSelected}
