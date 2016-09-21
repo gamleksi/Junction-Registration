@@ -162,16 +162,15 @@ router.post('/master-search',ensureIsAuthenticatedAndAdmin, function(req, res) {
   
 
 function ensureIsAuthenticatedAndAdmin(req, res, next){
-  // if(!req.isAuthenticated()) {
-  //   res.redirect('/');   
-  // } else {
-  //   if(!req.user.admin) {
-  //     res.redirect('/'); 
-  //   } else {
-  //     next();
-  //   }
-  // }
-  next()
+  if(!req.isAuthenticated()) {
+    res.redirect('/');   
+  } else {
+    if(!req.user.admin) {
+      res.redirect('/'); 
+    } else {
+      next();
+    }
+  }
 }
 
 module.exports = router; 
