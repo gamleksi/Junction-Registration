@@ -203,6 +203,31 @@ var validate = function(strng) {
 			});
 		}; 
 			
+		Users.modifyUserInformation = function(hacker, callback) {
+
+			Users.one({"email": hacker.email}, function(err,user){
+				if(err) throw err;
+				var result = false;
+				if(user) {
+					for(var key in hacker) {
+						if(key !== "email") {
+							user[key] = hacker[key];	
+						}
+					}
+					result = true;
+				}
+				console.log("modifyUserInformation");
+				console.log(user);
+				user.save(function(err){
+					if(err) {
+						console.error(err);
+						result = false;						
+					}
+					callback(result);
+				});
+			});
+		}; 
+
 
 		Users.comparePasswords = function(candidatePassword, hash, callback){
 			bcrypt.compare(candidatePassword,hash, function(err, isMatch){

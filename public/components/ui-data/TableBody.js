@@ -10,6 +10,7 @@ export default React.createClass({
             var hacker = this.props.hackers[i]          
              rows.push(
                 <TableRow
+                    hackerModificationSaved={this.props.hackerModificationSaved}
                     tdRowStyle={this.props.tdRowStyle}                
                     dropFromSelectedList={this.props.dropFromSelectedList}
                     addToSelectedList={this.props.addToSelectedList}
