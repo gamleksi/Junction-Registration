@@ -50,7 +50,7 @@ export default React.createClass({
                 tabButton={this.state.tabObject[2].buttonValue}
                 />]            
         }
-
+        console.log(hackers);
         return(
             <div id="hacker-table">
                 {tab}
