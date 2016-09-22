@@ -121,14 +121,13 @@ var ExpandedInfo = React.createClass({
     },
     saveModifications: function() {
         var hacker = this.hacker;
-        console.log(hacker);
         var self = this;
+        this.hacker = {}
+        this.originalHacker = {}
         this.props.saveModifications(hacker, function(result) {
-            if(result) {
-                console.log(self.hacker);
-                console.log(self.originalHacker);
-                self.originalHacker = self.hacker;
-                self.updateHackerObj();
+            if(!result) {
+                self.originalHacker = self.props.hackerInfo;     
+                self.updateHackerObj()
             }
             self.setState({
                 modified: false,
@@ -136,14 +135,21 @@ var ExpandedInfo = React.createClass({
             })
         });
     },
+    valuesDiffer: function(hacker){
+        var r = false;
+        for(var key in this.originalHacker) {
+            if(this.originalHacker[key] !== hacker[key]) {
+                r = true
+            }
+        }
+        return r;
+    },
     render: function(){
         var self = this;
-        console.log("render")
-        if(this.originalHacker.email === undefined) {
-            this.originalHacker = this.props.hackerInfo;     
+        if(self.originalHacker.email === undefined || self.valuesDiffer(self.props.hackerInfo) || self.valuesDiffer(self.hacker)) {
+            self.originalHacker = self.props.hackerInfo;     
+            self.updateHackerObj()
         }
-
-        this.updateHackerObj()
 
         var columns = [];
         var radioInputs = undefined;
@@ -248,9 +254,7 @@ var ExpandedInfo = React.createClass({
 
 var RowInfo = React.createClass({
 
-
     render: function() {
-
         var values = []
         for(var key in this.props.hackerInfo){
             if(this.props.visibleColumns[key]) {
@@ -287,13 +291,11 @@ export default React.createClass({
     getInitialState:function(){
         return {
             expand: false,
-            hackerInfo: this.props.hackerInfo,
         }
     },
     expandClick: function(){
         this.setState({
             expand: !(this.state.expand),
-            hackerInfo: this.state.hackerInfo
         })
     },
     inputSelected: function(travelReimbursement) {
@@ -307,12 +309,12 @@ export default React.createClass({
 
     
     render: function() {
-        console.log("table row render")
+
         if(this.state.expand) {
             return (
                 <ExpandedInfo
                     saveModifications={this.props.hackerModificationSaved}
-                    hackerInfo={this.state.hackerInfo}
+                    hackerInfo={this.props.hackerInfo}
                     selectClick={this.selectClick}
                     expandClick={this.expandClick}
                     visibleColumns={this.props.visibleColumns}
@@ -325,7 +327,7 @@ export default React.createClass({
                 <RowInfo
                     tdRowStyle={this.props.tdRowStyle}
                     visibleColumns={this.props.visibleColumns}
-                    hackerInfo={this.state.hackerInfo}
+                    hackerInfo={this.props.hackerInfo}
                     selectClick={this.selectClick}
                     expandClick={this.expandClick}
                     inputSelected={this.inputSelected}

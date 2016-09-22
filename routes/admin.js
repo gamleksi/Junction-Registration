@@ -156,6 +156,7 @@ router.post('/master-search',ensureIsAuthenticatedAndAdmin, function(req, res) {
       console.log(query.sortBy);
    }  
   req.models.users.masterSearch(req.body.query, function(hackers) {
+
     res.send({"hackers": hackers});  
   });    
 });
@@ -171,6 +172,7 @@ function ensureIsAuthenticatedAndAdmin(req, res, next){
       next();
     }
   }
+  next()
 }
 
 module.exports = router; 

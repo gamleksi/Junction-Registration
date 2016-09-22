@@ -184,6 +184,7 @@ export default React.createClass ({
         xhr.send(JSON.stringify({"hacker": hacker}));                  
     },    
     searchSpecificHackers: function(query) {
+        
         var self = this;
         var xhr = new XMLHttpRequest();
         var url = "/admin/master-search"
@@ -197,7 +198,6 @@ export default React.createClass ({
             if (xhr.status === 200) {
                 var responseItem = xhr.response
                 var jsoned = JSON.parse(responseItem)
-
                 var rowAttributes = {}                
                 if(Object.getOwnPropertyNames(this.state.rowAttributes).length === 0) {
 
@@ -229,7 +229,7 @@ export default React.createClass ({
                         hackers[index].travelReimbursement = this.state.selectedParticipants.travelReimbursement
                     }
                 }                     
-                this.setState({
+                self.setState({
                     rowAttributes: rowAttributes,
                     hackers: hackers,
                     hackerMap: hackerMap,
@@ -317,7 +317,6 @@ export default React.createClass ({
                 hackers[index] = hacker;
             }
         }
-
         this.setState({
             rowAttributes: this.state.rowAttributes,
             hackers: hackers,
@@ -379,9 +378,7 @@ export default React.createClass ({
             if (this.readyState === 4 && this.status === 200) {
                 var responseItem = xhr.response;
                 var jsoned = JSON.parse(responseItem)
-                console.log(jsoned)
                 if(jsoned.statusCode === 200 || jsoned.statusCode === 202) {
-                    console.log("responseItem.statusCode")
                     self.updateHackersAfterInvitation(jsoned.accepted)
                 }
             } else {
@@ -391,10 +388,7 @@ export default React.createClass ({
 
         xhr.send(JSON.stringify({"selected": selectedObj}));
     },
-    render: function() {
-
-        console.log("renderchr")
-        
+    render: function() {        
 
         if(Object.getOwnPropertyNames(this.state.hackers).length <= 0) {
             this.getHackers()
