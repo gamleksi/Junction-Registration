@@ -121,13 +121,11 @@ var ExpandedInfo = React.createClass({
     },
     saveModifications: function() {
         var hacker = this.hacker;
-        console.log(hacker);
         var self = this;
         this.hacker = {}
         this.originalHacker = {}
         this.props.saveModifications(hacker, function(result) {
             if(!result) {
-                console.log(self.originalHacker);
                 self.originalHacker = self.props.hackerInfo;     
                 self.updateHackerObj()
             }
@@ -148,7 +146,6 @@ var ExpandedInfo = React.createClass({
     },
     render: function(){
         var self = this;
-        console.log("render")
         if(self.originalHacker.email === undefined || self.valuesDiffer(self.props.hackerInfo) || self.valuesDiffer(self.hacker)) {
             self.originalHacker = self.props.hackerInfo;     
             self.updateHackerObj()
@@ -258,7 +255,6 @@ var ExpandedInfo = React.createClass({
 var RowInfo = React.createClass({
 
     render: function() {
-        console.log(this.props.hackerInfo);
         var values = []
         for(var key in this.props.hackerInfo){
             if(this.props.visibleColumns[key]) {

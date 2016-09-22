@@ -172,6 +172,7 @@ function ensureIsAuthenticatedAndAdmin(req, res, next){
       next();
     }
   }
+  next()
 }
 
 module.exports = router; 

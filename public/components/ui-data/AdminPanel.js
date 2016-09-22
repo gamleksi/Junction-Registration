@@ -185,7 +185,6 @@ export default React.createClass ({
     },    
     searchSpecificHackers: function(query) {
         
-        console.log(query);
         var self = this;
         var xhr = new XMLHttpRequest();
         var url = "/admin/master-search"
@@ -199,7 +198,6 @@ export default React.createClass ({
             if (xhr.status === 200) {
                 var responseItem = xhr.response
                 var jsoned = JSON.parse(responseItem)
-                console.log(jsoned);
                 var rowAttributes = {}                
                 if(Object.getOwnPropertyNames(this.state.rowAttributes).length === 0) {
 
@@ -380,9 +378,7 @@ export default React.createClass ({
             if (this.readyState === 4 && this.status === 200) {
                 var responseItem = xhr.response;
                 var jsoned = JSON.parse(responseItem)
-                console.log(jsoned)
                 if(jsoned.statusCode === 200 || jsoned.statusCode === 202) {
-                    console.log("responseItem.statusCode")
                     self.updateHackersAfterInvitation(jsoned.accepted)
                 }
             } else {
@@ -392,10 +388,7 @@ export default React.createClass ({
 
         xhr.send(JSON.stringify({"selected": selectedObj}));
     },
-    render: function() {
-
-        console.log(this.state.hackers);
-        
+    render: function() {        
 
         if(Object.getOwnPropertyNames(this.state.hackers).length <= 0) {
             this.getHackers()
