@@ -6,6 +6,7 @@ export default React.createClass({
     render:function(){
 
         var rows = []
+        console.log(this.props.hackers)
         for(var i in this.props.hackers){
             var hacker = this.props.hackers[i]          
              rows.push(

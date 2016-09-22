@@ -184,6 +184,8 @@ export default React.createClass ({
         xhr.send(JSON.stringify({"hacker": hacker}));                  
     },    
     searchSpecificHackers: function(query) {
+        
+        console.log(query);
         var self = this;
         var xhr = new XMLHttpRequest();
         var url = "/admin/master-search"
@@ -197,7 +199,7 @@ export default React.createClass ({
             if (xhr.status === 200) {
                 var responseItem = xhr.response
                 var jsoned = JSON.parse(responseItem)
-
+                console.log(jsoned);
                 var rowAttributes = {}                
                 if(Object.getOwnPropertyNames(this.state.rowAttributes).length === 0) {
 
@@ -229,7 +231,7 @@ export default React.createClass ({
                         hackers[index].travelReimbursement = this.state.selectedParticipants.travelReimbursement
                     }
                 }                     
-                this.setState({
+                self.setState({
                     rowAttributes: rowAttributes,
                     hackers: hackers,
                     hackerMap: hackerMap,
@@ -317,7 +319,6 @@ export default React.createClass ({
                 hackers[index] = hacker;
             }
         }
-
         this.setState({
             rowAttributes: this.state.rowAttributes,
             hackers: hackers,
@@ -393,7 +394,7 @@ export default React.createClass ({
     },
     render: function() {
 
-        console.log("renderchr")
+        console.log(this.state.hackers);
         
 
         if(Object.getOwnPropertyNames(this.state.hackers).length <= 0) {
