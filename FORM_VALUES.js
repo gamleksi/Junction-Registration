@@ -32,13 +32,6 @@ module.exports = {
 					{"value":"mobility", "text":" Future Mobility"},					
 
 		],
-			
-		role:[		{"value":"software","text":" Software Dev"},
-		 			{"value":"hardware","text":" Hardware Dev"},
-		 			{"value":"designer","text":" Designer"},
-		 			{"value":"business","text":" Business"},
-		 			{"value":"other","text":" Other"},
-		],
 		
 		occupation: [
 			{"value":"Student","text":" Student - full-time"},
