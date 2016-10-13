@@ -7,7 +7,9 @@ var json2csv = require('json2csv');
 var fs = require('fs');
 
 router.get('/', ensureIsAuthenticatedAndAdmin, function(req, res) {
-  res.render('admin', {layout: 'admin-layout'});     
+  req.models.users.getUsers(function(users) {    
+    res.render('hackers',{hackers:users, layout: 'admin-layout'});
+  });
 });
 
 router.get('/login', function(req, res) {
@@ -23,7 +25,6 @@ router.get('/hackers', ensureIsAuthenticatedAndAdmin, function(req, res) {
 
 
 router.get('/hackers/all', ensureIsAuthenticatedAndAdmin, function(req, res) {
-
   req.models.users.getUsers(function(users) {    
     res.send({hackers:users});
   });

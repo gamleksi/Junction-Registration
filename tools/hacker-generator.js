@@ -3501,8 +3501,9 @@ var hackers = [ { firstname: 'Witt',
 var dotenv = require('dotenv').config();
 var orm = require('orm');
 var Users = require('../models/user');
+var formValues = require('../Form_VALUES.js');
 
-orm.express(process.evn.DATABASE_URL, {
+orm.express(process.env.DATABASE_URL, {
     error: function(err){
       console.error(err);
     }, 
@@ -3510,14 +3511,22 @@ orm.express(process.evn.DATABASE_URL, {
         models.users = Users.createModel(db);
         db.sync(function(err,success){
           if(err){
-
-            // TODO: Mitä tehdä jos sync error
-
             console.log(err);
           }
           else{
             console.log("synced");
             for(i in hackers) {
+                hackers[i].motivation = hackers[i].question1;
+                Math.floor( Math.random() * 7)
+                hackers[i].role = formValues.role[Math.floor( Math.random() * 4)].value;
+                hackers[i].track =  formValues.track[Math.floor( Math.random() * 9)].value;
+                hackers[i].occupation =  formValues.occupation[Math.floor( Math.random() * 9)].value;
+                hackers[i].skills =  formValues.skills[Math.floor( Math.random() * 8)].value;
+                hackers[i].operating =  formValues.operating[Math.floor( Math.random() * 5)].value;
+                hackers[i].tc = "agree";
+                hackers[i].experience =  formValues.experience[Math.floor( Math.random() * 5)].value;
+                hackers[i].sublime =  formValues.sublime[Math.floor( Math.random() * 2)].value;
+                hackers[i].registerEmailStatus = "sent"
               models.users.createUser(hackers[i], function(err, user) {
                   if(err) {
                     console.error(err);     
