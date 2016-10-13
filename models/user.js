@@ -302,7 +302,7 @@ var validate = function(strng) {
 		};
 
 		Users.getUsers = function(callback){
-			Users.find({admin: false, refused: false}).omit('admin').omit('password').run(function(err, results) {
+			Users.find({admin: false}).omit('admin').omit('password').run(function(err, results) {
 				if(err) {
 					throw err;
 				}
