@@ -336,11 +336,6 @@ var validate = function(strng) {
 			var filterShow = {};
 			if(params.filterShow) {
 			 filterShow = params.filterShow;
-			 if(params.refused) {
-			 	 filterShow["refused"] = true;
-			 } else {
-			 	filterShow["refused"] = false;
-			 }
 			}
 			console.log(params)
 			var order = params.sortBy;
