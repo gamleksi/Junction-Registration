@@ -152,6 +152,15 @@ export default React.createClass ({
         }
         return hackers;
     },
+    setAttributeValues: function(attr){
+        var attributes = attr
+        this.setState({
+            rowAttributes: attributes,
+            hackers:this.state.hackers,
+            hackerMap: this.state.hackerMap,
+            selectedParticipants: this.state.selectedParticipants,
+        });
+    },
     render: function() {        
 
         if(Object.getOwnPropertyNames(this.state.hackers).length <= 0) {
