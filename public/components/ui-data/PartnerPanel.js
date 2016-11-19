@@ -39,19 +39,21 @@ export default React.createClass ({
                             rowAttributes[e] = false;
                         }
                     })
+                    rowAttributes["selected"] = true;
                 } else {
                     rowAttributes = this.state.rowAttributes;
                 }
                 var hackers = jsoned.hackers
                 var hackerMap = {};
                 for(var i in hackers) {
+                    hackers[i]["selected"] = false;
                     hackerMap[hackers[i].email] = i;
                 }
                 for(var email in this.state.selectedParticipants) {
                     var index = hackerMap[email];
-                    if(index && hackers[index].travelReimbursement === undefined) {
+                    if(index && !hackers[index].selected) {
                         var index = hackerMap[email]
-                        hackers[index].travelReimbursement = this.state.selectedParticipants.travelReimbursement
+                        hackers[index].travelReimbursement = this.state.selectedParticipants[email].selected;
                     }
                 }                
                 this.setState({
@@ -111,12 +113,13 @@ export default React.createClass ({
                 var hackerMap = {};
                 for(var i in hackers) {
                     hackerMap[hackers[i].email] = i;
+                    hackers[i].selected = false;
                 }
                 for(var email in this.state.selectedParticipants) {
                     var index = hackerMap[email];
-                    if(index && hackers[index].travelReimbursement !== undefined) {
+                    if(index && !hackers[index].selected) {
                         var index = hackerMap[email]
-                        hackers[index].travelReimbursement = this.state.selectedParticipants.travelReimbursement
+                        hackers[index].selcted = this.state.selectedParticipants[email].selected;
                     }
                 }                     
                 self.setState({
@@ -161,6 +164,35 @@ export default React.createClass ({
             selectedParticipants: this.state.selectedParticipants,
         });
     },
+    addToSelectedList: function(hacker) {
+        var selected = this.state.selectedParticipants;
+    
+            hacker["selected"] = true;
+            selected[hacker.email] = hacker;
+            var hackers = this.updateHackerIntoList(hacker);
+            this.setState({
+                    rowAttributes: this.state.rowAttributes,
+                    hackers: hackers,
+                    hackerMap: this.state.hackerMap,
+                    selectedParticipants: selected,
+                    previousAccepted: this.state.previousAccepted
+            });        
+    },
+    dropFromSelectedList: function(hacker) {
+        var selected = this.state.selectedParticipants        
+
+        delete selected[hacker.email];
+        hacker["selected"] = false;
+        var hackers = this.updateHackerIntoList(hacker);
+        this.setState({
+            rowAttributes: this.state.rowAttributes,
+            attributeNames: this.state.attributeNames,
+            hackers: hackers,
+            hackerMap: this.state.hackerMap,
+            selectedParticipants: selected,
+            previousAccepted: this.state.previousAccepted
+        })            
+    },
     render: function() {        
 
         if(Object.getOwnPropertyNames(this.state.hackers).length <= 0) {
@@ -184,8 +216,9 @@ export default React.createClass ({
         <SearchPanel
                 searchSpecificHackers ={this.searchSpecificHackers}
                 rowAttributes={this.state.rowAttributes}
-        /> 
+        />
        <HackerTable
+            partnerPanel={this.props.partnerPanel}
             hackerModificationSaved={this.hackerModificationSaved}
             reloadPrevious={this.reloadPrevious}
             tabObject={tabObject}
