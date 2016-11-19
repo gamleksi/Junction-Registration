@@ -10,7 +10,7 @@ router.get('/:hash', function (req, res, next) {
 			req.models.users.refuseHacker(email);
 			res.render('message', {message:"That's unfortunate. Thanks for your interest."});
 		}else{
-			res.render('message',{error:"Invalid link. <3"})
+			res.render('message',{error:"Invalid link."})
 		}
 	});
 });
