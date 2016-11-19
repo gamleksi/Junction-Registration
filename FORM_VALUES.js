@@ -21,6 +21,7 @@ module.exports = {
 		],
 		track:[
 					{"value":"gaming","text":" Gaming"},
+					{"value":"adtech","text":" Adtech"},
 		 			{"value":"vr","text":" Virtual Reality"},
 		 			{"value":"iot","text":" IoT"},
 		 			{"value":"dataDriven", "text":" Data Driven Economy"},
