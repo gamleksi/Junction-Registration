@@ -24,7 +24,14 @@ router.get('/hackers', authPartner, function(req, res) {
 
 router.get('/hackers/all', authPartner, function(req, res) {
 
-  req.models.users.getUsers(function(users) {    
+  req.models.users.getLimitedUserInfo(function(users) {    
+    res.send({hackers:users});
+  });
+});
+
+router.get('/hackers/sample', authPartner, function(req, res) {
+
+  req.models.users.getSampleUsers(function(users) {    
     res.send({hackers:users});
   });
 });

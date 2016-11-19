@@ -179,7 +179,7 @@ export default React.createClass ({
                 setAttributeValues ={this.setAttributeValues}
                 rowAttributes={this.state.rowAttributes}
         /> 
-      <HackerTable
+       <HackerTable
             hackerModificationSaved={this.hackerModificationSaved}
             reloadPrevious={this.reloadPrevious}
             tabObject={tabObject}
