@@ -4,7 +4,7 @@ var dateFormat = require('dateformat');
 var EventEmitter = require('events');
 var event = new EventEmitter();
 var formValues = require('../FORM_VALUES.js')
-var values_for_partners = ["firstname","lastname","age","email","countryFrom","countryHome","track","experience","portfolio","sex"]
+var values_for_partners = ["firstname","lastname","age","email","countryFrom","countryHome","track","experience","portfolio","sex","skills","city","motivation"]
 
 module.exports = {
 	createModel: function(db) {

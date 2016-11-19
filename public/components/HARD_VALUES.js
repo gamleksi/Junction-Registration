@@ -13,8 +13,8 @@ module.exports = {
 		        visible: false
 		    }
 		],
-		notBeShownInOpeningRow: ["shirtsize", "countryFrom", "dietary", "secret", "operating", "sublime", "accepted", "motivation", "comment", 
-		"status", "batch", "registrationDate", "refused", "registerEmailStatus", "accepted", "portfolio", "invitationEmailSent", "track", "role", "sublime", "invitationEmailStatus"],
+		notBeShownInOpeningRow: ["firstname","lastname","countryFrom","countryHome","sex","age"],
 		longComments: ["comment", "motivation"],
-		attrNotBeShown: ["admin", "password", "refuseHash", "invitationHash", ],
+		attrNotBeShown: ["admin", "phone","password","occupation","team","motivation", "refuseHash", "invitationHash", "shirtsize", "dietary", "secret", "operating", "sublime", "accepted", "comment", 
+		"status", "batch", "registrationDate", "refused", "registerEmailStatus", "accepted", "invitationEmailSent", "role", "sublime", "invitationEmailStatus"],
 };

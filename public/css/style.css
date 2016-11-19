@@ -2,6 +2,81 @@ div {
 	position: relative;
 }
 
+body {
+  background: #000 !important;
+  color: #fff !important;
+}
+
+td {
+  border: none !important;
+  padding: 10px 10px !important;
+  background: #000 !important;
+}
+p{
+  font-size: 14px !important;
+}
+tr {
+  border-bottom: 2px solid #fff;
+}
+button {
+  background: #000 !important;
+  color: #fff !important;
+  border: 1px solid #fff !important;
+  padding: 10px 20px !important;
+}
+button:hover {
+  text-decoration: underline;
+  background:#555 !important;
+  border: 4px solid #F1B026;
+
+}
+.nav-tabs > li.active > a{
+    background:#000 !important;
+
+  color: #F1B026 !important;
+  border: 4px solid #F1B026  !important;
+  font-weight: 600  !important;
+  text-transform: uppercase  !important;
+}
+
+.nav-tabs > li.active > a:hover{
+    background:#666 !important;
+
+  color: #F1B026;
+  border: 4px solid #fff;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+
+.nav-tabs > li > a:hover{
+    background:#666 !important;
+
+  color: #F1B026;
+  border: 4px solid #000;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+
+.nav-tabs > li > a{
+    background:#000 !important;
+
+  color: #F1B026;
+  border: 4px solid #000;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+
+
+
+
+.search-panel {
+  padding-bottom: 50px;
+}
+
+
 .checkbox-container.row {
     margin-top: 15px;
     margin-bottom: 40px;
@@ -27,9 +102,11 @@ div {
 .checkbox-inline {
   font-size: small;
 }
-
+.container{
+  width:100% !important;
+}
 .admin-container {
-	width: 95%;
+	width: 100%;
 	margin-left: auto;
 	margin-right: auto;
 }
@@ -78,10 +155,26 @@ Hacker table
 table .hacker{
  height:700px; 
 }
+tbody{
+   border: none !important;
+}
+table{
+   border: none !important;
 
+}
 .hacker > thead{ 
 	min-width: 100%;	
 }
+thead {
+  color: #F1B026;
+  border-bottom: 4px solid #F1B026;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+thead tr {
+ border: none !important;
+}
+
 .hacker > tbody{
   min-width: 100%;	
   overflow-y: scroll;
@@ -96,12 +189,13 @@ tr {
 }
 
 td {
+   border: none !important;
+
   padding: 0;
 }
 
 td > p {
 	word-break: break-all;
-	font-size: x-small !important;
 }
 
 td > button {
@@ -129,6 +223,8 @@ td > button {
   background-color: white;
 }
 
+
+
 .modified > input {
  font-size: x-small !important;
  min-width: 100%;   
@@ -144,3 +240,4 @@ td > button {
 select {
 	width: 100%;
 }
+
