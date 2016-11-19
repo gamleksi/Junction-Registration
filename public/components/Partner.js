@@ -4,5 +4,7 @@ import AdminPanel from "./ui-data/AdminPanel"
 import PartnerPanel from "./ui-data/PartnerPanel"
 
 const partner = document.getElementById('partnerContainer');
-
-ReactDom.render(<PartnerPanel />, partner)
+var partnerPanel = true;
+ReactDom.render(<PartnerPanel 
+	partnerPanel={partnerPanel}
+	/>, partner)
