@@ -78,6 +78,8 @@ var validate = function(strng) {
 				operating: String,
 				sublime: String,
 				admin: {type: "boolean", defaultValue: false},
+				partner: {type: "boolean", defaultValue: false},
+				participated: {type: "boolean", defaultValue: false},
 				accepted:  {type: "boolean", defaultValue: false},
 				refused:  {type: "boolean", defaultValue: false},
 				registrationDate: Date,
