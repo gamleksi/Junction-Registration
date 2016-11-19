@@ -1,9 +1,22 @@
-import React from "react"
+import React from "react";
 
 
 export default React.createClass({
+    
+    getInitialState() {
+        return {
+            attributes: this.props.rowAttributes
+        }
+    },
     checkBoxSelected: function(e){
-        this.props.setAttributeValues(e.target.value);
+        var attr = this.state.attributes;
+        attr[e.target.value] = !attr[e.target.value]
+        this.setState({
+            attributes: attr
+        });
+    },
+    changeAttributes: function() {
+        this.props.setAttributeValues(this.state.attributes);
     }
     ,render:function(){
         var checkboxes= [];
@@ -12,7 +25,7 @@ export default React.createClass({
                 <label class="checkbox col-sm-2"> 
                     <input
                         type="checkbox"
-                        checked={this.props.rowAttributes[key]}
+                        checked={this.state.attributes[key]}
                         value={key}
                         onChange={this.checkBoxSelected}
                       />
@@ -21,7 +34,10 @@ export default React.createClass({
         }
         return(
             <div>
-                {checkboxes}
+                <div>
+                    {checkboxes}
+                </div>
+                <button onClick={this.changeAttributes}>Set Columns</button>
             </div>
             )
     }

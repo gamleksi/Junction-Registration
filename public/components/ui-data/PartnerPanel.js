@@ -13,7 +13,7 @@ export default React.createClass ({
         var self = this;
         var xhr = new XMLHttpRequest();
 
-        var url = "/admin/hackers/all"
+        var url = "/partners/hackers/sample"
          // () => {   == same as function(){
         xhr.onload = () => {
           //request finished and response is ready  
@@ -77,7 +77,7 @@ export default React.createClass ({
         
         var self = this;
         var xhr = new XMLHttpRequest();
-        var url = "/admin/master-search"
+        var url = "/partners/master-search"
         xhr.open('POST', url);
         xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 
@@ -168,15 +168,12 @@ export default React.createClass ({
 
     return (        
     <div id="init">
-        <button onClick={this.getHackers}>All hackers</button>
-        
-        <SearchPanel
-                searchSpecificHackers ={this.searchSpecificHackers}
-                rowAttributes={this.state.rowAttributes}
-        /> 
-
         <ControlPanel
                 setAttributeValues ={this.setAttributeValues}
+                rowAttributes={this.state.rowAttributes}
+        />
+        <SearchPanel
+                searchSpecificHackers ={this.searchSpecificHackers}
                 rowAttributes={this.state.rowAttributes}
         /> 
        <HackerTable
