@@ -61,6 +61,8 @@ var confirm = require('./routes/confirm');
 var users = require('./routes/users');
 var admin = require('./routes/admin');
 var refuse = require('./routes/refuse');
+var partners = require('./routes/partners');
+
 
 // uncomment after placing your favicon in /public
 app.use(favicon(__dirname + '/public/img/favicon.ico'));
@@ -121,6 +123,8 @@ app.use('/', users);
 app.use('/refuse', refuse);
 app.use('/confirm', confirm);
 app.use('/admin', admin);
+app.use('/partners', partners);
+
 
 app.set('port', (process.env.PORT));
 
