@@ -299,7 +299,8 @@ var validate = function(strng) {
 				if(err) {
 					throw err;
 				}
-				callback({hackers:results});
+				console.log("sample")
+				callback(results);
 			});
 		};
 
