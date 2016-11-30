@@ -2,8 +2,8 @@ import React from "react";
 import ControlPanel from "./ControlPanel";
 import SearchPanel from "./SearchPanel"
 import TableHeader from "./TableHeader";
-import HackerTable from "./HackerTable";
-import {attrNotBeShown, attrNotBeShownInRows, notBeShownInOpeningRow, tabObject, longComments} from "../HARD_VALUES.js"
+import PartnerTable from "./PartnerTable";
+import {attrNotBeShown, attrNotBeShownInRows, notBeShownInOpeningRow, partnerTabs, longComments} from "../HARD_VALUES.js"
 
 
 export default React.createClass ({
@@ -51,9 +51,8 @@ export default React.createClass ({
                 }
                 for(var email in this.state.selectedParticipants) {
                     var index = hackerMap[email];
-                    if(index && !hackers[index].selected) {
-                        var index = hackerMap[email]
-                        hackers[index].travelReimbursement = this.state.selectedParticipants[email].selected;
+                    if(index) {
+                        hackers[index]["selected"] = true;
                     }
                 }                
                 this.setState({
@@ -117,9 +116,8 @@ export default React.createClass ({
                 }
                 for(var email in this.state.selectedParticipants) {
                     var index = hackerMap[email];
-                    if(index && !hackers[index].selected) {
-                        var index = hackerMap[email]
-                        hackers[index].selcted = this.state.selectedParticipants[email].selected;
+                    if(index) {
+                        hackers[index]["selected"] = true;
                     }
                 }                     
                 self.setState({
@@ -143,7 +141,7 @@ export default React.createClass ({
             hackers: {},
             hackerMap: {},
             selectedParticipants: {},
-            tabObject: tabObject,
+            tabObject: partnerTabs,
             previousAccepted: {}
         }
     },
@@ -178,6 +176,9 @@ export default React.createClass ({
                     previousAccepted: this.state.previousAccepted
             });        
     },
+    exportSelected: function() {
+        console.log("export")
+    },
     dropFromSelectedList: function(hacker) {
         var selected = this.state.selectedParticipants        
 
@@ -201,11 +202,12 @@ export default React.createClass ({
         var i = 1;
         for(var key in this.state.rowAttributes) {
             if(this.state.rowAttributes[key]) {
-
                 i++;
             }
         }
         var tdRowStyle = {"width": 100/i + '%'};
+
+        console.log("partnerTabs " + partnerTabs)
 
     return (        
     <div id="init">
@@ -217,11 +219,10 @@ export default React.createClass ({
                 searchSpecificHackers ={this.searchSpecificHackers}
                 rowAttributes={this.state.rowAttributes}
         />
-       <HackerTable
+       <PartnerTable
             partnerPanel={this.props.partnerPanel}
-            hackerModificationSaved={this.hackerModificationSaved}
-            reloadPrevious={this.reloadPrevious}
-            tabObject={tabObject}
+            exportSelected={this.exportSelected}
+            tabObject={partnerTabs}
             acceptSelectedHackers={this.acceptSelectedHackers}
             previousAccepted={this.state.previousAccepted}
             selectedParticipants={this.state.selectedParticipants} 

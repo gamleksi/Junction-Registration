@@ -64,33 +64,6 @@ var ExpandedRadioInput = React.createClass({
     }
 });
 
-var ModificationInput = React.createClass({
-    getInitialState: function() {
-        return {
-            attributeValue: this.props.attributeValue  
-        }
-    },
-    inputChanged: function(e) {
-        this.setState({
-            attributeValue: e.target.value,
-        })
-        this.props.inputChanged(this.props.attributeKey, e.target.value);
-    },    
-    render: function(){
-        
-        var type = typeof this.props.attributeValue;
-
-        return(
-            <div class="modified">
-                <p><b>{this.props.attributeKey}:</b></p>
-                <input
-                    type={type}
-                    value={this.state.attributeValue}
-                    onChange={this.inputChanged}/>
-            </div>        
-        )
-    }
-})
 
 var ExpandedInfo = React.createClass({
     
@@ -98,7 +71,6 @@ var ExpandedInfo = React.createClass({
     originalHacker: {},
     getInitialState: function(){
         return {
-            modified: false,
             alert: false
         }   
     },
@@ -110,31 +82,7 @@ var ExpandedInfo = React.createClass({
             this.hacker[key] = this.originalHacker[key]
         }
     },
-    modificationClicked: function() {
-        if(this.modified) {
-            this.updateHackerObj();
-        }        
-        this.setState({
-            modified: !this.state.modified,
-            alert: false
-        })
-    },
-    saveModifications: function() {
-        var hacker = this.hacker;
-        var self = this;
-        this.hacker = {}
-        this.originalHacker = {}
-        this.props.saveModifications(hacker, function(result) {
-            if(!result) {
-                self.originalHacker = self.props.hackerInfo;     
-                self.updateHackerObj()
-            }
-            self.setState({
-                modified: false,
-                alert: !result,
-            })
-        });
-    },
+
     valuesDiffer: function(hacker){
         var r = false;
         for(var key in this.originalHacker) {
@@ -155,7 +103,6 @@ var ExpandedInfo = React.createClass({
         var radioInputs = undefined;
 
         for(var key in this.hacker){
-            var modificationClicked
             if(key === "travelReimbursement" && (!this.hacker[key] || !this.hacker["accepted"])) {
                 radioInputs = <ExpandedRadioInput inputSelected={this.props.inputSelected} travelReimbursement={this.hacker.travelReimbursement} hackerId={this.hacker.email}/>;
             } else {
@@ -192,13 +139,6 @@ var ExpandedInfo = React.createClass({
 
         if(this.state.alert) {
             divStyle['color'] = 'red';
-        }
-
-        var modText = "MODIFY"
-        var saveButton = "";
-        if(this.state.modified) {
-            modText = "CANCEL"
-            saveButton = <button class="expand" onClick={this.saveModifications}>SAVE</button>;            
         }
 
         var sections = [[], [], []]
@@ -241,8 +181,6 @@ var ExpandedInfo = React.createClass({
                     </td>
                     <td>                            
                         <button class="expand" onClick={this.props.expandClick}>COLLAPSE</button>
-                        <button class="expand" onClick={this.modificationClicked}>{modText}</button>
-                        {saveButton}
                         <div>
                             {radioInputs}
                         </div>
@@ -318,7 +256,6 @@ export default React.createClass({
         if(this.state.expand) {
             return (
                 <ExpandedInfo
-                    saveModifications={this.props.hackerModificationSaved}
                     hackerInfo={this.props.hackerInfo}
                     selectClick={this.selectClick}
                     expandClick={this.expandClick}
