@@ -1,19 +1,90 @@
-import React from "react";
-import ControlPanel from "./ControlPanel";
-import SearchPanel from "./SearchPanel"
-import TableHeader from "./TableHeader";
-import PartnerTable from "./PartnerTable";
-import {attrNotBeShown, attrNotBeShownInRows, notBeShownInOpeningRow, partnerTabs, longComments} from "../HARD_VALUES.js"
+var $ = require ('jquery')
+import React from 'react';
+import ReactDOM from 'react-dom';
+import {Table, Column, Cell} from 'fixed-data-table';
 
 
-export default React.createClass ({
+
+class NameCell extends React.Component {
+  render() {
+    const {rowIndex, field, data, ...props} = this.props;
+    return (
+      <Cell >
+        {data[rowIndex].firstname +" "+ data[rowIndex].lastname }
+      </Cell>
+    );
+  }
+}
+
+class MyLinkCell extends React.Component {
+  render() {
+    const {rowIndex, field, data, ...props} = this.props;
+    const link = data[rowIndex][field];
+    return (
+      <Cell >
+        <a href={link}>{link}</a>
+      </Cell>
+    );
+  }
+}
+
+class SkillCell extends React.Component {
+  render() {
+    const {rowIndex, field, data, ...props} = this.props;
+    const skills = data[rowIndex]['skills'].replace("(","").replace(")","").replace(/,/g,", ")
+    return (
+      <Cell >
+        {skills}
+      </Cell>
+    );
+  }
+}
+class TextCell extends React.Component {
+  render() {
+    const {rowIndex, field, data, ...props} = this.props;
+    return (
+      <Cell >
+        {data[rowIndex][field]}
+      </Cell>
+    );
+  }
+}
+
+class PartnerPanel extends React.Component {
 
 
-    getHackers: function(){
+
+  constructor(props) {
+    super(props);
+  
+    this.state = {
+      myTableData: [
+        {
+            firstname:"Example Hacker",
+            email:"example@hackjunction.com",
+            skills:"node.js,tvOS"
+        }
+      ]
+    };
+
+    this.getUsers = this.getUsers.bind(this);
+
+  }
+
+
+
+  componentDidMount() {
+    var that = this;
+    this.getUsers();
+  }
+
+ 
+
+ getUsers(){
         var self = this;
         var xhr = new XMLHttpRequest();
 
-        var url = "/partners/hackers/sample"
+        var url = "/partners/hackers/all"
          // () => {   == same as function(){
         xhr.onload = () => {
           //request finished and response is ready  
@@ -22,46 +93,11 @@ export default React.createClass ({
             if (xhr.status === 200) {
                 var responseItem = xhr.response
                 var jsoned = JSON.parse(responseItem)
-                
-                var rowAttributes = {}                
-                
-                if(Object.getOwnPropertyNames(this.state.rowAttributes).length === 0) {
-
-                    for(var key in jsoned.hackers[0]){
-                        rowAttributes[key] = true
-                    }
-                    attrNotBeShown.forEach(function(e) {
-                        delete rowAttributes[e]
-                    })
-
-                    notBeShownInOpeningRow.forEach(function(e) {
-                        if(rowAttributes[e]) {
-                            rowAttributes[e] = false;
-                        }
-                    })
-                    rowAttributes["selected"] = true;
-                } else {
-                    rowAttributes = this.state.rowAttributes;
-                }
-                var hackers = jsoned.hackers
-                var hackerMap = {};
-                for(var i in hackers) {
-                    hackers[i]["selected"] = false;
-                    hackerMap[hackers[i].email] = i;
-                }
-                for(var email in this.state.selectedParticipants) {
-                    var index = hackerMap[email];
-                    if(index) {
-                        hackers[index]["selected"] = true;
-                    }
-                }                
+                console.log(jsoned)
                 this.setState({
-                    rowAttributes: rowAttributes,
-                    hackers: hackers,
-                    hackerMap: hackerMap,
-                    selectedParticipants: {},
-                    previousAccepted: this.state.previousAccepted
+                    myTableData:jsoned.hackers.hackers
                 })
+            
             } else {
               console.error(xhr.statusText);
 
@@ -73,167 +109,321 @@ export default React.createClass ({
         };
         xhr.open('GET', url);
         xhr.send();
-    },    
-    searchSpecificHackers: function(query) {
-        
-        var self = this;
-        var xhr = new XMLHttpRequest();
-        var url = "/partners/master-search"
-        xhr.open('POST', url);
-        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-
-        xhr.onload = () => {
-          //request finished and response is ready  
-          if (xhr.readyState === 4) {
-
-            if (xhr.status === 200) {
-                var responseItem = xhr.response
-                var jsoned = JSON.parse(responseItem)
-                var rowAttributes = {}                
-                if(Object.getOwnPropertyNames(this.state.rowAttributes).length === 0) {
-
-                    for(var key in jsoned.hackers[0]){
-                        rowAttributes[key] = true
-                    }
-                    attrNotBeShown.forEach(function(e) {
-                        delete rowAttributes[e]
-                    })
-
-                    notBeShownInOpeningRow.forEach(function(e) {
-                        if(rowAttributes[e]) {
-                            rowAttributes[e] = false;
-                        }
-                    })
-                } else {
-                    rowAttributes = this.state.rowAttributes;
-                }
-                var hackers = jsoned.hackers
-
-                var hackerMap = {};
-                for(var i in hackers) {
-                    hackerMap[hackers[i].email] = i;
-                    hackers[i].selected = false;
-                }
-                for(var email in this.state.selectedParticipants) {
-                    var index = hackerMap[email];
-                    if(index) {
-                        hackers[index]["selected"] = true;
-                    }
-                }                     
-                self.setState({
-                    rowAttributes: rowAttributes,
-                    hackers: hackers,
-                    hackerMap: hackerMap,
-                    selectedParticipants: this.state.selectedParticipants,
-                    previousAccepted: this.state.previousAccepted
-                })
-            } else {
-              console.error(xhr.statusText);
-            }
-          }
-        };
-        xhr.send(JSON.stringify({"query": query}));
-    },
-    
-    getInitialState: function() {
-        return {
-            rowAttributes: {},
-            hackers: {},
-            hackerMap: {},
-            selectedParticipants: {},
-            tabObject: partnerTabs,
-            previousAccepted: {}
-        }
-    },
-    updateHackerIntoList: function(hacker) {
-        var hackers = this.state.hackers
-        var index = this.state.hackerMap[hacker.email]
-        if(index) {
-            hackers[index] = hacker;
-        }
-        return hackers;
-    },
-    setAttributeValues: function(attr){
-        var attributes = attr
-        this.setState({
-            rowAttributes: attributes,
-            hackers:this.state.hackers,
-            hackerMap: this.state.hackerMap,
-            selectedParticipants: this.state.selectedParticipants,
-        });
-    },
-    addToSelectedList: function(hacker) {
-        var selected = this.state.selectedParticipants;
-    
-            hacker["selected"] = true;
-            selected[hacker.email] = hacker;
-            var hackers = this.updateHackerIntoList(hacker);
-            this.setState({
-                    rowAttributes: this.state.rowAttributes,
-                    hackers: hackers,
-                    hackerMap: this.state.hackerMap,
-                    selectedParticipants: selected,
-                    previousAccepted: this.state.previousAccepted
-            });        
-    },
-    exportSelected: function() {
-        console.log("export")
-    },
-    dropFromSelectedList: function(hacker) {
-        var selected = this.state.selectedParticipants        
-
-        delete selected[hacker.email];
-        hacker["selected"] = false;
-        var hackers = this.updateHackerIntoList(hacker);
-        this.setState({
-            rowAttributes: this.state.rowAttributes,
-            attributeNames: this.state.attributeNames,
-            hackers: hackers,
-            hackerMap: this.state.hackerMap,
-            selectedParticipants: selected,
-            previousAccepted: this.state.previousAccepted
-        })            
-    },
-    render: function() {        
-
-        if(Object.getOwnPropertyNames(this.state.hackers).length <= 0) {
-            this.getHackers()
-        }
-        var i = 1;
-        for(var key in this.state.rowAttributes) {
-            if(this.state.rowAttributes[key]) {
-                i++;
-            }
-        }
-        var tdRowStyle = {"width": 100/i + '%'};
-
-        console.log("partnerTabs " + partnerTabs)
-
-    return (        
-    <div id="init">
-        <ControlPanel
-                setAttributeValues ={this.setAttributeValues}
-                rowAttributes={this.state.rowAttributes}
-        />
-        <SearchPanel
-                searchSpecificHackers ={this.searchSpecificHackers}
-                rowAttributes={this.state.rowAttributes}
-        />
-       <PartnerTable
-            partnerPanel={this.props.partnerPanel}
-            exportSelected={this.exportSelected}
-            tabObject={partnerTabs}
-            acceptSelectedHackers={this.acceptSelectedHackers}
-            previousAccepted={this.state.previousAccepted}
-            selectedParticipants={this.state.selectedParticipants} 
-            tdRowStyle={tdRowStyle}
-            rowAttributes={this.state.rowAttributes}
-            hackers={this.state.hackers}
-            addToSelectedList={this.addToSelectedList}
-            dropFromSelectedList={this.dropFromSelectedList}
-            expandedInfo={longComments}
-      />
-      </div>
-    )
     }
-});
+
+  render() {
+    return (
+    <div id="init">
+    <button onClick={this.getUsers}> Refresh</button>
+      <Table
+        rowsCount={this.state.myTableData.length}
+        rowHeight={100}
+        headerHeight={50}
+        width={1400}
+        height={500}>
+        <Column
+          header={<Cell>Name</Cell>}
+          cell={
+            <NameCell
+              data={this.state.myTableData}
+              field="name"
+            />
+          }
+          width={200}
+        />
+
+          <Column
+          header={<Cell>City</Cell>}
+          cell={
+            <TextCell
+              data={this.state.myTableData}
+              field="city"
+            />
+          }
+          width={400}
+        />
+          <Column
+          header={<Cell>Skillset</Cell>}
+          cell={
+            <SkillCell
+              data={this.state.myTableData}
+              field="skills"
+            />
+          }
+          width={400}
+        />
+
+        <Column
+          header={<Cell>email</Cell>}
+          cell={
+            <MyLinkCell
+              data={this.state.myTableData}
+              field="email"
+            />
+          }
+          width={200}
+        />
+      
+       
+      </Table>
+      </div>
+    );
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// var SortTypes = {
+//   ASC: 'ASC',
+//   DESC: 'DESC',
+// };
+
+// function reverseSortDirection(sortDir) {
+//   return sortDir === SortTypes.DESC ? SortTypes.ASC : SortTypes.DESC;
+// }
+
+// class SortHeaderCell extends React.Component {
+//   constructor(props) {
+//     super(props);
+
+//     this._onSortChange = this._onSortChange.bind(this);
+//   }
+
+//   render() {
+//     var {sortDir, children, ...props} = this.props;
+//     return (
+//       <Cell {...props}>
+//         <a onClick={this._onSortChange}>
+//           {children} {sortDir ? (sortDir === SortTypes.DESC ? '↓' : '↑') : ''}
+//         </a>
+//       </Cell>
+//     );
+//   }
+
+//   _onSortChange(e) {
+//     e.preventDefault();
+
+//     if (this.props.onSortChange) {
+//       this.props.onSortChange(
+//         this.props.columnKey,
+//         this.props.sortDir ?
+//           reverseSortDirection(this.props.sortDir) :
+//           SortTypes.DESC
+//       );
+//     }
+//   }
+// }
+
+// const TextCell2 = ({rowIndex, data, columnKey, ...props}) => (
+//   <Cell {...props}>
+//     {data[rowIndex][columnKey]}
+//   </Cell>
+// );
+
+// class DataListWrapper {
+//   constructor(indexMap, data) {
+//     this._indexMap = indexMap;
+//     this._data = data;
+//   }
+
+//   getSize() {
+//     return this._indexMap.length;
+//   }
+
+//   getObjectAt(index) {
+//     return this._data.getObjectAt(
+//       this._indexMap[index],
+//     );
+//   }
+// }
+
+// class PartnerPanel extends React.Component {
+//   constructor(props) {
+//     super(props);
+
+//     this._dataList = [];
+
+//     this._defaultSortIndexes = [];
+//     var size = this._dataList.length;
+//     for (var index = 0; index < size; index++) {
+//       this._defaultSortIndexes.push(index);
+//     }
+
+//     this.state = {
+//       sortedDataList: this._dataList,
+//       colSortDirs: {},
+//     };
+
+//     this._onSortChange = this._onSortChange.bind(this);
+//     this.getUsers = this.getUsers.bind(this);
+
+//   }
+
+//   componentDidMount() {
+//     var that = this;
+//     this.getUsers();
+//   }
+
+//  getUsers(){
+//         var self = this;
+//         var xhr = new XMLHttpRequest();
+
+//         var url = "/partners/hackers/all"
+//          // () => {   == same as function(){
+//         xhr.onload = () => {
+//           //request finished and response is ready  
+//           if (xhr.readyState === 4) {
+
+//             if (xhr.status === 200) {
+//                 var responseItem = xhr.response
+//                 var jsoned = JSON.parse(responseItem)
+//                 console.log(jsoned)
+                
+//                 this.state = {
+//                   sortedDataList: jsoned.hackers,
+//                   colSortDirs: this.state.colSortDirs,
+//                 };
+//                 return jsoned.hackers;
+            
+//             } else {
+//               console.error(xhr.statusText);
+
+//             }
+//           }
+//         };
+//         xhr.onerror = function (e) {
+//           console.error(xhr.statusText);
+//         };
+//         xhr.open('GET', url);
+//         xhr.send();
+//     }
+
+
+//   _onSortChange(columnKey, sortDir) {
+//     var sortIndexes = this._defaultSortIndexes.slice();
+//     sortIndexes.sort((indexA, indexB) => {
+//       var valueA = this._dataList[(indexA)][columnKey];
+//       var valueB = this._dataList[indexB][columnKey];
+//       var sortVal = 0;
+//       if (valueA > valueB) {
+//         sortVal = 1;
+//       }
+//       if (valueA < valueB) {
+//         sortVal = -1;
+//       }
+//       if (sortVal !== 0 && sortDir === SortTypes.ASC) {
+//         sortVal = sortVal * -1;
+//       }
+
+//       return sortVal;
+//     });
+
+//     this.setState({
+//       sortedDataList: new DataListWrapper(sortIndexes, this._dataList),
+//       colSortDirs: {
+//         [columnKey]: sortDir,
+//       },
+//     });
+//   }
+
+//   render() {
+//     var {sortedDataList, colSortDirs} = this.state;
+//     return (
+//         <div id="init">
+//         <button onClick={this.getUsers}> Refresh</button>
+
+//       <Table
+//         rowHeight={50}
+//         rowsCount={sortedDataList.length}
+//         headerHeight={50}
+//         width={1000}
+//         height={500}
+//         {...this.props}>
+//         <Column
+//           columnKey="id"
+//           header={
+//             <SortHeaderCell
+//               onSortChange={this._onSortChange}
+//               sortDir={colSortDirs.id}>
+//               id
+//             </SortHeaderCell>
+//           }
+//           cell={<TextCell2 data={sortedDataList} />}
+//           width={100}
+//         />
+//         <Column
+//           columnKey="firstname"
+//           header={
+//             <SortHeaderCell
+//               onSortChange={this._onSortChange}
+//               sortDir={colSortDirs.firstname}>
+//               First Name
+//             </SortHeaderCell>
+//           }
+//           cell={<TextCell2 data={sortedDataList} />}
+//           width={200}
+//         />
+//         <Column
+//           columnKey="lastname"
+//           header={
+//             <SortHeaderCell
+//               onSortChange={this._onSortChange}
+//               sortDir={colSortDirs.lastname}>
+//               Last Name
+//             </SortHeaderCell>
+//           }
+//           cell={<TextCell2 data={sortedDataList} />}
+//           width={200}
+//         />
+//         <Column
+//           columnKey="city"
+//           header={
+//             <SortHeaderCell
+//               onSortChange={this._onSortChange}
+//               sortDir={colSortDirs.city}>
+//               City
+//             </SortHeaderCell>
+//           }
+//           cell={<TextCell data={sortedDataList} />}
+//           width={200}
+//         />
+//         <Column
+//           columnKey="email"
+//           header={
+//             <SortHeaderCell
+//               onSortChange={this._onSortChange}
+//               sortDir={colSortDirs.email}>
+//               Email
+//             </SortHeaderCell>
+//           }
+//           cell={<TextCell data={sortedDataList} />}
+//           width={200}
+//         />
+//       </Table>
+//       </div>
+//     );
+//   }
+// }
+
+
+
+PartnerPanel.defaultProps = {
+};
+
+export default PartnerPanel;
