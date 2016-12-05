@@ -9,6 +9,10 @@ config/app-config.js
 
 public/js/scripts.min.js
 
+public/js/partner.js
+
+public/js/admin.js
+
 public/css/bootstrap.min.js
 
 public/.DS_Store

@@ -1,7 +1,6 @@
-var $ = require ('jquery')
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {Table, Column, Cell} from 'fixed-data-table';
+
 
 // in ECMAScript 6
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
