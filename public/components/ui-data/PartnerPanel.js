@@ -7,55 +7,22 @@ import {Table, Column, Cell} from 'fixed-data-table';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 
 
-class NameCell extends React.Component {
-  render() {
-    const {rowIndex, field, data, ...props} = this.props;
-    return (
-      <Cell >
-        {data[rowIndex].firstname +" "+ data[rowIndex].lastname }
-      </Cell>
-    );
-  }
-}
-
-class MyLinkCell extends React.Component {
-  render() {
-    const {rowIndex, field, data, ...props} = this.props;
-    const link = data[rowIndex][field];
-    return (
-      <Cell >
-        <a href={link}>{link}</a>
-      </Cell>
-    );
-  }
-}
-
-class SkillCell extends React.Component {
-  render() {
-    const {rowIndex, field, data, ...props} = this.props;
-    const skills = data[rowIndex]['skills'].replace("(","").replace(")","").replace(/,/g,", ")
-    return (
-      <Cell >
-        {skills}
-      </Cell>
-    );
-  }
-}
-class TextCell extends React.Component {
-  render() {
-    const {rowIndex, field, data, ...props} = this.props;
-    return (
-      <Cell >
-        {data[rowIndex][field]}
-      </Cell>
-    );
-  }
-}
-
+ 
 
 function enumFormatter(cell, row, enumObject) {
   return enumObject[cell];
 }
+
+
+
+const qualityType = {
+        '':'All',
+      '< 1 Year': '< 1 Year',
+      '1-2 Years': '1-2 Years',
+      '3-5 Years': '3-5 Years',
+      '5+ Years': '5+ Years'
+    };
+
 
 
 class PartnerPanel extends React.Component {
@@ -66,13 +33,7 @@ class PartnerPanel extends React.Component {
     super(props);
   
     this.state = {
-      myTableData: [
-        {
-            firstname:"Example Hacker",
-            email:"example@hackjunction.com",
-            skills:"node.js,tvOS"
-        }
-      ]
+      myTableData: []
     };
 
     this.getUsers = this.getUsers.bind(this);
@@ -120,6 +81,15 @@ class PartnerPanel extends React.Component {
     }
 
 
+      handlerClickCleanFiltered() {
+        this.refs.skills.cleanFiltered();
+        this.refs.experience.cleanFiltered();
+        this.refs.school.cleanFiltered();
+        
+      }
+
+
+
 
   render() {
 
@@ -135,16 +105,17 @@ function priceFormatter(cell, row){
         striped={true} 
         hover={true} 
         exportCSV 
-        search
-        pagination>
-          <TableHeaderColumn dataField="firstname" isKey={true}  dataSort={true}>Firstname</TableHeaderColumn>
-          <TableHeaderColumn dataField="lastname" dataSort={true}>Lastname</TableHeaderColumn>
-          <TableHeaderColumn dataField="city" dataSort={true}>City</TableHeaderColumn>
-
-          <TableHeaderColumn dataField="email" dataSort={true}>Email</TableHeaderColumn>
-        <TableHeaderColumn dataField="experience" dataSort={true}>Experience</TableHeaderColumn>
-        <TableHeaderColumn dataField="skills" filter={ { type: 'TextFilter', delay: 500 } } >Skills</TableHeaderColumn>
-
+        search>
+        <TableHeaderColumn dataField="firstname" isKey={true}  dataSort={true}>
+            Firstname
+          <br/><a onClick={ this.handlerClickCleanFiltered.bind(this) } style={ { cursor: 'pointer' } }>clear filters</a>
+        </TableHeaderColumn>
+        <TableHeaderColumn dataField="lastname" dataSort={true}>Lastname</TableHeaderColumn>
+        <TableHeaderColumn dataField="countryFrom" dataSort={true}>Country from</TableHeaderColumn>
+        <TableHeaderColumn dataField="email" dataSort={true}>Email</TableHeaderColumn>
+        <TableHeaderColumn ref="school" filter={ { type: 'TextFilter', delay: 500 } }  dataField="school" dataSort={true}>School</TableHeaderColumn>
+        <TableHeaderColumn ref="experience" dataField="experience" filter={ { type: 'SelectFilter', options: qualityType } } dataFormat={ enumFormatter } formatExtraData={ qualityType }>Experience</TableHeaderColumn>
+        <TableHeaderColumn ref="skills" dataField="skills" filter={ { type: 'TextFilter', delay: 500 } } >Skills</TableHeaderColumn>
       </BootstrapTable>
     );
   }
