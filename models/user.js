@@ -134,13 +134,32 @@ var validate = function(strng) {
 			});
 		};
 
-		Users.getUserByEmail = function(addr, callback){
+		Users.addParticipatedAttr = function(addr, callback){
 			Users.one({"email":addr}, function(err,user){
 				if(err) throw err;
-				else callback(user);
+				
+				if(user) {
+					user.participated = true;
+					console.log(user.email);
+					user.save(function(err){
+						if(err) {
+							throw err;
+						}
+						callback(err);
+					});
+				}
+				
 			});
 		};
 
+
+		Users.getUserByEmail = function(addr, callback){
+			Users.one({"email":addr}, function(err,user){
+				if(err) throw err;
+
+				callback(user);
+			});
+		};
 
 		Users.acceptHackers = function(hackers, callback) {
 
@@ -358,6 +377,11 @@ var validate = function(strng) {
 			var filterShow = {};
 			if(params.filterShow) {
 			 filterShow = params.filterShow;
+			 if(params.refused) {
+			 	 filterShow["refused"] = true;
+			 } else {
+			 	filterShow["refused"] = false;
+			 }
 			}
 			console.log(params)
 			var order = params.sortBy;
@@ -373,4 +397,3 @@ var validate = function(strng) {
 			return Users;
 		}
 };
-

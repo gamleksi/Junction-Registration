@@ -9,18 +9,16 @@ var Conv=require("csvtojson").Converter;
 
 var async=require("async");
 
-var rs=require("fs").createReadStream("particpants.csv"); // or any readable stream to csv data.
+var rs=require("fs").createReadStream("participants.csv"); // or any readable stream to csv data.
 
 var u = undefined;
 
 var q=async.queue(function(json,callback){
 
-  console.log(json.email);  
-  u.getUserByEmail(json.email, function(err, hacker) {
+  u.addParticipatedAttr(json.email, function(err) {
+    
     if(err) {
       console.log("not found");
-    } else {
-      console.log(hacker);    
     }
     callback();
   });
@@ -49,12 +47,11 @@ conv.transform=function(json){
 
 conv.on("end_parsed",function(){
   q.drain=function(){
-    console.log(arr.length);
   };
 });
 
 
-orm.express(process.env.DATABASE_URL_OLD, {
+orm.express(process.env.DATABASE_URL, {
     error: function(err){
       console.error(err);
     }, 
