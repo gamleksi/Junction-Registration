@@ -21,6 +21,7 @@ module.exports = {
 		],
 		track:[
 					{"value":"gaming","text":" Gaming"},
+					{"value":"adtech","text":" Adtech"},
 		 			{"value":"vr","text":" Virtual Reality"},
 		 			{"value":"iot","text":" IoT"},
 		 			{"value":"dataDriven", "text":" Data Driven Economy"},
@@ -31,13 +32,6 @@ module.exports = {
 					{"value":"ecommerce", "text":" E-Commerce"},
 					{"value":"mobility", "text":" Future Mobility"},					
 
-		],
-			
-		role:[		{"value":"software","text":" Software Dev"},
-		 			{"value":"hardware","text":" Hardware Dev"},
-		 			{"value":"designer","text":" Designer"},
-		 			{"value":"business","text":" Business"},
-		 			{"value":"other","text":" Other"},
 		],
 		
 		occupation: [

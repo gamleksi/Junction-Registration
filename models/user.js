@@ -4,6 +4,8 @@ var dateFormat = require('dateformat');
 var EventEmitter = require('events');
 var event = new EventEmitter();
 var formValues = require('../FORM_VALUES.js')
+var values_for_partners = ["firstname","lastname","age","email","countryFrom","countryHome","track","experience","portfolio","sex","skills","city","motivation"]
+
 module.exports = {
 	createModel: function(db) {
 		// Form attributes:
@@ -76,6 +78,8 @@ var validate = function(strng) {
 				operating: String,
 				sublime: String,
 				admin: {type: "boolean", defaultValue: false},
+				partner: {type: "boolean", defaultValue: false},
+				participated: {type: "boolean", defaultValue: false},
 				accepted:  {type: "boolean", defaultValue: false},
 				refused:  {type: "boolean", defaultValue: false},
 				registrationDate: Date,
@@ -284,6 +288,24 @@ var validate = function(strng) {
 			});
 		};
 			
+		Users.getLimitedUserInfo = function(callback){
+			Users.find({admin: false, refused: false, accepted:true}).omit('admin').omit('password').only(values_for_partners).run(function(err, results){
+				if(err) {
+					throw err;
+				}
+				callback({hackers:results});
+			});
+		};
+		Users.getSampleUsers = function(callback){
+			Users.find({admin: false, refused: false, accepted:true},10).omit('admin').omit('password').only(values_for_partners).run(function(err, results){
+				if(err) {
+					throw err;
+				}
+				console.log("sample")
+				callback(results);
+			});
+		};
+
 
 		Users.invitationHashMatches = function(hashString,callback){
 

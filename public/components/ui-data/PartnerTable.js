@@ -27,13 +27,11 @@ export default React.createClass({
     },
     render: function(){
         var hackers = this.props.hackers;
-        
         var tab = [
             <HackerTab 
                 changeSheet={this.changeSheet}
                 tabObject={this.state.tabObject}
                 />]
-
         if(this.state.tabObject[1].visible) {
             hackers = this.props.selectedParticipants;
             tab[0] = [<HackerTab 
@@ -44,9 +42,9 @@ export default React.createClass({
                 />]
         }
         if(this.state.tabObject[2].visible) {
-            hackers = this.props.previousAccepted
+            hackers = [];
             tab[0] = [<HackerTab 
-                buttonClicked={this.props.reloadPrevious}
+                buttonClicked={this.props.exportSelected}
                 changeSheet={this.changeSheet}
                 tabObject={this.state.tabObject}
                 tabButton={this.state.tabObject[2].buttonValue}

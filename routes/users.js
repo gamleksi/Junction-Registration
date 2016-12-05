@@ -306,7 +306,7 @@ passport.use('user-local', new LocalStrategy(
 ));
 
 router.post('/login',
-  passport.authenticate('user-local', {successRedirect: '/admin', failureRedirect:'/login',failureFlash: true}));
+  passport.authenticate('user-local', {successRedirect: '/admin/hackers', failureRedirect:'/login',failureFlash: true}));
 
 router.get('/logout', function(req, res){
 	req.logout();

@@ -5,9 +5,9 @@ var event = new EventEmitter();
 var Users = require('./models/user');
 var OldUsers = require('./models/user_old');
 
-console.log("process.env.DATABASE_URL_")
-console.log(process.env.DATABASE_URL_OLD)
-console.log(process.env.DATABASE_URL)
+console.log("process.env.DATABASE_URL_");
+console.log(process.env.DATABASE_URL_OLD);
+console.log(process.env.DATABASE_URL);
 
 event.once('event', function(hackers){
 	orm.express(process.env.DATABASE_URL, {
@@ -22,12 +22,6 @@ event.once('event', function(hackers){
 	          }
 	          else{
 	            console.log("synced");
-	            for(i in hackers) {
-	            	var hacker = hackers[i];
-	            	var ms = hacker.refuseHash.slice(0, 13);
-	            	hacker["registrationDate"] = new Date(parseInt(ms));
-	            	hackers[i] = hacker;
-	            }
 	            var arr = [];
 	            var l = hackers.length;
 	            event.on('created', function(index){
@@ -69,10 +63,10 @@ orm.express(process.env.DATABASE_URL_OLD, {
             console.log("synced");
               models.users.getUsers(function(users) {
                   if(users) {
-                    event.emit('event', users)     
+                    event.emit('event', users);     
                   }
               });              
-            console.log('ready')
+            console.log('ready');
 
           }
 
