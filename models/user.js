@@ -143,6 +143,8 @@ var validate = function(strng) {
 					console.log(user.email);
 					user.save(function(err){
 						if(err) {
+							console.log(err);
+
 							throw err;
 						}
 						callback(err);
@@ -308,7 +310,7 @@ var validate = function(strng) {
 		};
 			
 		Users.getLimitedUserInfo = function(callback){
-			Users.find({admin: false, refused: false, accepted:true}).omit('admin').omit('password').only(values_for_partners).run(function(err, results){
+			Users.find({admin: false, refused: false, accepted:true,participated:true}).omit('admin').omit('password').only(values_for_partners).run(function(err, results){
 				if(err) {
 					throw err;
 				}

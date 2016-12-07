@@ -23,7 +23,7 @@ var q=async.queue(function(json,callback){
     callback();
   });
   
-},10);//10 concurrent worker same time
+},50);//10 concurrent worker same time
 
 
 
