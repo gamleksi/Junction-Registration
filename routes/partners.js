@@ -6,13 +6,15 @@ var csv = require('express-csv')
 var json2csv = require('json2csv');
 var fs = require('fs');
 
+
+
 router.get('/', authPartner, function(req, res) {
+    console.log("partner")
+
   res.render('partner_view', {layout: 'partner-layout'});     
 });
 
-router.get('/login', function(req, res) {
-  res.render('login');
-});
+
 
 router.get('/hackers', authPartner, function(req, res) {
   req.models.users.getUsers(function(users) {
@@ -39,7 +41,44 @@ router.get('/hackers/sample', authPartner, function(req, res) {
 
 
 
-router.get('/export',authPartner, function(req, res) {
+
+
+
+router.post('/export',authPartner, function(req, res) {
+    console.log('%s %s', req.method, req.url);
+      
+//==============
+//console.log(req.body['exportData'])
+var asd = req.body['exportData']
+var fields = Object.keys(asd[Object.keys(asd)[0]])
+ console.log(asd)
+
+ var vals = Object.keys(req.body.exportData).map(function(key) {
+    return req.body.exportData[key];
+});
+  var csv = json2csv({ data: vals, fields: fields });
+  var date = new Date()
+  var fileName = "export.csv"
+ res.setHeader('Content-disposition', 'attachment; filename=' + fileName);
+   fs.writeFile(fileName, csv, function(err) {
+    if (err) throw err;
+    console.log('file saved');
+     res.attachment(fileName);
+    res.attachment(fileName);
+      res.send(csv);
+      res.end();
+
+  });
+
+//==============
+
+
+});
+
+
+
+
+router.get('/backup',authPartner, function(req, res) {
     console.log('%s %s', req.method, req.url);
    req.models.users.getUsers(function(users) {
       
@@ -54,13 +93,19 @@ var fields = Object.keys(users[0]);
   fs.writeFile(fileName, csv, function(err) {
     if (err) throw err;
     console.log('file saved');
-    res.download(fileName)
+     res.attachment(fileName);
+    res.attachment("ionic.app.scss");
+      res.send(csv);
+      res.end();
+
   });
 
 //==============
 
   });
 });
+
+
 
 
 router.post('/master-search',authPartner, function(req, res) {
@@ -85,16 +130,16 @@ router.post('/master-search',authPartner, function(req, res) {
   
 
 function authPartner(req, res, next){
-  // if(!req.isAuthenticated()) {
-  //   res.redirect('/');   
-  // } else {
-  //   if(!req.user.admin) {
-  //     res.redirect('/'); 
-  //   } else {
-  //     next();
-  //   }
-  // }
-  next();
+  if(!req.isAuthenticated()) {
+      res.redirect('/partner'); 
+  } else {
+    if(!req.user.partner) {
+      res.redirect('/partner'); 
+    } else {
+      next();
+    }
+  }
+
 }
 
 module.exports = router; 

@@ -10,7 +10,7 @@ body {
 td {
   border: none !important;
   padding: 10px 10px !important;
-  background: #000 !important;
+  background: #111 !important;
 }
 p{
   font-size: 14px !important;
@@ -155,13 +155,7 @@ Hacker table
 table .hacker{
  height:700px; 
 }
-tbody{
-   border: none !important;
-}
-table{
-   border: none !important;
 
-}
 .hacker > thead{ 
 	min-width: 100%;	
 }
@@ -187,6 +181,7 @@ thead tr {
 
 td {
    border: none !important;
+   height: 100px;
 }
 
 td > p {
@@ -198,7 +193,7 @@ td > button {
 }
 
 .expand-view > p {
-	font-size: small !important;	
+	font-size: 16px !important;	
 }
 
 .modified {
@@ -241,7 +236,7 @@ select {
 }
 
 .react-bs-table {
-  border: 1px solid #ddd;
+  border: 5px solid #ddd;
   border-radius: 5px;
 }
 
@@ -482,5 +477,13 @@ select {
 .bounceOut {
   animation-name: bounceOut;
 }
+.react-bs-table table td {
+  white-space: normal;
+  }
 
-
+.td-column-string-example{
+  width:60px !important;
+}
+.pagination > .active > a {
+  background: #000 !important;
+}

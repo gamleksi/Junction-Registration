@@ -21,7 +21,20 @@ const qualityType = {
       '3-5 Years': '3-5 Years',
       '5+ Years': '5+ Years'
     };
+const trackType = {
+    "gaming":" Gaming",
+    "adtech":" Adtech",
+    "vr":" Virtual Reality",
+    "iot":" IoT",
+    "dataDriven" :" Data Driven Economy",
+    "fintech" :" Fintech",
+    "ai" :" Artificial Intelligence",
+    "healthtech" :" Healthtech",
+    "buildings" :" Intelligent Buildings",
+    "ecommerce" :" E-Commerce",
+    "mobility" :" Future Mobility" 
 
+};
 
 
 class PartnerPanel extends React.Component {
@@ -61,7 +74,14 @@ class PartnerPanel extends React.Component {
             if (xhr.status === 200) {
                 var responseItem = xhr.response
                 var jsoned = JSON.parse(responseItem)
-                console.log(jsoned)
+                console.log(jsoned.hackers.hackers)
+                var skills = jsoned.hackers.hackers.skills
+                console.log(skills)
+                jsoned.hackers.hackers.forEach(function(hacker){
+                    hacker["skills"] = hacker["skills"].replace(/\(|\)/g, "").replace(/,/g,", ").replace(/"/g,"'");
+                    hacker["name"] = hacker["firstname"]+ " " +hacker["lastname"];
+                })
+                
                 this.setState({
                     myTableData:jsoned.hackers.hackers
                 })
@@ -84,38 +104,71 @@ class PartnerPanel extends React.Component {
         this.refs.skills.cleanFiltered();
         this.refs.experience.cleanFiltered();
         this.refs.school.cleanFiltered();
+        this.refs.tracks.cleanFiltered();
         
       }
 
 
+    
+// It's a data format example.
+ priceFormatter(cell, row){
+  return '<i class="glyphicon glyphicon-usd"></i> ' + cell;
+}
+    
+     createCustomModalHeader(onClose, onSave) {
+    const headerStyle = {
+      fontWeight: 'bold',
+      fontSize: 'large',
+      textAlign: 'center',
+      backgroundColor: '#eeeeee'
+    };
+    return (
+      <div className='modal-header' style={ headerStyle }>
+        <h3>That is my custom header</h3>
+        <button className='btn btn-info' onClick={ onClose }>Close it!</button>
+      </div>
+    );
+  }
 
+   
 
   render() {
 
+     const options = {
+        sizePerPage: 10,
+        exportCSVText: 'Export current hackers to CSV'
+      };
     
-// It's a data format example.
-function priceFormatter(cell, row){
-  return '<i class="glyphicon glyphicon-usd"></i> ' + cell;
-}
-
     return (
+    <div>
+    <br/><a onClick={ this.handlerClickCleanFiltered.bind(this) } style={ { cursor: 'pointer'} } >CLEAR FILTERS</a>
        <BootstrapTable data={
         this.state.myTableData} 
         striped={true} 
         hover={true} 
-        exportCSV 
-        search>
-        <TableHeaderColumn dataField="firstname" isKey={true}  dataSort={true}>
-            Firstname
-          <br/><a onClick={ this.handlerClickCleanFiltered.bind(this) } style={ { cursor: 'pointer' } }>clear filters</a>
+        options={options}
+        exportCSV
+        search
+        pagination
+        striped
+        csvFileName='junction_hackers'
+        >
+        <TableHeaderColumn dataField="name" isKey={true}  dataSort={true}>
+            Name
+       
         </TableHeaderColumn>
-        <TableHeaderColumn dataField="lastname" dataSort={true}>Lastname</TableHeaderColumn>
-        <TableHeaderColumn dataField="countryFrom" dataSort={true}>Country from</TableHeaderColumn>
-        <TableHeaderColumn dataField="email" dataSort={true}>Email</TableHeaderColumn>
-        <TableHeaderColumn ref="school" filter={ { type: 'TextFilter', delay: 500 } }  dataField="school" dataSort={true}>School</TableHeaderColumn>
+        <TableHeaderColumn dataField="countryFrom" columnClassName='td-column-string-example' dataSort={true}>🌍</TableHeaderColumn>
         <TableHeaderColumn ref="experience" dataField="experience" filter={ { type: 'SelectFilter', options: qualityType } } dataFormat={ enumFormatter } formatExtraData={ qualityType }>Experience</TableHeaderColumn>
         <TableHeaderColumn ref="skills" dataField="skills" filter={ { type: 'TextFilter', delay: 500 } } >Skills</TableHeaderColumn>
+        <TableHeaderColumn ref="school" filter={ { type: 'TextFilter', delay: 500 } }  dataField="school" dataSort={true}>School</TableHeaderColumn>
+        <TableHeaderColumn ref="track" dataField="track" filter={ { type: 'SelectFilter', options: trackType } } dataFormat={ enumFormatter } formatExtraData={ trackType }>Track</TableHeaderColumn>
+
+        <TableHeaderColumn dataField="portfolio" dataSort={true}>Portfolio</TableHeaderColumn>
+
+        <TableHeaderColumn dataField="email" dataSort={true}>Email</TableHeaderColumn>
+        
       </BootstrapTable>
+      </div>
     );
   }
 }

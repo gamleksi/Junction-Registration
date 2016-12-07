@@ -6,13 +6,14 @@ var csv = require('express-csv')
 var json2csv = require('json2csv');
 var fs = require('fs');
 
-router.get('/', ensureIsAuthenticatedAndAdmin, function(req, res) {
-  req.models.users.getUsers(function(users) {    
-    res.render('hackers',{hackers:users, layout: 'admin-layout'});
-  });
+router.all('/', ensureIsAuthenticatedAndAdmin, function(req, res) {
+  console.log("IN ADMIN")
+  res.render('admin', {layout: 'admin-layout'});     
 });
 
 router.get('/login', function(req, res) {
+    console.log("IN ADMIN login")
+
   res.render('login');
 });
 
@@ -25,6 +26,7 @@ router.get('/hackers', ensureIsAuthenticatedAndAdmin, function(req, res) {
 
 
 router.get('/hackers/all', ensureIsAuthenticatedAndAdmin, function(req, res) {
+
   req.models.users.getUsers(function(users) {    
     res.send({hackers:users});
   });
@@ -164,16 +166,15 @@ router.post('/master-search',ensureIsAuthenticatedAndAdmin, function(req, res) {
   
 
 function ensureIsAuthenticatedAndAdmin(req, res, next){
-  // if(!req.isAuthenticated()) {
-  //   res.redirect('/');   
-  // } else {
-  //   if(!req.user.admin) {
-  //     res.redirect('/'); 
-  //   } else {
-  //     next();
-  //   }
-  // }
-  next();
+  if(!req.isAuthenticated()) {
+    res.redirect('/');   
+  } else {
+    if(!req.user.admin) {
+      res.redirect('/'); 
+    } else {
+      next();
+    }
+  }
 }
 
 module.exports = router; 
