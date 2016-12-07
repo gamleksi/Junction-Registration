@@ -151,7 +151,7 @@ class PartnerPanel extends React.Component {
         search
         pagination
         striped
-        csvFileName='junction_hackers'
+        csvFileName='junction_hackers.csv'
         >
         <TableHeaderColumn dataField="name" isKey={true}  dataSort={true}>
             Name
