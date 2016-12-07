@@ -4,6 +4,8 @@ var dateFormat = require('dateformat');
 var EventEmitter = require('events');
 var event = new EventEmitter();
 var formValues = require('../FORM_VALUES.js')
+var values_for_partners = ["firstname","lastname","age","email","countryFrom","countryHome","track","school","experience","portfolio","sex","skills","city","motivation"]
+
 module.exports = {
 	createModel: function(db) {
 		// Form attributes:
@@ -76,6 +78,8 @@ var validate = function(strng) {
 				operating: String,
 				sublime: String,
 				admin: {type: "boolean", defaultValue: false},
+				partner: {type: "boolean", defaultValue: false},
+				participated: {type: "boolean", defaultValue: false},
 				accepted:  {type: "boolean", defaultValue: false},
 				refused:  {type: "boolean", defaultValue: false},
 				registrationDate: Date,
@@ -130,13 +134,34 @@ var validate = function(strng) {
 			});
 		};
 
-		Users.getUserByEmail = function(addr, callback){
+		Users.addParticipatedAttr = function(addr, callback){
 			Users.one({"email":addr}, function(err,user){
 				if(err) throw err;
-				else callback(user);
+				
+				if(user) {
+					user.participated = true;
+					console.log(user.email);
+					user.save(function(err){
+						if(err) {
+							console.log(err);
+
+							throw err;
+						}
+						callback(err);
+					});
+				}
+				
 			});
 		};
 
+
+		Users.getUserByEmail = function(addr, callback){
+			Users.one({"email":addr}, function(err,user){
+				if(err) throw err;
+
+				callback(user);
+			});
+		};
 
 		Users.acceptHackers = function(hackers, callback) {
 
@@ -284,6 +309,24 @@ var validate = function(strng) {
 			});
 		};
 			
+		Users.getLimitedUserInfo = function(callback){
+			Users.find({admin: false, refused: false, accepted:true,participated:true}).omit('admin').omit('password').only(values_for_partners).run(function(err, results){
+				if(err) {
+					throw err;
+				}
+				callback({hackers:results});
+			});
+		};
+		Users.getSampleUsers = function(callback){
+			Users.find({admin: false, refused: false, accepted:true},10).omit('admin').omit('password').only(values_for_partners).run(function(err, results){
+				if(err) {
+					throw err;
+				}
+				console.log("sample")
+				callback(results);
+			});
+		};
+
 
 		Users.invitationHashMatches = function(hashString,callback){
 

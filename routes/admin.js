@@ -6,11 +6,14 @@ var csv = require('express-csv')
 var json2csv = require('json2csv');
 var fs = require('fs');
 
-router.get('/', ensureIsAuthenticatedAndAdmin, function(req, res) {
+router.all('/', ensureIsAuthenticatedAndAdmin, function(req, res) {
+  console.log("IN ADMIN")
   res.render('admin', {layout: 'admin-layout'});     
 });
 
 router.get('/login', function(req, res) {
+    console.log("IN ADMIN login")
+
   res.render('login');
 });
 

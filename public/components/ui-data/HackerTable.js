@@ -27,11 +27,13 @@ export default React.createClass({
     },
     render: function(){
         var hackers = this.props.hackers;
+        
         var tab = [
             <HackerTab 
                 changeSheet={this.changeSheet}
                 tabObject={this.state.tabObject}
                 />]
+
         if(this.state.tabObject[1].visible) {
             hackers = this.props.selectedParticipants;
             tab[0] = [<HackerTab 
@@ -50,7 +52,6 @@ export default React.createClass({
                 tabButton={this.state.tabObject[2].buttonValue}
                 />]            
         }
-        console.log(hackers);
         return(
             <div id="hacker-table">
                 {tab}
@@ -60,6 +61,7 @@ export default React.createClass({
                         rowAttributes={this.props.rowAttributes}
                             />
                     <TableBody
+                        partnerPanel={this.props.partnerPanel}
                         hackerModificationSaved={this.props.hackerModificationSaved} 
                         tdRowStyle={this.props.tdRowStyle}
                         hackers={hackers}

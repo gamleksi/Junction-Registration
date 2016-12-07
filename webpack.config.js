@@ -8,7 +8,11 @@ var APP_DIR = path.resolve(__dirname, 'public/components/');
 
 module.exports = {
   devtool: debug ? "inline-sourcemap" : null,
-  entry: APP_DIR + '/App.js',
+  entry: {
+    admin:APP_DIR + '/Admin.js',
+    partner: APP_DIR + '/Partner.js'
+  }
+    ,
   module: {
     loaders: [
       {
@@ -24,7 +28,7 @@ module.exports = {
   },
   output: {
     path: BUILD_DIR,
-    filename: "scripts.min.js"
+    filename: "[name].js"
   },
   plugins: debug ? [] : [
     new webpack.optimize.DedupePlugin(),
