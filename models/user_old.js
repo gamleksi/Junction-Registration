@@ -4,6 +4,8 @@ var dateFormat = require('dateformat');
 var EventEmitter = require('events');
 var event = new EventEmitter();
 var formValues = require('../FORM_VALUES.js')
+var values_for_partners = ["firstname","lastname","age","email","countryFrom","countryHome","track","experience","portfolio","sex"]
+
 module.exports = {
 	createModel: function(db) {
 		// Form attributes:
@@ -14,7 +16,7 @@ module.exports = {
 		// - email: String (määrämuotoinen) [CHECK]
 		// - gender [male, female, other] [CHECK]
 		// - t-shirt size: [xs, s, m, l, xl, xxl] [CHECK]
-		// - dietary restrictions: String (määräpituus, esim 160 merkkiä) 
+		// - dietary restrictions: String (määräpituus, esim 160 merkkiä)
 		/*	Vegetarian:
 		 	No Pork:
 	 		Gluten-Free:
@@ -30,7 +32,7 @@ var validate = function(strng) {
 			var valueArray = formValues[strng];
 			var result = [];
 			for(var i in valueArray) {
-			
+
 				result.push(valueArray[i].value);
 			}
 			return result;
@@ -78,11 +80,12 @@ var validate = function(strng) {
 				admin: {type: "boolean", defaultValue: false},
 				accepted:  {type: "boolean", defaultValue: false},
 				refused:  {type: "boolean", defaultValue: false},
+				registrationDate: Date,
 				batch: Date,
 				invitationHash: String,
 				refuseHash: String,
 				status: {type: "text", defaultValue: "pending"},
-				travelReimbursement: {type: "text", defaultValue: undefined},				
+				travelReimbursement: {type: "text", defaultValue: undefined},
 				invitationEmailStatus: {type: "text", defaultValue: "Not Send"},
 				registerEmailStatus: {type: "text", defaultValue: "Should be sent??"}
 			}, {
@@ -113,6 +116,7 @@ var validate = function(strng) {
 			bcrypt.genSalt(10, function(err, salt) {
 				bcrypt.hash(user.password, salt, function(err, hash) {
 					user["password"] = hash;
+					var date = new Date()
 					user["admin"] = false;
 					Users.create(user, function(err,items){
 				      if(err){
@@ -123,7 +127,7 @@ var validate = function(strng) {
 				       console.log("User has been created succesfully.")
 				       callback({success:true})
 				      }
-				     });		
+				     });
 				});
 			});
 		};
@@ -142,7 +146,7 @@ var validate = function(strng) {
 
 
 			var date = dateFormat(new Date(), "isoDate");
-			var errors = 0; 
+			var errors = 0;
 			var savedUsers = [];
 
 			event.once('event', function(){
@@ -152,11 +156,11 @@ var validate = function(strng) {
 
 			function inner(hacker) {
 				Users.one({"email": hacker.email}, function(err, user) {
-					
+
 					if(err) {
 						errors++;
 						throw err;
-					} 
+					}
 					if(user) {
 						var date = dateFormat(new Date(), "isoDate").split("T")[0];
 						user.accepted = true;
@@ -173,13 +177,13 @@ var validate = function(strng) {
 							if(Object.keys(hackers).length === (length)) {
 								event.emit('event');
 							}
-						});							
+						});
 
 					}
 
-				});				
-			} 
-			
+				});
+			}
+
 			for(var key in hackers){
 				inner(hackers[key]);
 			}
@@ -192,15 +196,40 @@ var validate = function(strng) {
 				if(user) {
 					if(user.travelReimbursement) {
 						user.invitationEmailStatus = event;
-						
+
 					} else {
 						user.registerEmailStatus = event;
 					}
 					user.save();
 				}
 			});
-		}; 
-			
+		};
+
+		Users.modifyUserInformation = function(hacker, callback) {
+
+			Users.one({"email": hacker.email}, function(err,user){
+				if(err) throw err;
+				var result = false;
+				if(user) {
+					for(var key in hacker) {
+						if(key !== "email") {
+							user[key] = hacker[key];
+						}
+					}
+					result = true;
+				}
+				console.log("modifyUserInformation");
+				console.log(user);
+				user.save(function(err){
+					if(err) {
+						console.error(err);
+						result = false;
+					}
+					callback(result);
+				});
+			});
+		};
+
 
 		Users.comparePasswords = function(candidatePassword, hash, callback){
 			bcrypt.compare(candidatePassword,hash, function(err, isMatch){
@@ -216,7 +245,7 @@ var validate = function(strng) {
 				if(err){
 					callback("status not changed")
 					throw err;
-				} 
+				}
 				if(user) {
 					user.status = status;
 					user.save();
@@ -234,7 +263,7 @@ var validate = function(strng) {
 				if(err){
 					callback("status not changed")
 					throw err;
-				} 
+				}
 				if(user) {
 					callback(user.email);
 				}else {
@@ -256,7 +285,25 @@ var validate = function(strng) {
 				}
 			});
 		};
-			
+
+		Users.getLimitedUserInfo = function(callback){
+			Users.find({admin: false, refused: false, accepted:true}).omit('admin').omit('password').only(values_for_partners).run(function(err, results){
+				if(err) {
+					throw err;
+				}
+				callback({hackers:results});
+			});
+		};
+		Users.getSampleUsers = function(callback){
+			Users.find({admin: false, refused: false, accepted:true},10).omit('admin').omit('password').only(values_for_partners).run(function(err, results){
+				if(err) {
+					throw err;
+				}
+				console.log("sample")
+				callback(results);
+			});
+		};
+
 
 		Users.invitationHashMatches = function(hashString,callback){
 
@@ -265,7 +312,7 @@ var validate = function(strng) {
 				if(err){
 					callback("status not changed")
 					throw err;
-				} 
+				}
 				if(exists) {
 					callback(true);
 				}else {
@@ -275,7 +322,7 @@ var validate = function(strng) {
 		};
 
 		Users.getUsers = function(callback){
-			Users.find({admin: false, refused: false}).omit('admin').omit('password').run(function(err, results) {
+			Users.find({admin: false}).omit('admin').omit('password').run(function(err, results) {
 				if(err) {
 					throw err;
 				}
@@ -285,7 +332,9 @@ var validate = function(strng) {
 
 		Users.getUsersWithParameters = function(params,callback){
 			params.admin = false;
-			params.refused = false;
+			if(params.refused === undefined) {
+				params.refused = finalse;
+			}
 			Users.find(params).omit('admin').omit('password').run(function(err, results) {
 				if(err) {
 					throw err;
@@ -302,10 +351,28 @@ var validate = function(strng) {
 				callback(results);
 			});
 		};
-		return Users;
-	}
 
-};
+		Users.masterSearch = function(params, callback) {
+			var filterShow = {};
+			if(params.filterShow) {
+			 filterShow = params.filterShow;
+			 if(params.refused) {
+			 	 filterShow["refused"] = true;
+			 } else {
+			 	filterShow["refused"] = false;
+			 }
+			}
+			console.log(params)
+			var order = params.sortBy;
+			console.log("oder+++ " + order)
+			Users.find(filterShow, order).omit('admin').run(function(err, results) {
+				if(err) {
+					throw err;
+				}
+				callback(results);
+			});
+		};
 
-
-
+			return Users;
+		}
+}

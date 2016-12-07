@@ -9,7 +9,7 @@ var sendgrid = require('../sendgrid/sendgrid.js')
 
 
 /* GET users listing. */
-router.get('/', ensureIsNotAuthenticated, function(req, res) {
+router.all('/', ensureIsNotAuthenticated, function(req, res) {
   res.render('register',{form_values: form_values,
                         country_home_values:country_values,
                         country_from_values:country_values})
@@ -29,16 +29,19 @@ router.get('/thanks', ensureIsNotAuthenticated, function(req, res) {
 router.get('/login', ensureIsNotAuthenticated, function(req, res) {
   res.render('login')
 });
+router.get('/partner', ensureIsNotAuthenticated, function(req, res) {
+  res.render('partner_login')
+});
 
 
 
 router.get('/account', function(req, res){
-	res.render('account');
+  res.render('account');
 });
 
 
 router.get('/edit_profile', function(req, res){
-	res.render('edit_profile');
+  res.render('edit_profile');
 });
 
 //Register User
@@ -228,14 +231,14 @@ router.get('/edit_profile', function(req, res){
 //     errors.forEach(function(v) {
 //       error_messages[v.param] = v.msg
 //     });
-// 	  res.render("register", {errors: errors,
+//    res.render("register", {errors: errors,
 //                             error_messages:error_messages,
 //                             failedPost:failedPost,
 //                             form_values: form_values_with_errors,
 //                             country_from_values:country_from_with_errors,
 //                              country_home_values:country_home_with_errors})
 //   } else {
-  	 
+     
 //       var time =  new Date().getTime();
 //       var refuseHash = time + Math.random().toString(36).substring(7).toUpperCase();
 //       var invitationHash = Math.random().toString(36).substring(7).toUpperCase() + time;
@@ -285,19 +288,43 @@ passport.use('user-local', new LocalStrategy(
   {passReqToCallback : true},
   function(req, username, password, done) {
     req.models.users.getUserByEmail(username, function(user){
-    	if(user === null){
-    		return done(null,false,{message:"Invalid username"});
-    	}
-    	 req.models.users.comparePasswords(password, user.password, function(err,isMatch){
-    		if(err) throw err;
-    		if(isMatch){
-    			return done(null, user);
-    		} 
+      if(user === null){
+        return done(null,false,{message:"Invalid username"});
+      }
+       req.models.users.comparePasswords(password, user.password, function(err,isMatch){
+        if(err) throw err;
+        if(isMatch){
+          return done(null, user);
+        } 
         else {
-    			done(null,false,{message:'Invalid password'});
-    		}
+          done(null,false,{message:'Invalid password'});
+        }
 
-    	});
+      });
+    
+    });
+  
+  }
+
+));
+
+passport.use('partner-local', new LocalStrategy(
+  {passReqToCallback : true},
+  function(req, username, password, done) {
+    req.models.users.getUserByEmail(username, function(user){
+      if(user === null){
+        return done(null,false,{message:"Invalid username"});
+      }
+       req.models.users.comparePasswords(password, user.password, function(err,isMatch){
+        if(err) throw err;
+        if(isMatch){
+          return done(null, user);
+        } 
+        else {
+          done(null,false,{message:'Invalid password'});
+        }
+
+      });
     
     });
   
@@ -308,10 +335,20 @@ passport.use('user-local', new LocalStrategy(
 router.post('/login',
   passport.authenticate('user-local', {successRedirect: '/admin', failureRedirect:'/login',failureFlash: true}));
 
+router.post('/partner_login',
+  passport.authenticate('user-local', {successRedirect: '/partners', failureRedirect:'/partner',failureFlash: true}));
+
+
 router.get('/logout', function(req, res){
-	req.logout();
-	req.flash('success_msg', 'You are logget out.');
-	res.redirect('/');
+  req.logout();
+  req.flash('success_msg', 'You are logged out.');
+  res.redirect('/');
+});
+
+router.get('/partner_logout', function(req, res){
+  req.logout();
+  req.flash('success_msg', 'You are logged out.');
+  res.redirect('/partner');
 });
 
 
@@ -324,11 +361,11 @@ passport.deserializeUser(function(user, done){
 });
 
 function ensureIsNotAuthenticated(req, res, next){
-	if(!req.isAuthenticated()) {
-		return next();
-	} else {
-		res.redirect('/');
-	}
+  if(!req.isAuthenticated()) {
+    return next();
+  } else {
+    res.redirect('/');
+  }
 }
 
 module.exports = router;

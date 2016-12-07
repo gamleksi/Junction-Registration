@@ -254,9 +254,8 @@ export default React.createClass ({
             previousAccepted: {}
         }
     },
-    setAttributeValues: function(key){
-        var attributes = this.state.rowAttributes
-        attributes[key] = !(attributes[key]) 
+    setAttributeValues: function(attr){
+        var attributes = attr
         this.setState({
             rowAttributes: attributes,
             hackers:this.state.hackers,

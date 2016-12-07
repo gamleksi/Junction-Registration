@@ -24,9 +24,12 @@ export default React.createClass({
 	    	tabs.push(this.renderTabs(index))
 	    }
 	    var tabButton = []
+
+/*
 	    if(this.props.buttonClicked) {
 	    	tabs.push(<li class="active tab-button" onClick={this.props.buttonClicked}><a>{this.props.tabButton}</a></li>)
 	    }
+*/
 		return (
 			<ul class="nav nav-tabs">
 				{tabs}
